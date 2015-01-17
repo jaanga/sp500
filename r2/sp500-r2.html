@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang=en >
 <head>
-<title>jaanga sp500 r2</title>
+<title>jaanga sp500 r2.1</title>
 <meta charset=utf-8 />
 <meta name=viewport content=width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0 />
 </head>
@@ -52,13 +52,14 @@
 		scene = new THREE.Scene();
 
 		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 5000 );
-		camera.position.set( 200, 200, 200 );
+		camera.position.set( 200, 100, 150 );
 		scene.add( camera ); // for light to follow
 
 // controls
 		controls = new THREE.OrbitControls( camera );
 		controls.minDistance = 10;
 		controls.maxDistance = 1000;
+		controls.target.set( 0, 20, -150 );
 
 // Lights
 		light = new THREE.AmbientLight( 0xffffff );
@@ -72,13 +73,13 @@
 		light.position.set( -200, 200, 200 );
 
 		var d = 300;
-		light.shadowCameraLeft = -d;
-		light.shadowCameraRight = d;
-		light.shadowCameraTop = d;
-		light.shadowCameraBottom = -d;
+		light.shadowCameraLeft = -400;
+		light.shadowCameraRight = 120;
+		light.shadowCameraTop = 300;
+		light.shadowCameraBottom = -100;
 
 		light.shadowCameraNear = 200;
-		light.shadowCameraFar = 600;
+		light.shadowCameraFar = 700;
 
 // can help stop appearance of gridlines in objects with opacity < 1
 		light.shadowBias = -0.0002; // default 0 ~ distance fron corners?
@@ -91,20 +92,19 @@
 		scene.add( light );
 
 // Ground Plane
-		geometry = new THREE.BoxGeometry( 300, 5, 400 );
+		geometry = new THREE.BoxGeometry( 150, 5, 400 );
 
 //		var material.color = 0x202099;
 //		var material = new THREE.MeshNormalMaterial();
 		var material = new THREE.MeshPhongMaterial( {
-			color: 0xffffff * Math.random(),
-			ambient: 0xffffff * Math.random(),
+			color: 0x00ff00 * Math.random(),
+			ambient: 0x00ff00 * Math.random(),
 			specular: 0xffffff * Math.random(),
-			shininess: 50,
-			side: THREE.DoubleSide
+			shininess: 10
 		} );
 
 		mesh = new THREE.Mesh( geometry, material );
-		mesh.position.set( 0, -2.51, -100 );
+		mesh.position.set( 75, -2.51, -200 );
 		mesh.castShadow = true;
 		mesh.receiveShadow = true;
 		scene.add( mesh );
@@ -112,6 +112,54 @@
 		helper = new THREE.BoxHelper( mesh );
 		helper.material.color.setRGB( 1, 0, 1 );
 		scene.add( helper );
+
+		var material = new THREE.MeshPhongMaterial( {
+			color: 0xaa2222,
+			ambient: 0x444444,
+			specular: 0xffffff * Math.random(),
+			shininess: 10
+		} );
+
+		mesh = new THREE.Mesh( geometry, material );
+		mesh.position.set( -75, -2.51, -200 );
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
+		scene.add( mesh );
+
+		helper = new THREE.BoxHelper( mesh );
+		helper.material.color.setRGB( 1, 0, 1 );
+		scene.add( helper );
+
+
+		geometry = new THREE.BoxGeometry( 300, 1, 5 );
+
+		var material = new THREE.MeshPhongMaterial( {
+			color: 0xaaaaaa,
+			ambient: 0x444444,
+			specular: 0xffffff * Math.random(),
+			shininess: 10
+		} );
+
+		mesh = new THREE.Mesh( geometry, material );
+		mesh.position.set( 0, 0.5, -200 * Math.log( 2 ) );
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
+		scene.add( mesh );
+
+		sp = drawSprite( '0% vol avg', 0.1, '#ff00ff', -150, 12 , 0 );
+		sp.material.opacity = 0.5;
+		scene.add( sp );
+
+		sp = drawSprite( '100% vol avg', 0.1, '#ff00ff', -150, 12 , mesh.position.z );
+		sp.material.opacity = 0.5;
+		scene.add( sp );
+
+		sp = drawSprite( '>600% vol avg', 0.1, '#ff00ff', -150, 1 , -200 * Math.log( 7 ) );
+		sp.material.opacity = 0.5;
+		scene.add( sp );
+
+		var ar = new THREE.ArrowHelper( v( 0, 1, 0 ), v( -150, 0, 0 ), 8, 0xff8888, 4, 3 );
+scene.add( ar );
 
 		var axis = new THREE.AxisHelper( 50 );
 		scene.add( axis );
@@ -132,6 +180,21 @@
 
 		renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );
 		renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
+
+		cssBackround = document.body.appendChild( document.createElement('style') );
+
+		var col1 = "#" + Math.random().toString(16).slice(2, 8);
+		var col2 = "#" + Math.random().toString(16).slice(2, 8);
+		var col3 = "#" + Math.random().toString(16).slice(2, 8);
+		var X = ( Math.random() * window.innerWidth ).toFixed(0);
+		var Y = ( Math.random() * window.innerHeight ).toFixed(0);
+		var center =  20 + ( Math.random() * 60 ).toFixed(0);
+
+		cssBackround.innerText = 'body { ' +
+			'background: -webkit-radial-gradient(' + X + 'px ' + Y + 'px, farthest-corner, ' + col1 + ' 0%, ' + col2 + ' 50%, ' + col3 + ' 100%); ' +
+			'background: -moz-radial-gradient(' + X + 'px ' + Y + 'px, farthest-corner, ' + col1 + ' 0%, ' + col2 + ' 50%, ' + col3 + ' 100%); ' +
+			'background: radial-gradient(' + X + 'px ' + Y + 'px, farthest-corner, ' + col1 + ' 0%, ' + col2 + ' 50%, ' + col3 + ' 100%); }' +
+		'';
 
 	}
 
@@ -162,13 +225,15 @@
 //clic
 			mesh.userData.volumeAvg = sp500[i][6];
 			mesh.userData.marketCap = sp500[i][7];
-			scale = 1 + 0.0000000003 * sp500[i][7];
+			scale = 2 + 0.0000000002 * sp500[i][7];
 //			mesh.position.set( 10 * sp500[i][2], 0.5 * scale, -200 * Math.log( 1 + sp500[i][4] / sp500[i][3] ) + 100 );
 			mesh.position.set( 0, 0.5 * scale, 0 );
 			mesh.scale.y = scale;
 			mesh.castShadow = true;
 			mesh.receiveShadow = true;
 			symbol.add( mesh );
+
+
 
 			helper = new THREE.BoxHelper( mesh );
 			helper.material.color.setRGB( 0.3, 0.3, 0.3 );
@@ -190,12 +255,14 @@
 	}
 
 	function drawSprite( text, scale, color, x, y, z) {
+
 		texture = canvasText( text, color );
 		var spriteMaterial = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false, opacity: 1 } );
 		var sprite = new THREE.Sprite( spriteMaterial );
 		sprite.position.set( x, y, z ) ;
 		sprite.scale.set( scale * texture.image.width, scale * texture.image.height );
 		return sprite;
+
 	}
 
 	function canvasText( textArray, color ) {
@@ -234,12 +301,15 @@
 
 	function updateSymbols() {
 
+		var pos;
+
 		for ( var i = 0; i < sp500.length; i++ ) {
+
 			touchables[i].userData.changePct = sp500trades[i][1];
 			touchables[i].userData.volume = sp500trades[i][2];
 			symbols[i].position.x = 10 * sp500trades[i][1];
-			symbols[i].position.z = -200 * Math.log( 1 + sp500trades[i][2] / sp500[i][6] ) + 100;
-
+			pos = -200 * Math.log( 1 + sp500trades[i][2] / sp500[i][6] );
+			symbols[i].position.z = pos < -400 ? -400 : pos;
 		}
 
 	}
@@ -284,11 +354,14 @@
 						'<div>' + intersected.userData.name + '</div>' +
 						'<div style="margin:0; background-color: #' + intersected.material.color.getHexString() + ';" >' + intersected.userData.sector + '</div>' +
 						'<img src="http://www.google.com/finance/chart?tlf=12&q=' + 'NASDAQ:' + intersected.userData.symbol +
-							'"  style="background: white;" />' +
-						'<br><a href="http://www.google.com/finance?q=' + 'NASDAQ:' + intersected.name + '" target="_blank">Google Finance: ' + intersected.name + '</a>' +
-						'<br>chg:' + intersected.userData.changePct + '% vol:' + addCommas(intersected.userData.volume) + '<br>' +
-						'mkt cap:' + addCommas(intersected.userData.marketCap) +
-						'<br></p>';
+							'"  style="background: white;" /><br>' +
+						'<a href="http://www.google.com/finance?q=' + 'NASDAQ:' + intersected.name + '" target="_blank">Google Finance: ' + intersected.name + '</a><br>' +
+						'chg: ' + intersected.userData.changePct + '%<br>' +
+						'vol: ' + addCommas(intersected.userData.volume) + '<br>' +
+						'vol avg :' + addCommas( intersected.userData.volumeAvg ) + '<br>' +
+						'vol/vol avg: ' + ( 100 * intersected.userData.volume / intersected.userData.volumeAvg ).toFixed(1) + '%<br>' +
+						'mkt cap: ' + addCommas(intersected.userData.marketCap) +
+						'';
 						headsUp.innerHTML = txt;
 					}
 
@@ -323,6 +396,7 @@
 	}
 
 	function addCommas( nStr ){
+
 		nStr += '';
 		x = nStr.split( '.' );
 		x1 = x[ 0 ];
@@ -332,7 +406,10 @@
 			x1 = x1.replace( rgx, '$1' + ',' + '$2' );
 		}
 		return x1 + x2;
+
 	}
+
+	function v( x, y, z ){ return new THREE.Vector3( x, y, z ); }
 
 	function animate( timestamp ) {
 

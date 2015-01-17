@@ -2,21 +2,22 @@ SP500 Read Me
 ===========
 
 [Web page view]( http://jaanga.github.io/sp500/ "View files with docBrowser" ) &nbsp;  
-[Source code view]( https://github.com/jaanga/XXX/tree/gh-pages/XXX/ "View files with GitHub")
+[Source code view]( https://github.com/jaanga/sp500 "View files with GitHub")
 
 
 ### Live Demo
 
-<iframe src="http://XXX.github.io/XXX/latest/index.html" width=100% height=500px class='overview' >
+<iframe src="http://jaanga.github.io/sp500/latest/index.html" width=100% height=500px class='overview' >
 There is an `iframe` here. It is not visible when viewed on github.com/jaanga/sp500. To view, click 'Web page view' just above.
 </iframe>
-_SP500 - latest revision_ / [Full Screen]( http://jaanga.github.io/sp500/latest/index.html)
+_SP500 - latest revision_ / [Full Screen]( http://jaanga.github.io/sp500/latest/index.html )
 
 
 ## Concept
 
 ### Mission  
 <!-- a statement of a rationale, applicable now as well as in the future -->
+View market symbols in a non-reductionist manner
 
 ### Vision  
 <!--  a descriptive picture of a desired future state -->
