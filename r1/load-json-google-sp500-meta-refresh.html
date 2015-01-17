@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang='en'>
+<head>
+<title>load json google sp500 meta refresh</title>
+<meta charset=utf-8 />
+<meta http-equiv=refresh content=20 />
+</head>
+<body>
+<script>
+
+	var xmlhttp;
+
+	var fname = 'https://spreadsheets.google.com/feeds/list/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/1/public/values?alt=json';
+
+	init();
+
+	function init() {
+
+		document.body.style.cssText = 'font: 600 12pt monospace; margin: 0; overflow: hidden;' ;
+
+		var info = document.body.appendChild( document.createElement( 'div' ) );
+		info.style.cssText = 'left: 20px; position: absolute; ';
+		info.innerHTML = '<h1><a href="" >' + document.title + '</a></h1>' +
+			'<div id=msg1 ></div>' +
+			'<div id=msg2 ></div>';
+
+		loadJSON();
+
+	}
+
+	function loadJSON() {
+
+		xmlhttp = new XMLHttpRequest();
+		xmlhttp.open( 'GET', fname + '&t=' + Math.random(), true );
+		xmlhttp.onload = callbackJSON;
+		xmlhttp.send( null );
+
+	}
+
+	function callbackJSON() {
+
+		var data = xmlhttp.responseText;
+		data = JSON.parse( data );
+		var entries = data.feed.entry;
+		var sp500 = [];
+		var txt = '', entry, symbol;
+
+		for ( var i = 0; i < entries.length; i++  ) {
+
+			entry = entries[i].content.$t.split( ', _' );
+			symbol = [
+				entry[0].split( ': ' )[1],
+				entry[1].split( ': ' )[1],
+				parseFloat( entry[2].split( ': ' )[1] ),
+				parseInt( entry[3].split( ': ' )[1] , 10 ),
+				parseInt( entry[5].split( ': ' )[1] , 10 ),
+				parseInt( entry[4].split( ': ' )[1] , 10 )
+			];
+
+			sp500.push( symbol );
+//			txt += ( i + 1 ) + ' ' + symbol.toString() + '<br>';
+
+		}
+
+		parent.sp500 = sp500;
+		parent.msg1.innerHTML = new Date();
+//		parent.msg2.innerHTML = txt;
+
+		if ( window.self !== window.top ) {
+
+			parent.update();
+
+		}
+
+	}
+
+</script>
+</body>
+</html>

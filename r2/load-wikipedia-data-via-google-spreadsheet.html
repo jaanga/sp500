@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang='en'>
+<head>
+<title>load-wikipedia-data-via-google-spreadsheet.html</title>
+<meta charset=utf-8 />
+<!--
+<meta http-equiv=refresh content=20 />
+-->
+</head>
+<body>
+<script>
+
+	var xmlhttp;
+
+	var fname = 'https://spreadsheets.google.com/feeds/list/1_sv-QsJvHCfTCjRlpgv5ZwAUZetMCu-SfQHERAOuGZE/1/public/values?alt=json';
+
+	init();
+
+	function init() {
+
+		document.body.style.cssText = 'font: 600 12pt monospace;' ;
+
+		var info = document.body.appendChild( document.createElement( 'div' ) );
+		info.innerHTML = '<h1><a href="" >' + document.title + '</a></h1>' +
+			'<div id=msg1>1</div>' +
+			'<div id=msg2>2</div>';
+
+		loadJSON();
+
+	}
+
+	function loadJSON() {
+
+		xmlhttp = new XMLHttpRequest();
+		xmlhttp.open( 'GET', fname + '&t=' + Math.random(), true );
+		xmlhttp.onload = callbackJSON;
+		xmlhttp.send( null );
+
+	}
+
+	function callbackJSON() {
+
+		var data = xmlhttp.responseText;
+		data = JSON.parse( data );
+		var entries = data.feed.entry;
+		sp500 = [];
+		var txt = '';
+//		var entry, symbol;
+
+		for ( var i = 0; i < entries.length; i++  ) {
+
+			entry = entries[i];
+
+			symbol = [
+				entry.gsx$tickersymbol.$t,
+				entry.gsx$security.$t,
+				entry.gsx$gicssector.$t,
+				parseInt( entry.gsx$sectorid.$t, 10 ),
+				entry.gsx$gicssubindustry.$t,
+				parseInt( entry.gsx$cik.$t, 10),
+				parseInt( entry.gsx$volumeavg.$t, 10 ),
+				parseInt( entry.gsx$marketcap.$t, 10 )
+			];
+
+			sp500.push( symbol );
+			txt += i + ' ' + symbol.toString() + '<br>';
+
+		}
+
+		if ( window.self !== window.top ) {
+
+			parent.sp500 = sp500;
+			parent.msg1.innerHTML = new Date();
+			parent.msg2.innerHTML = txt;
+			parent.drawSymbols();
+
+		} else {
+
+			msg1.innerHTML = new Date();
+			msg2.innerHTML = txt;
+		}
+
+	}
+
+</script>
+</body>
+</html>

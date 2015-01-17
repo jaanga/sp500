@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang=en >
+<head>
+<title>jaanga sp500 r2</title>
+<meta charset=utf-8 />
+<meta name=viewport content=width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0 />
+</head>
+<body>
+<script src=http://mrdoob.github.io/three.js/build/three.min.js ></script>
+<script src=http://mrdoob.github.io/three.js/examples/js/controls/OrbitControls.js ></script>
+<script src=http://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
+<script>
+	var info, renderer, scene, camera, controls, stats, light;
+
+	var VH = VH || {};
+	var sp500, sp500trades;
+	var symbols = [], touchables = [];
+	var colors = [0x575757,0xAD2323,0x2A4BD7,0x1D6914,0x814A19,0x8126C0,0x81C57A,0x9DAFFF,0x29D0D0,0xFF9233,0xE9DEBB,0xFFCDF3,0xFFEE33,0xA0A0A0,0x000000,0xFFFFFF];
+//	var colors = ['575757','AD2323','2A4BD7','1D6914','814A19','8126C0','81C57A','9DAFFF','29D0D0','FF9233','E9DEBB','FFCDF3','FFEE33','A0A0A0','000000','FFFFFF'];
+
+	var mouse = new THREE.Vector2();
+	var offset = new THREE.Vector3();
+	var intersected;
+
+	init();
+
+	function init() {
+
+		var geometry, material, mesh, helper;
+
+		document.body.style.cssText = 'font: 600 12pt monospace; margin: 0; overflow: hidden' ;
+
+		info = document.body.appendChild( document.createElement( 'div' ) );
+		info.style.cssText = 'height: ' + ( 0.25 * window.innerHeight ) + 'px; position: absolute; margin: 10px; overflow: auto; ';
+		info.innerHTML = '<a href="" ><h1>' + document.title + '</h1></a>' +
+			'<div id=msg1 ></div>' +
+			'<div id=msg2 ></div>' +
+			'<div id=msg3 ></div>' +
+		'';
+		msg2.style.display = msg1.style.display = 'none';
+
+		stats = new Stats();
+		stats.domElement.style.cssText = 'position: absolute; right: 0; ';
+		document.body.appendChild( stats.domElement );
+
+		renderer = new THREE.WebGLRenderer( { alpha: 1, antialias: true, clearColor: 0xffffff }  );
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.shadowMapEnabled = true;
+		renderer.shadowMapSoft = true;
+		document.body.appendChild( renderer.domElement );
+
+		scene = new THREE.Scene();
+
+		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 5000 );
+		camera.position.set( 200, 200, 200 );
+		scene.add( camera ); // for light to follow
+
+// controls
+		controls = new THREE.OrbitControls( camera );
+		controls.minDistance = 10;
+		controls.maxDistance = 1000;
+
+// Lights
+		light = new THREE.AmbientLight( 0xffffff );
+		scene.add( light );
+
+		light = new THREE.PointLight( 0xffffff, 1 );
+		light.position = camera.position;
+		camera.add( light );
+
+		light = new THREE.DirectionalLight( 0xffffff, 1 );
+		light.position.set( -200, 200, 200 );
+
+		var d = 300;
+		light.shadowCameraLeft = -d;
+		light.shadowCameraRight = d;
+		light.shadowCameraTop = d;
+		light.shadowCameraBottom = -d;
+
+		light.shadowCameraNear = 200;
+		light.shadowCameraFar = 600;
+
+// can help stop appearance of gridlines in objects with opacity < 1
+		light.shadowBias = -0.0002; // default 0 ~ distance fron corners?
+		light.shadowDarkness = 0.3; // default 0.5
+		light.shadowMapWidth = 2048;  // default 512
+		light.shadowMapHeight = 2048;
+
+		light.castShadow = true;
+//		light.shadowCameraVisible = true;
+		scene.add( light );
+
+// Ground Plane
+		geometry = new THREE.BoxGeometry( 300, 5, 400 );
+
+//		var material.color = 0x202099;
+//		var material = new THREE.MeshNormalMaterial();
+		var material = new THREE.MeshPhongMaterial( {
+			color: 0xffffff * Math.random(),
+			ambient: 0xffffff * Math.random(),
+			specular: 0xffffff * Math.random(),
+			shininess: 50,
+			side: THREE.DoubleSide
+		} );
+
+		mesh = new THREE.Mesh( geometry, material );
+		mesh.position.set( 0, -2.51, -100 );
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
+		scene.add( mesh );
+
+		helper = new THREE.BoxHelper( mesh );
+		helper.material.color.setRGB( 1, 0, 1 );
+		scene.add( helper );
+
+		var axis = new THREE.AxisHelper( 50 );
+		scene.add( axis );
+
+		var geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
+		var material = new THREE.MeshBasicMaterial( );
+		plane = new THREE.Mesh( geometry, material );
+		plane.visible = false;
+		scene.add( plane );
+
+		headsUp = document.body.appendChild( document.createElement( 'div' ) );
+		headsUp.style.cssText = 'background-color: #ddd; border-radius: 8px; padding: 0 5px 10px 5px; opacity: 0.85; ' +
+			'position: absolute; left: 50px; text-align: left; ';
+
+		ifr = document.body.appendChild( document.createElement( 'iframe' ) );
+		ifr.style.display = 'none';
+		ifr.src = 'load-wikipedia-data-via-google-spreadsheet.html';
+
+		renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );
+		renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
+
+	}
+
+	function drawSymbols() {
+
+		geometry = new THREE.BoxGeometry( 1, 1, 1 );
+
+		for (var i = 0; i < sp500.length; i++) {
+
+			symbol = new THREE.Object3D();
+
+			material = new THREE.MeshPhongMaterial( {
+				color: colors[ sp500[i][3] ], // 0xffffff * Math.random(),
+				ambient: colors[ sp500[i][3] ], //0xffffff * Math.random(),
+//				opacity: Math.random(),
+				specular: 0xffffff * Math.random(),
+				shading: THREE.FlatShading,
+				shininess: 10,
+				transparent: true
+			} );
+
+			mesh = new THREE.Mesh( geometry, material );
+			mesh.name = mesh.userData.symbol = sp500[i][0];
+			mesh.userData.name = sp500[i][1];
+			mesh.userData.sector = sp500[i][2];
+			mesh.userData.sectorID = sp500[i][3];
+//subindustry
+//clic
+			mesh.userData.volumeAvg = sp500[i][6];
+			mesh.userData.marketCap = sp500[i][7];
+			scale = 1 + 0.0000000003 * sp500[i][7];
+//			mesh.position.set( 10 * sp500[i][2], 0.5 * scale, -200 * Math.log( 1 + sp500[i][4] / sp500[i][3] ) + 100 );
+			mesh.position.set( 0, 0.5 * scale, 0 );
+			mesh.scale.y = scale;
+			mesh.castShadow = true;
+			mesh.receiveShadow = true;
+			symbol.add( mesh );
+
+			helper = new THREE.BoxHelper( mesh );
+			helper.material.color.setRGB( 0.3, 0.3, 0.3 );
+			scene.add( helper );
+
+			sp = drawSprite( mesh.userData.symbol, (0.05 ), '#ffff00', mesh.position.x, ( 2 * mesh.position.y + 3 ), mesh.position.z);
+			sp.material.opacity = 0.5;
+			symbol.add( sp );
+
+			symbols.push( symbol );
+			touchables.push( mesh );
+			scene.add( symbol );
+		}
+
+		ifr.src = 'load-google-data-via-google-spreadsheet.html';
+
+		animate();
+
+	}
+
+	function drawSprite( text, scale, color, x, y, z) {
+		texture = canvasText( text, color );
+		var spriteMaterial = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false, opacity: 1 } );
+		var sprite = new THREE.Sprite( spriteMaterial );
+		sprite.position.set( x, y, z ) ;
+		sprite.scale.set( scale * texture.image.width, scale * texture.image.height );
+		return sprite;
+	}
+
+	function canvasText( textArray, color ) {
+		var canvas = document.createElement( 'canvas' );
+		var context = canvas.getContext( '2d' );
+
+		if ( typeof textArray === 'string' ) textArray = [ textArray ];
+		context.font = '48px sans-serif';
+		var width = 0;
+		for (var i = 0, len = textArray.length; i < len; i++) {
+			width = context.measureText( textArray[i] ).width > width ? context.measureText( textArray[i] ).width : width;
+		}
+
+		canvas.width = width + 20; // 480
+		canvas.height = textArray.length * 60;
+
+		context.fillStyle = color;
+		context.fillRect( 0, 0, canvas.width, canvas.height);
+
+		context.lineWidth = 1 ;
+		context.strokeStyle = '#000';
+		context.strokeRect( 0, 0, canvas.width, canvas.height);
+
+		context.fillStyle = '#000' ;
+		context.font = '48px sans-serif';
+
+		for (var i = 0, len = textArray.length; i < len; i++) {
+			context.fillText( textArray[i], 10, 48  + i * 60 );
+		}
+
+		var texture = new THREE.Texture( canvas );
+		texture.needsUpdate = true;
+		return texture;
+
+	}
+
+	function updateSymbols() {
+
+		for ( var i = 0; i < sp500.length; i++ ) {
+			touchables[i].userData.changePct = sp500trades[i][1];
+			touchables[i].userData.volume = sp500trades[i][2];
+			symbols[i].position.x = 10 * sp500trades[i][1];
+			symbols[i].position.z = -200 * Math.log( 1 + sp500trades[i][2] / sp500[i][6] ) + 100;
+
+		}
+
+	}
+
+	function onDocumentMouseMove( event ) {
+
+		event.preventDefault();
+
+		mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+		mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+		var vector = new THREE.Vector3( mouse.x, mouse.y, 0.5 ).unproject( camera );
+
+		var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+
+		var intersects = raycaster.intersectObjects( touchables );
+
+		if ( intersects.length > 0 ) {
+
+			if ( intersected != intersects[ 0 ].object ) {
+
+				if ( intersected && intersected.material.emissive ) {
+
+					intersected.material.emissive.setHex( intersected.currentHex );
+
+				}
+
+				intersected = intersects[ 0 ].object;
+
+				if ( intersected.material.emissive ) {
+
+					intersected.currentHex = intersected.material.emissive.getHex();
+					intersected.material.emissive.setHex( 0xff0000 );
+
+					headsUp.style.left = 50 + 0.5 * window.innerWidth + mouse.x * 0.5 * window.innerWidth + 'px';
+					headsUp.style.top = -50 + 0.5 * window.innerHeight - mouse.y * 0.5 * window.innerHeight + 'px';
+					headsUp.style.display = '';
+
+					if (intersected.userData.name) {
+
+						var txt = '<h2 style="margin:0;" >' + intersected.userData.symbol + '</h2>' +
+						'<div>' + intersected.userData.name + '</div>' +
+						'<div style="margin:0; background-color: #' + intersected.material.color.getHexString() + ';" >' + intersected.userData.sector + '</div>' +
+						'<img src="http://www.google.com/finance/chart?tlf=12&q=' + 'NASDAQ:' + intersected.userData.symbol +
+							'"  style="background: white;" />' +
+						'<br><a href="http://www.google.com/finance?q=' + 'NASDAQ:' + intersected.name + '" target="_blank">Google Finance: ' + intersected.name + '</a>' +
+						'<br>chg:' + intersected.userData.changePct + '% vol:' + addCommas(intersected.userData.volume) + '<br>' +
+						'mkt cap:' + addCommas(intersected.userData.marketCap) +
+						'<br></p>';
+						headsUp.innerHTML = txt;
+					}
+
+				}
+
+			}
+
+			document.body.style.cursor = 'pointer';
+
+
+		} else {
+
+			if ( intersected && intersected.material.emissive ) {
+
+				intersected.material.emissive.setHex( intersected.currentHex );
+
+			}
+
+			intersected = null;
+
+			document.body.style.cursor = 'auto';
+
+		}
+
+	}
+
+
+	function onDocumentMouseDown( event ) {
+
+		headsUp.style.display = 'none';
+
+	}
+
+	function addCommas( nStr ){
+		nStr += '';
+		x = nStr.split( '.' );
+		x1 = x[ 0 ];
+		x2 = x.length > 1 ? '.' + x[ 1 ] : '';
+		var rgx = /(\d+)(\d{3})/;
+		while ( rgx.test( x1 ) ) {
+			x1 = x1.replace( rgx, '$1' + ',' + '$2' );
+		}
+		return x1 + x2;
+	}
+
+	function animate( timestamp ) {
+
+		renderer.render( scene, camera );
+		controls.update();
+		stats.update();
+		requestAnimationFrame( animate );
+
+	}
+
+</script>
+</body>
+</html>
