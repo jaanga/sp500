@@ -1,7 +1,7 @@
-SP600 Read Me
+SP500 Read Me
 ===========
 
-[Web page view]( http://jaanga.github.io/sp500/ "View files with docBrowser" ) &nbsp;
+[Web page view]( http://jaanga.github.io/sp500/ "View files with docBrowser" ) &nbsp;  
 [Source code view]( https://github.com/jaanga/XXX/tree/gh-pages/XXX/ "View files with GitHub")
 
 
