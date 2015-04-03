@@ -51,12 +51,13 @@
 
 
 			symbol = [
+				entry.gsx$symbol.$t,
 				parseFloat( entry.gsx$changepct.$t ),
 				parseInt( entry.gsx$volume.$t, 10 )
 			];
 
 			sp500trades.push( symbol );
-			txt += i + ' ' + entry.gsx$symbol.$t + ' ' + symbol.toString() + '<br>';
+			txt += i + ' ' + symbol.toString() + '<br>';
 
 		}
 

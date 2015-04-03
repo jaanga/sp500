@@ -14,6 +14,9 @@
 
 	var VH = VH || {};
 	var sp500, sp500trades;
+	var updateTime, updateText, updateTextPrevious;
+	var  sp500ticks = [];
+
 	var symbols = [], touchables = [];
 	var colors = [0x575757,0xAD2323,0x2A4BD7,0x1D6914,0x814A19,0x8126C0,0x81C57A,0x9DAFFF,0x29D0D0,0xFF9233,0xE9DEBB,0xFFCDF3,0xFFEE33,0xA0A0A0,0x000000,0xFFFFFF];
 //	var colors = ['575757','AD2323','2A4BD7','1D6914','814A19','8126C0','81C57A','9DAFFF','29D0D0','FF9233','E9DEBB','FFCDF3','FFEE33','A0A0A0','000000','FFFFFF'];
@@ -31,13 +34,33 @@
 		document.body.style.cssText = 'font: 600 12pt monospace; margin: 0; overflow: hidden' ;
 
 		info = document.body.appendChild( document.createElement( 'div' ) );
-		info.style.cssText = 'height: ' + ( 0.25 * window.innerHeight ) + 'px; position: absolute; margin: 10px; overflow: auto; ';
+		info.style.cssText = 'background-color: #ddd; height: ' + ( 0.25 * window.innerHeight ) + 'px;' +
+			'margin: 10px; opacity: 0.5; overflow: auto; padding: 10px; position: absolute; ';
 		info.innerHTML = '<a href="" ><h1>' + document.title + '</h1></a>' +
 			'<div id=msg1 ></div>' +
 			'<div id=msg2 ></div>' +
 			'<div id=msg3 ></div>' +
 		'';
-		msg2.style.display = msg1.style.display = 'none';
+
+		cssBackround = document.body.appendChild( document.createElement('style') );
+
+		var col1 = "#" + Math.random().toString(16).slice(2, 8);
+		var col2 = "#" + Math.random().toString(16).slice(2, 8);
+		var col3 = "#" + Math.random().toString(16).slice(2, 8);
+		var X = ( Math.random() * window.innerWidth ).toFixed(0);
+		var Y = ( Math.random() * window.innerHeight ).toFixed(0);
+		var center =  20 + ( Math.random() * 60 ).toFixed(0);
+
+		cssBackround.innerText = 'body { ' +
+			'background: -webkit-radial-gradient(' + X + 'px ' + Y + 'px, farthest-corner, ' + col1 + ' 0%, ' + col2 + ' 50%, ' + col3 + ' 100%); ' +
+			'background: -moz-radial-gradient(' + X + 'px ' + Y + 'px, farthest-corner, ' + col1 + ' 0%, ' + col2 + ' 50%, ' + col3 + ' 100%); ' +
+			'background: radial-gradient(' + X + 'px ' + Y + 'px, farthest-corner, ' + col1 + ' 0%, ' + col2 + ' 50%, ' + col3 + ' 100%); }' +
+		'';
+
+// Heads Up
+		headsUp = document.body.appendChild( document.createElement( 'div' ) );
+		headsUp.style.cssText = 'background-color: #ddd; border-radius: 8px; padding: 0 5px 10px 5px; opacity: 0.85; ' +
+			'position: absolute; left: 50px; text-align: left; ';
 
 		stats = new Stats();
 		stats.domElement.style.cssText = 'position: absolute; right: 0; ';
@@ -55,7 +78,7 @@
 		camera.position.set( 200, 100, 150 );
 		scene.add( camera ); // for light to follow
 
-// controls
+// Controls
 		controls = new THREE.OrbitControls( camera );
 		controls.minDistance = 10;
 		controls.maxDistance = 1000;
@@ -130,7 +153,7 @@
 		helper.material.color.setRGB( 1, 0, 1 );
 		scene.add( helper );
 
-
+// Bar
 		geometry = new THREE.BoxGeometry( 300, 1, 5 );
 
 		var material = new THREE.MeshPhongMaterial( {
@@ -146,55 +169,41 @@
 		mesh.receiveShadow = true;
 		scene.add( mesh );
 
+// Labels
 		sp = drawSprite( '0% vol avg', 0.1, '#ff00ff', -150, 12 , 0 );
 		sp.material.opacity = 0.5;
 		scene.add( sp );
+
+		var ar = new THREE.ArrowHelper( v( 0, 1, 0 ), v( -150, 0, 0 ), 8, 0xff8888, 4, 3 );
+		scene.add( ar );
+
+		var axis = new THREE.AxisHelper( 50 );
+		scene.add( axis );
 
 		sp = drawSprite( '100% vol avg', 0.1, '#ff00ff', -150, 12 , mesh.position.z );
 		sp.material.opacity = 0.5;
 		scene.add( sp );
 
-		sp = drawSprite( '>600% vol avg', 0.1, '#ff00ff', -150, 1 , -200 * Math.log( 7 ) );
+		sp = drawSprite( '>600% vol avg', 0.1, '#ff00ff', -150, 12 , -200 * Math.log( 7 ) );
 		sp.material.opacity = 0.5;
 		scene.add( sp );
 
-		var ar = new THREE.ArrowHelper( v( 0, 1, 0 ), v( -150, 0, 0 ), 8, 0xff8888, 4, 3 );
-scene.add( ar );
 
-		var axis = new THREE.AxisHelper( 50 );
-		scene.add( axis );
-
+// Interaction Plane
 		var geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
 		var material = new THREE.MeshBasicMaterial( );
 		plane = new THREE.Mesh( geometry, material );
 		plane.visible = false;
 		scene.add( plane );
 
-		headsUp = document.body.appendChild( document.createElement( 'div' ) );
-		headsUp.style.cssText = 'background-color: #ddd; border-radius: 8px; padding: 0 5px 10px 5px; opacity: 0.85; ' +
-			'position: absolute; left: 50px; text-align: left; ';
-
+//Iframe
 		ifr = document.body.appendChild( document.createElement( 'iframe' ) );
 		ifr.style.display = 'none';
 		ifr.src = 'load-wikipedia-data-via-google-spreadsheet.html';
 
+// Events
 		renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );
 		renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
-
-		cssBackround = document.body.appendChild( document.createElement('style') );
-
-		var col1 = "#" + Math.random().toString(16).slice(2, 8);
-		var col2 = "#" + Math.random().toString(16).slice(2, 8);
-		var col3 = "#" + Math.random().toString(16).slice(2, 8);
-		var X = ( Math.random() * window.innerWidth ).toFixed(0);
-		var Y = ( Math.random() * window.innerHeight ).toFixed(0);
-		var center =  20 + ( Math.random() * 60 ).toFixed(0);
-
-		cssBackround.innerText = 'body { ' +
-			'background: -webkit-radial-gradient(' + X + 'px ' + Y + 'px, farthest-corner, ' + col1 + ' 0%, ' + col2 + ' 50%, ' + col3 + ' 100%); ' +
-			'background: -moz-radial-gradient(' + X + 'px ' + Y + 'px, farthest-corner, ' + col1 + ' 0%, ' + col2 + ' 50%, ' + col3 + ' 100%); ' +
-			'background: radial-gradient(' + X + 'px ' + Y + 'px, farthest-corner, ' + col1 + ' 0%, ' + col2 + ' 50%, ' + col3 + ' 100%); }' +
-		'';
 
 	}
 
@@ -232,8 +241,6 @@ scene.add( ar );
 			mesh.castShadow = true;
 			mesh.receiveShadow = true;
 			symbol.add( mesh );
-
-
 
 			helper = new THREE.BoxHelper( mesh );
 			helper.material.color.setRGB( 0.3, 0.3, 0.3 );
@@ -305,12 +312,28 @@ scene.add( ar );
 
 		for ( var i = 0; i < sp500.length; i++ ) {
 
-			touchables[i].userData.changePct = sp500trades[i][1];
-			touchables[i].userData.volume = sp500trades[i][2];
-			symbols[i].position.x = 10 * sp500trades[i][1];
-			pos = -200 * Math.log( 1 + sp500trades[i][2] / sp500[i][6] );
+			touchables[i].userData.changePct = sp500trades[i][0];
+			touchables[i].userData.volume = sp500trades[i][1];
+			pos = 10 * sp500trades[i][0];
+			pos = pos > 150 ? 150 : pos;
+			pos = pos < -150 ? -150 : pos;
+			symbols[i].position.x = pos; 
+			pos = -200 * Math.log( 1 + sp500trades[i][1] / sp500[i][6] );
 			symbols[i].position.z = pos < -400 ? -400 : pos;
 		}
+
+		var note;
+		if ( updateText === updateTextPrevious ) {
+			note = '<br>no update'; 
+		} else {
+			note = '<br><span style=color:red>update</span>';
+			sp500ticks.push( sp500trades );
+		}
+		msg1.innerHTML = updateTime + note;
+		msg2.innerHTML = 'ticks:' + sp500ticks.length;
+		msg3.innerHTML = updateText;
+		updateTextPrevious = updateText;
+
 
 	}
 
