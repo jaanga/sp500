@@ -204,6 +204,7 @@
 // Events
 		renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );
 		renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
+		renderer.domElement.addEventListener( 'touchstart', onDocumentTouchStart, false ); // for mobile
 
 	}
 
@@ -301,6 +302,7 @@
 		}
 
 		var texture = new THREE.Texture( canvas );
+		texture.minFilter = texture.magFilter = THREE.NearestFilter;
 		texture.needsUpdate = true;
 		return texture;
 
@@ -415,6 +417,16 @@
 	function onDocumentMouseDown( event ) {
 
 		headsUp.style.display = 'none';
+
+	}
+
+	function onDocumentTouchStart( event ) {
+		
+		event.preventDefault();
+		
+		event.clientX = event.touches[0].clientX;
+		event.clientY = event.touches[0].clientY;
+		onDocumentMouseDown( event );
 
 	}
 
