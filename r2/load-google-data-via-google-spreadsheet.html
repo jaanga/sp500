@@ -10,13 +10,15 @@
 
 	var xmlhttp;
 
+// https://docs.google.com/spreadsheets/d/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/edit#gid=1750244370
+
 	var fname = 'https://spreadsheets.google.com/feeds/list/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/1/public/values?alt=json';
 
 	init();
 
 	function init() {
 
-		document.body.style.cssText = 'font: 600 12pt monospace;' ;
+		document.body.style.cssText = 'font: 12pt monospace;' ;
 
 		var info = document.body.appendChild( document.createElement( 'div' ) );
 		info.innerHTML = '<h1><a href="" >' + document.title + '</a></h1>' +

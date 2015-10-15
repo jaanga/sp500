@@ -1,16 +1,17 @@
-SP500 Read Me
+[Jaanga]( http://jaanga.github.io/ ) &raquo;
+
+[SP500 Read Me]( index.html )
 ===========
 
-[Web page view]( http://jaanga.github.io/sp500/ "View files with docBrowser" ) &nbsp;  
-[Source code view]( https://github.com/jaanga/sp500 "View files with GitHub")
+<span style=display:none; >[You are now in GitHub source code view - click this button to view Read Me file as a web page]( http://jaanga.github.io/sp500/ "View file as a web page." ) </span>
+<input type=button value='You are now in GitHub web page view - Click this button to view Read Me file as source code' onclick=window.location.href='https://github.com/jaanga/sp500/'; />
 
 
 ### Live Demo
-
-<iframe src="http://jaanga.github.io/sp500/latest/index.html" width=100% height=500px class='overview' >
+<iframe src="http://jaanga.github.io/sp500/latest/index.html" width=100% height=600px class='overview' >
 There is an `iframe` here. It is not visible when viewed on github.com/jaanga/sp500. To view, click 'Web page view' just above.
 </iframe>
-_SP500 - latest revision_ / [Full Screen]( http://jaanga.github.io/sp500/latest/index.html )
+#### _SP500 - latest revision_ / [Open Full Screen]( http://jaanga.github.io/sp500/latest/index.html )
 
 
 ## Concept
@@ -54,7 +55,7 @@ Bugs on browsers other than Chrome need not be reported until such time as the w
 
 ## Copyright and License
 
-copyright &copy; 2014 Jaanga authors ~ 
+copyright &copy; 2015 Jaanga authors ~ 
 All work herein is under the [MIT License]( http://jaanga.github.io/libs/jaanga-copyright-and-mit-license.md )
 
 This repository contains files that are at an early and volatile stage. Not all licensing requirements may have been fully met let alone identified. It is the intension of the authors to play fair and all such requirements will either be met or the feature in question will turned off.
