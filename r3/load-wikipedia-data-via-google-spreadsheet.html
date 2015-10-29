@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang='en'>
+<html lang>
 <head>
+<meta charset=utf-8 >
 <title>load-wikipedia-data-via-google-spreadsheet.html</title>
-<meta charset=utf-8 />
 <!--
 <meta http-equiv=refresh content=20 />
 -->
@@ -19,12 +19,17 @@
 
 	function init() {
 
-		document.body.style.cssText = 'font: 600 12pt monospace;' ;
 
-		var info = document.body.appendChild( document.createElement( 'div' ) );
-		info.innerHTML = '<h1><a href="" >' + document.title + '</a></h1>' +
-			'<div id=msg1>1</div>' +
-			'<div id=msg2>2</div>';
+		if ( window.self === window.top ) {
+
+			document.body.style.cssText = 'font: 12pt monospace;' ;
+
+			var info = document.body.appendChild( document.createElement( 'div' ) );
+			info.innerHTML = '<h1><a href="" >' + document.title + '</a></h1>' +
+				'<div id=msg1>1</div>' +
+				'<div id=msg2>2</div>';
+
+		}
 
 		loadJSON();
 
@@ -40,7 +45,6 @@
 	}
 
 	function callbackJSON() {
-// called by load-wikipedia-data-via-google-spreadsheet.html
 
 		var data = xmlhttp.responseText;
 		data = JSON.parse( data );
@@ -65,7 +69,8 @@
 			];
 
 			sp500.push( symbol );
-			txt += i + ' ' + symbol.toString() + '<br>';
+
+//			txt += i + ' ' + symbol.toString() + '<br>';
 
 		}
 
@@ -78,8 +83,8 @@
 
 		} else {
 
-			msg1.innerHTML = new Date();
-			msg2.innerHTML = txt;
+//			msg1.innerHTML = new Date().toLocaleString();
+//			msg2.innerHTML = txt;
 		}
 
 	}

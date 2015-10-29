@@ -1,6 +1,15 @@
 Dev Notes
 ===
 
+2015-10-29 ~ Theo
+
+Lots of fun to be back here. And lots of cool updates to R3.
+
+* .toLocaleString() and .tolocaleTime( are nice new things
+* Moving to a setTimeOut is also nice
+
+Currently the script is using an iframe. It may not need to use one. Must investigate.
+
 
 2015-01-17 ~ Theo
 

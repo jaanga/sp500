@@ -51,6 +51,7 @@
 
 			entry = entries[i];
 
+
 			symbol = [
 				parseFloat( entry.gsx$changepct.$t ),
 				parseInt( entry.gsx$volume.$t, 10 )
@@ -64,13 +65,13 @@
 		if ( window.self !== window.top ) {
 
 			parent.sp500trades = sp500trades;
-			parent.updateTime = new Date().toLocaleString();
+			parent.updateTime = new Date();
 			parent.updateText = txt;
 			parent.updateSymbols();
 
 		} else {
 
-			msg1.innerHTML = new Date().toLocaleString();
+			msg1.innerHTML = new Date();
 			msg2.innerHTML = txt;
 		}
 

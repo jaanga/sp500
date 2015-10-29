@@ -2,8 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>jaanga sp500 r2.4</title>
-
+<title>📈 jaanga sp500 r3</title>
 <meta name=viewport content=width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0 >
 </head>
 <body>
@@ -15,9 +14,9 @@
 
 	var info, renderer, scene, camera, controls, stats, light;
 
-	var fileDir = ( window.location.origin === 'file://' ) ? '' : 'http://jaanga.github.io/sp500/r2/';
+	var fileDir = window.location.origin === 'file://' ? '' : 'http://jaanga.github.io/sp500/r3/';
 
-	var sp500, sp500trades;
+	var sp500, sp500Trades;
 	var updateTime, updateText, updateTextPrevious;
 	var  sp500ticks = [];
 
@@ -36,13 +35,28 @@
 		var geometry, material, mesh, helper;
 
 		var css = document.body.appendChild( document.createElement('style') );
-		css.innerHTML = 'body { font: 600 12pt monospace; margin: 0; overflow: hidden; }' +
+		css.innerHTML = 'body { font: 12pt monospace; margin: 0; overflow: hidden; height: ' + window.innerHeight + 'px; }' +
+			'h2 a { margin: 0; text-decoration: none; }' +
+			'#bars, #i { cursor: pointer; font-size: 24pt; text-decoration: none; }' +
+			'#bars { color: pink; } ' +
 			'#i { text-decoration: none; }' +
 		'';
 
-		info = document.body.appendChild( document.createElement( 'div' ) );
-		info.style.cssText = 'background-color: #ddd; height: ' + ( 0.25 * window.innerHeight ) + 'px;' +
-			'margin: 10px; opacity: 0.5; overflow: auto; padding: 10px; position: absolute; ';
+		var col1 = Math.random().toString(16).slice(2, 8);
+		var col2 = Math.random().toString(16).slice(2, 8);
+		var col3 = Math.random().toString(16).slice(2, 8);
+		var x = ( Math.random() * window.innerWidth ).toFixed(0);
+		var y = ( Math.random() * window.innerHeight ).toFixed(0);
+
+		document.body.style.backgroundImage = 'radial-gradient( circle farthest-corner at ' + x + 'px ' + y + 'px, #' + col1 + ' 0%, #' + col2 + ' 50%, #' + col3 + ' 100%)';
+
+		hamburger = document.body.appendChild( document.createElement( 'div' ) );
+		hamburger.style.cssText = ' left: 270px; position: absolute; top: 10px; transition: left 1s; ';
+		hamburger.innerHTML = '<span id=bars onclick=hamburger.style.left=hamburger.style.left==="0px"?"270px":0; >&#9776;</span>';
+
+		info = hamburger.appendChild( document.createElement( 'div' ) );
+		info.style.cssText = 'background-color: #ddd; height: ' + ( 0.25 * window.innerHeight ) + 'px; left: -270px;' +
+			'margin: 0px; opacity: 0.5; overflow: auto; padding: 10px; position: absolute; top: 0px; width: 250px; ';
 		info.innerHTML = '<h2 style=margin:0; ><a href="" >' + document.title + '</a> ' +
 			'<a id=i href=http://jaanga.github.io/sp500/ >&#x24D8;</a></h2>' +
 			'<div id=msg1 ></div>' +
@@ -50,25 +64,11 @@
 			'<div id=msg3 ></div>' +
 		'';
 
-		cssBackround = document.body.appendChild( document.createElement('style') );
-
-		var col1 = "#" + Math.random().toString(16).slice(2, 8);
-		var col2 = "#" + Math.random().toString(16).slice(2, 8);
-		var col3 = "#" + Math.random().toString(16).slice(2, 8);
-		var X = ( Math.random() * window.innerWidth ).toFixed(0);
-		var Y = ( Math.random() * window.innerHeight ).toFixed(0);
-		var center =  20 + ( Math.random() * 60 ).toFixed(0);
-
-		cssBackround.innerText = 'body { ' +
-			'background: -webkit-radial-gradient(' + X + 'px ' + Y + 'px, farthest-corner, ' + col1 + ' 0%, ' + col2 + ' 50%, ' + col3 + ' 100%); ' +
-			'background: -moz-radial-gradient(' + X + 'px ' + Y + 'px, farthest-corner, ' + col1 + ' 0%, ' + col2 + ' 50%, ' + col3 + ' 100%); ' +
-			'background: radial-gradient(' + X + 'px ' + Y + 'px, farthest-corner, ' + col1 + ' 0%, ' + col2 + ' 50%, ' + col3 + ' 100%); }' +
-		'';
 
 // Heads Up
 		headsUp = document.body.appendChild( document.createElement( 'div' ) );
-		headsUp.style.cssText = 'background-color: #ddd; border-radius: 8px; padding: 0 5px 10px 5px; opacity: 0.85; ' +
-			'position: absolute; left: 50px; text-align: left; ';
+		headsUp.style.cssText = 'background-color: #ddd; border-radius: 8px; display: none; padding: 0 5px 10px 5px; opacity: 0.85; ' +
+			'position: absolute; ';
 
 		stats = new Stats();
 		stats.domElement.style.cssText = 'position: absolute; right: 0; ';
@@ -83,22 +83,18 @@
 		scene = new THREE.Scene();
 
 		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 5000 );
-		camera.position.set( 200, 100, 150 );
+		camera.position.set( 120, 100, 110 );
 		scene.add( camera ); // for light to follow
 
 // Controls
 		controls = new THREE.OrbitControls( camera );
 		controls.minDistance = 10;
-		controls.maxDistance = 1000;
+		controls.maxDistance = 800;
 		controls.target.set( 0, 20, -150 );
 
 // Lights
 		light = new THREE.AmbientLight( 0xffffff );
 		scene.add( light );
-
-		light = new THREE.PointLight( 0xffffff, 1 );
-		light.position = camera.position;
-		camera.add( light );
 
 		light = new THREE.DirectionalLight( 0xffffff, 1 );
 		light.position.set( -200, 200, 200 );
@@ -122,11 +118,13 @@
 //		light.shadowCameraVisible = true;
 		scene.add( light );
 
+		lightPoint = new THREE.PointLight( 0xffffff, 0.5 );
+		lightPoint.position = new THREE.Vector3( 0, 0, 1 );
+		camera.add( lightPoint );
+
 // Ground Plane
 		geometry = new THREE.BoxGeometry( 150, 5, 400 );
 
-//		var material.color = 0x202099;
-//		var material = new THREE.MeshNormalMaterial();
 		var material = new THREE.MeshPhongMaterial( {
 			color: 0x00ff00 * Math.random(),
 			specular: 0xffffff * Math.random(),
@@ -134,7 +132,7 @@
 		} );
 
 		mesh = new THREE.Mesh( geometry, material );
-		mesh.position.set( 75, -2.51, -200 );
+		mesh.position.set( 75, -2.6, -200 );
 		mesh.castShadow = true;
 		mesh.receiveShadow = true;
 		scene.add( mesh );
@@ -150,7 +148,7 @@
 		} );
 
 		mesh = new THREE.Mesh( geometry, material );
-		mesh.position.set( -75, -2.6, -200 );
+		mesh.position.set( -75, -2.51, -200 );
 		mesh.castShadow = true;
 		mesh.receiveShadow = true;
 		scene.add( mesh );
@@ -175,7 +173,7 @@
 		scene.add( mesh );
 
 		helper = new THREE.EdgesHelper( mesh );
-		helper.material.color.setRGB( 1, 0, 1 );
+		helper.material.color.setRGB( 0.5, 0, 1 );
 		scene.add( helper );
 
 // Labels
@@ -197,13 +195,14 @@
 		sp.material.opacity = 0.5;
 		scene.add( sp );
 
-
+/*
 // Interaction Plane
 		var geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
 		var material = new THREE.MeshBasicMaterial( );
 		plane = new THREE.Mesh( geometry, material );
 		plane.visible = false;
 		scene.add( plane );
+*/
 
 //Iframe
 		ifr = document.body.appendChild( document.createElement( 'iframe' ) );
@@ -262,6 +261,7 @@
 			symbols.push( symbol );
 			touchables.push( mesh );
 			scene.add( symbol );
+
 		}
 
 		ifr.src = fileDir + 'load-google-data-via-google-spreadsheet.html';
@@ -306,7 +306,9 @@
 		context.font = '48px sans-serif';
 
 		for (var i = 0, len = textArray.length; i < len; i++) {
+
 			context.fillText( textArray[i], 10, 48  + i * 60 );
+
 		}
 
 		var texture = new THREE.Texture( canvas );
@@ -318,32 +320,34 @@
 
 	function updateSymbols() {
 
-		var pos;
-
 		for ( var i = 0; i < sp500.length; i++ ) {
 
-			touchables[i].userData.changePct = sp500trades[i][0];
-			touchables[i].userData.volume = sp500trades[i][1];
-			pos = 10 * sp500trades[i][0];
+			touchables[i].userData.changePct = sp500Trades[i][0];
+			touchables[i].userData.volume = sp500Trades[i][1];
+			var pos = 10 * sp500Trades[i][0];
 			pos = pos > 150 ? 150 : pos;
 			pos = pos < -150 ? -150 : pos;
-			symbols[i].position.x = pos; 
-			pos = -200 * Math.log( 1 + sp500trades[i][1] / sp500[i][6] );
+			symbols[i].position.x = pos;
+			pos = -200 * Math.log( 1 + sp500Trades[i][1] / sp500[i][6] );
 			symbols[i].position.z = pos < -400 ? -400 : pos;
+
 		}
 
-		var note;
 		if ( updateText === updateTextPrevious ) {
-			note = '<br>no update'; 
+
+			var note = '<br>no update';
+
 		} else {
+
 			note = '<br><span style=color:red; >update</span>';
-			sp500ticks.push( sp500trades );
+			sp500ticks.push( sp500Trades );
+
 		}
+
 		msg1.innerHTML = 'Debug info:<br>' + updateTime + note;
 		msg2.innerHTML = 'ticks:' + sp500ticks.length;
 		msg3.innerHTML = updateText;
 		updateTextPrevious = updateText;
-
 
 	}
 
@@ -381,7 +385,7 @@
 					headsUp.style.top = -50 + 0.5 * window.innerHeight - mouse.y * 0.5 * window.innerHeight + 'px';
 					headsUp.style.display = '';
 
-					if (intersected.userData.name) {
+					if ( intersected.userData.name ) {
 
 						var txt = '<h2 style="margin:0;" >' + intersected.userData.symbol + '</h2>' +
 						'<div>' + intersected.userData.name + '</div>' +
@@ -390,12 +394,14 @@
 							'"  style="background: white;" /><br>' +
 						'<a href="http://www.google.com/finance?q=' + 'NASDAQ:' + intersected.name + '" target="_blank">Google Finance: ' + intersected.name + '</a><br>' +
 						'chg: ' + intersected.userData.changePct + '%<br>' +
-						'vol: ' + addCommas(intersected.userData.volume) + '<br>' +
-						'vol avg :' + addCommas( intersected.userData.volumeAvg ) + '<br>' +
+						'vol: ' + intersected.userData.volume.toLocaleString() + '<br>' +
+						'vol avg :' + intersected.userData.volumeAvg.toLocaleString() + '<br>' +
 						'vol/vol avg: ' + ( 100 * intersected.userData.volume / intersected.userData.volumeAvg ).toFixed(1) + '%<br>' +
-						'mkt cap: ' + addCommas(intersected.userData.marketCap) +
+						'mkt cap: ' + intersected.userData.marketCap.toLocaleString() +
 						'';
+
 						headsUp.innerHTML = txt;
+
 					}
 
 				}
@@ -403,7 +409,6 @@
 			}
 
 			document.body.style.cursor = 'pointer';
-
 
 		} else {
 
@@ -429,32 +434,18 @@
 	}
 
 	function onDocumentTouchStart( event ) {
-		
+
 		event.preventDefault();
-		
+
 		event.clientX = event.touches[0].clientX;
 		event.clientY = event.touches[0].clientY;
 		onDocumentMouseDown( event );
 
 	}
 
-	function addCommas( nStr ){
-
-		nStr += '';
-		x = nStr.split( '.' );
-		x1 = x[ 0 ];
-		x2 = x.length > 1 ? '.' + x[ 1 ] : '';
-		var rgx = /(\d+)(\d{3})/;
-		while ( rgx.test( x1 ) ) {
-			x1 = x1.replace( rgx, '$1' + ',' + '$2' );
-		}
-		return x1 + x2;
-
-	}
-
 	function v( x, y, z ){ return new THREE.Vector3( x, y, z ); }
 
-	function animate( timestamp ) {
+	function animate() {
 
 		renderer.render( scene, camera );
 		controls.update();

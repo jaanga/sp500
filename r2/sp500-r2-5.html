@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>jaanga sp500 r2.4</title>
+<title>jaanga sp500 r2.5</title>
 
 <meta name=viewport content=width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0 >
 </head>
@@ -50,20 +50,15 @@
 			'<div id=msg3 ></div>' +
 		'';
 
-		cssBackround = document.body.appendChild( document.createElement('style') );
+		document.body.style.cssText += ' height: ' + window.innerHeight + 'px; ';
 
-		var col1 = "#" + Math.random().toString(16).slice(2, 8);
-		var col2 = "#" + Math.random().toString(16).slice(2, 8);
-		var col3 = "#" + Math.random().toString(16).slice(2, 8);
-		var X = ( Math.random() * window.innerWidth ).toFixed(0);
-		var Y = ( Math.random() * window.innerHeight ).toFixed(0);
-		var center =  20 + ( Math.random() * 60 ).toFixed(0);
+		var col1 = Math.random().toString(16).slice(2, 8);
+		var col2 = Math.random().toString(16).slice(2, 8);
+		var col3 = Math.random().toString(16).slice(2, 8);
+		var x = ( Math.random() * window.innerWidth ).toFixed(0);
+		var y = ( Math.random() * window.innerHeight ).toFixed(0);
 
-		cssBackround.innerText = 'body { ' +
-			'background: -webkit-radial-gradient(' + X + 'px ' + Y + 'px, farthest-corner, ' + col1 + ' 0%, ' + col2 + ' 50%, ' + col3 + ' 100%); ' +
-			'background: -moz-radial-gradient(' + X + 'px ' + Y + 'px, farthest-corner, ' + col1 + ' 0%, ' + col2 + ' 50%, ' + col3 + ' 100%); ' +
-			'background: radial-gradient(' + X + 'px ' + Y + 'px, farthest-corner, ' + col1 + ' 0%, ' + col2 + ' 50%, ' + col3 + ' 100%); }' +
-		'';
+		document.body.style.backgroundImage = 'radial-gradient( circle farthest-corner at ' + x + 'px ' + y + 'px, #' + col1 + ' 0%, #' + col2 + ' 50%, #' + col3 + ' 100%)';
 
 // Heads Up
 		headsUp = document.body.appendChild( document.createElement( 'div' ) );
@@ -161,7 +156,6 @@
 
 // Bar
 		geometry = new THREE.BoxGeometry( 300, 1, 5 );
-
 		var material = new THREE.MeshPhongMaterial( {
 			color: 0xaaaaaa,
 			specular: 0xffffff * Math.random(),
@@ -197,15 +191,9 @@
 		sp.material.opacity = 0.5;
 		scene.add( sp );
 
-
-// Interaction Plane
-		var geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
-		var material = new THREE.MeshBasicMaterial( );
-		plane = new THREE.Mesh( geometry, material );
-		plane.visible = false;
-		scene.add( plane );
-
 //Iframe
+//		ifr = document.createElement( 'iframe' );
+//		ifr = document.body.appendChild( ifr );
 		ifr = document.body.appendChild( document.createElement( 'iframe' ) );
 		ifr.style.display = 'none';
 		ifr.src = fileDir + 'load-wikipedia-data-via-google-spreadsheet.html';
@@ -318,13 +306,11 @@
 
 	function updateSymbols() {
 
-		var pos;
-
 		for ( var i = 0; i < sp500.length; i++ ) {
 
 			touchables[i].userData.changePct = sp500trades[i][0];
 			touchables[i].userData.volume = sp500trades[i][1];
-			pos = 10 * sp500trades[i][0];
+			var pos = 10 * sp500trades[i][0];
 			pos = pos > 150 ? 150 : pos;
 			pos = pos < -150 ? -150 : pos;
 			symbols[i].position.x = pos; 
@@ -343,7 +329,6 @@
 		msg2.innerHTML = 'ticks:' + sp500ticks.length;
 		msg3.innerHTML = updateText;
 		updateTextPrevious = updateText;
-
 
 	}
 
@@ -390,10 +375,15 @@
 							'"  style="background: white;" /><br>' +
 						'<a href="http://www.google.com/finance?q=' + 'NASDAQ:' + intersected.name + '" target="_blank">Google Finance: ' + intersected.name + '</a><br>' +
 						'chg: ' + intersected.userData.changePct + '%<br>' +
-						'vol: ' + addCommas(intersected.userData.volume) + '<br>' +
-						'vol avg :' + addCommas( intersected.userData.volumeAvg ) + '<br>' +
+//						'vol: ' + addCommas(intersected.userData.volume) + '<br>' +
+//						'vol avg :' + addCommas( intersected.userData.volumeAvg ) + '<br>' +
+//						'vol/vol avg: ' + ( 100 * intersected.userData.volume / intersected.userData.volumeAvg ).toFixed(1) + '%<br>' +
+//						'mkt cap: ' + addCommas(intersected.userData.marketCap) +
+
+						'vol: ' + intersected.userData.volume.toLocaleString() + '<br>' +
+						'vol avg :' + intersected.userData.volumeAvg.toLocaleString() + '<br>' +
 						'vol/vol avg: ' + ( 100 * intersected.userData.volume / intersected.userData.volumeAvg ).toFixed(1) + '%<br>' +
-						'mkt cap: ' + addCommas(intersected.userData.marketCap) +
+						'mkt cap: ' + intersected.userData.marketCap.toLocaleString() +
 						'';
 						headsUp.innerHTML = txt;
 					}
