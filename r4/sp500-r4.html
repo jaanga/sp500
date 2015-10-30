@@ -205,7 +205,7 @@
 		window.addEventListener( 'resize', onWindowResize, false );
 		renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );
 		renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
-		renderer.domElement.addEventListener( 'touchstart', onDocumentTouchMove, false ); // for mobile
+		renderer.domElement.addEventListener( 'touchmove', onDocumentTouchStart, false ); // for mobile
 
 		loadWikiJSON();
 
