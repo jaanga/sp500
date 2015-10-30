@@ -2,25 +2,30 @@
 <html>
 <head>
 <meta charset=utf-8 >
-<title>📈 jaanga sp500 r3</title>
-<meta name=viewport content='width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0' >
+<title>📈 jaanga sp500 r4</title>
+<meta name=viewport content='initial-scale=1, minimal-ui, minimum-scale=1, maximum-scale=1, user-scalable=no, width=device-width' >
 </head>
 <body>
 <script src=http://mrdoob.github.io/three.js/build/three.min.js ></script>
 <script src=http://mrdoob.github.io/three.js/examples/js/controls/OrbitControls.js ></script>
 <script src=http://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
 <script>
+
+// https://docs.google.com/spreadsheets/d/1_sv-QsJvHCfTCjRlpgv5ZwAUZetMCu-SfQHERAOuGZE/edit#gid=0
+	var WikipediaDataFileName = 'https://spreadsheets.google.com/feeds/list/1_sv-QsJvHCfTCjRlpgv5ZwAUZetMCu-SfQHERAOuGZE/1/public/values?alt=json';
+
 // https://docs.google.com/spreadsheets/d/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/edit#gid=1750244370
+	var TradeDataFileName = 'https://spreadsheets.google.com/feeds/list/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/1/public/values?alt=json';
 
-	var info, renderer, scene, camera, controls, stats, light;
+	var sp500Trades = [];
+	var sp500TradesPrevious;
 
-	var fileDir = window.location.origin.indexOf( 'file://' ) > -1 ? './' : 'http://jaanga.github.io/sp500/r3/';
-
-	var sp500, sp500Trades;
+	var sp500;
 	var updateTime, updateText, updateTextPrevious;
-	var  sp500ticks = [];
+	var sp500ticks = [];
 
-	var symbols = [], touchables = [];
+	var symbols = [];
+	var touchables = [];
 	var colors = [0x575757,0xAD2323,0x2A4BD7,0x1D6914,0x814A19,0x8126C0,0x81C57A,0x9DAFFF,0x29D0D0,0xFF9233,0xE9DEBB,0xFFCDF3,0xFFEE33,0xA0A0A0,0x000000,0xFFFFFF];
 //	var colors = ['575757','AD2323','2A4BD7','1D6914','814A19','8126C0','81C57A','9DAFFF','29D0D0','FF9233','E9DEBB','FFCDF3','FFEE33','A0A0A0','000000','FFFFFF'];
 
@@ -28,7 +33,10 @@
 	var offset = new THREE.Vector3();
 	var intersected;
 
+	var hamburger, info, renderer, scene, camera, controls, stats, light;
+
 	init();
+	animate();
 
 	function init() {
 
@@ -193,24 +201,57 @@
 		sp.material.opacity = 0.5;
 		scene.add( sp );
 
-/*
-// Interaction Plane
-		var geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
-		var material = new THREE.MeshBasicMaterial( );
-		plane = new THREE.Mesh( geometry, material );
-		plane.visible = false;
-		scene.add( plane );
-*/
-
-//Iframe
-		ifr = document.body.appendChild( document.createElement( 'iframe' ) );
-		ifr.style.display = 'none';
-		ifr.src = fileDir + 'load-wikipedia-data-via-google-spreadsheet.html';
-
 // Events
+		window.addEventListener( 'resize', onWindowResize, false );
 		renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );
 		renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
 		renderer.domElement.addEventListener( 'touchstart', onDocumentTouchStart, false ); // for mobile
+
+		loadWikiJSON();
+
+	}
+
+	function loadWikiJSON() {
+
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.open( 'GET', WikipediaDataFileName + '&t=' + Math.random(), true );
+		xmlhttp.onload = callbackJSON;
+		xmlhttp.send( null );
+
+		function callbackJSON() {
+
+			var data = xmlhttp.responseText;
+			data = JSON.parse( data );
+			var entries = data.feed.entry;
+			sp500 = [];
+			var txt = '';
+
+			for ( var i = 0; i < entries.length; i++  ) {
+
+				var entry = entries[i];
+				var symbol = [
+					entry.gsx$tickersymbol.$t,
+					entry.gsx$security.$t,
+					entry.gsx$gicssector.$t,
+					parseInt( entry.gsx$sectorid.$t, 10 ),
+					entry.gsx$gicssubindustry.$t,
+					parseInt( entry.gsx$cik.$t, 10),
+					parseInt( entry.gsx$volumeavg.$t, 10 ),
+					parseInt( entry.gsx$marketcap.$t, 10 )
+				];
+
+				sp500.push( symbol );
+
+//				txt += i + ' ' + symbol.toString() + '<br>';
+
+			}
+
+//			msg1.innerHTML = new Date().toLocaleString();
+//			msg2.innerHTML = txt;
+
+			drawSymbols();
+
+		}
 
 	}
 
@@ -223,12 +264,12 @@
 			symbol = new THREE.Object3D();
 
 			material = new THREE.MeshPhongMaterial( {
-				color: colors[ sp500[i][3] ], // 0xffffff * Math.random(),
+				color: colors[ sp500[i][3] ] // 0xffffff * Math.random(),
 //				opacity: Math.random(),
-				specular: 0xffffff * Math.random(),
-				shading: THREE.FlatShading,
-				shininess: 10,
-				transparent: true
+//				specular: 0xffffff * Math.random(),
+//				shading: THREE.FlatShading,
+//				shininess: 10,
+//				transparent: true
 			} );
 
 			mesh = new THREE.Mesh( geometry, material );
@@ -262,57 +303,71 @@
 
 		}
 
-		ifr.src = fileDir + 'load-google-data-via-google-spreadsheet.html';
-
-		animate();
+		loadTradeJSON();
 
 	}
 
-	function drawSprite( text, scale, color, x, y, z) {
+	function loadTradeJSON() {
 
-		texture = canvasText( text, color );
-		var spriteMaterial = new THREE.SpriteMaterial( { map: texture, opacity: 1 } );
-		var sprite = new THREE.Sprite( spriteMaterial );
-		sprite.position.set( x, y, z ) ;
-		sprite.scale.set( scale * texture.image.width, scale * texture.image.height );
-		return sprite;
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.open( 'GET', TradeDataFileName + '&t=' + Math.random(), true );
+		xmlhttp.onload = callbackJSON;
+		xmlhttp.send( null );
 
-	}
+		function callbackJSON() {
 
-	function canvasText( textArray, color ) {
-		var canvas = document.createElement( 'canvas' );
-		var context = canvas.getContext( '2d' );
+			var data = xmlhttp.responseText;
+			data = JSON.parse( data );
+			entries = data.feed.entry;
+			sp500TradesPrevious = sp500Trades.slice( 0 );
+			sp500Trades = [];
+			var txt = '';
 
-		if ( typeof textArray === 'string' ) textArray = [ textArray ];
-		context.font = '48px sans-serif';
-		var width = 0;
-		for (var i = 0, len = textArray.length; i < len; i++) {
-			width = context.measureText( textArray[i] ).width > width ? context.measureText( textArray[i] ).width : width;
+			for ( var i = 0; i < entries.length; i++  ) {
+
+				var entry = entries[i];
+				var symbol = [
+					parseFloat( entry.gsx$changepct.$t ),
+					parseInt( entry.gsx$volume.$t, 10 )
+				];
+
+				sp500Trades.push( symbol );
+
+				txt += i + ' ' + entry.gsx$symbol.$t + ' ' + symbol.toString() + '<br>';
+
+			}
+
+			for ( var i = 0; i < sp500Trades.length ; i++ ) {
+
+				if ( sp500TradesPrevious.length > 1 && !isNaN( sp500Trades[ i ][ 1 ] ) &&  sp500Trades[ i ][ 1 ] !== sp500TradesPrevious[ i ][ 1 ] ) {
+
+console.log( 'update', sp500[ i ][ 0 ],  sp500Trades[ i ], sp500TradesPrevious[ i ]);
+
+				diff = true;
+
+						break;
+
+				} else if ( sp500TradesPrevious.length === 0 && sp500Trades.length > 500 ) {
+
+					diff = true;
+
+				} else {
+
+					diff = false;
+
+				}
+
+			}
+
+console.log( 'difference:', diff,  new Date().toLocaleTimeString() );
+
+			updateTime = new Date().toLocaleTimeString();
+			updateText = txt;
+			updateSymbols();
+
+			tim = setTimeout( loadTradeJSON, 10000 );
+
 		}
-
-		canvas.width = width + 20; // 480
-		canvas.height = textArray.length * 60;
-
-		context.fillStyle = color;
-		context.fillRect( 0, 0, canvas.width, canvas.height);
-
-		context.lineWidth = 1 ;
-		context.strokeStyle = '#000';
-		context.strokeRect( 0, 0, canvas.width, canvas.height);
-
-		context.fillStyle = '#000' ;
-		context.font = '48px sans-serif';
-
-		for (var i = 0, len = textArray.length; i < len; i++) {
-
-			context.fillText( textArray[i], 10, 48  + i * 60 );
-
-		}
-
-		var texture = new THREE.Texture( canvas );
-		texture.minFilter = texture.magFilter = THREE.NearestFilter;
-		texture.needsUpdate = true;
-		return texture;
 
 	}
 
@@ -346,6 +401,58 @@
 		msg2.innerHTML = 'ticks:' + sp500ticks.length;
 		msg3.innerHTML = updateText;
 		updateTextPrevious = updateText;
+
+	}
+
+	function drawSprite( text, scale, color, x, y, z) {
+
+		texture = canvasText( text, color );
+		var spriteMaterial = new THREE.SpriteMaterial( { map: texture, opacity: 1 } );
+		var sprite = new THREE.Sprite( spriteMaterial );
+		sprite.position.set( x, y, z ) ;
+		sprite.scale.set( scale * texture.image.width, scale * texture.image.height );
+		return sprite;
+
+	}
+
+	function canvasText( textArray, color ) {
+
+		var canvas = document.createElement( 'canvas' );
+		var context = canvas.getContext( '2d' );
+		var width = 0;
+
+		if ( typeof textArray === 'string' ) textArray = [ textArray ];
+		context.font = '48px sans-serif';
+
+		for (var i = 0, len = textArray.length; i < len; i++) {
+
+			width = context.measureText( textArray[i] ).width > width ? context.measureText( textArray[i] ).width : width;
+
+		}
+
+		canvas.width = width + 20; // 480
+		canvas.height = textArray.length * 60;
+
+		context.fillStyle = color;
+		context.fillRect( 0, 0, canvas.width, canvas.height);
+
+		context.lineWidth = 1 ;
+		context.strokeStyle = '#000';
+		context.strokeRect( 0, 0, canvas.width, canvas.height);
+
+		context.fillStyle = '#000' ;
+		context.font = '48px sans-serif';
+
+		for (var i = 0, len = textArray.length; i < len; i++) {
+
+			context.fillText( textArray[i], 10, 48  + i * 60 );
+
+		}
+
+		var texture = new THREE.Texture( canvas );
+		texture.minFilter = texture.magFilter = THREE.NearestFilter;
+		texture.needsUpdate = true;
+		return texture;
 
 	}
 
@@ -439,6 +546,15 @@
 		event.clientY = event.touches[0].clientY;
 		
 		onDocumentMouseMove( event );
+
+	}
+
+	function onWindowResize() {
+
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+
+		renderer.setSize( window.innerWidth, window.innerHeight );
 
 	}
 

@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 >
+<title>load-google-data-via-google-spreadsheet.html</title>
+<!--
+<meta http-equiv=refresh content=20 >
+-->
+</head>
+<body>
+<script>
+
+// https://docs.google.com/spreadsheets/d/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/edit#gid=1750244370
+
+	var xmlhttp;
+	var sp500Trades = [];
+	var sp500TradesPrevious;
+
+	var fname = 'https://spreadsheets.google.com/feeds/list/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/1/public/values?alt=json';
+
+	init();
+
+	function init() {
+
+//		if ( window.self === window.top ) {
+
+			document.body.style.cssText = 'font: 12pt monospace;' ;
+
+			var info = document.body.appendChild( document.createElement( 'div' ) );
+			info.innerHTML = '<h1><a href="" >' + document.title + '</a></h1>' +
+				'<div id=msg1>1</div>' +
+				'<div id=msg2>2</div>';
+
+//		}
+
+		loadJSON();
+
+	}
+
+	function loadJSON() {
+
+		xmlhttp = new XMLHttpRequest();
+		xmlhttp.open( 'GET', fname + '&t=' + Math.random(), true );
+		xmlhttp.onload = callbackJSON;
+		xmlhttp.send( null );
+
+	}
+
+	function callbackJSON() {
+
+		var data = xmlhttp.responseText;
+		data = JSON.parse( data );
+		entries = data.feed.entry;
+		sp500TradesPrevious = sp500Trades.slice( 0 );
+		sp500Trades = [];
+		var txt = '';
+
+		for ( var i = 0; i < entries.length; i++  ) {
+
+			var entry = entries[i];
+			var symbol = [
+				parseFloat( entry.gsx$changepct.$t ),
+				parseInt( entry.gsx$volume.$t, 10 )
+			];
+
+			sp500Trades.push( symbol );
+
+			txt += i + ' ' + entry.gsx$symbol.$t + ' ' + symbol.toString() + '<br>';
+
+		}
+
+
+		for ( var i = 0; i < sp500Trades.length ; i++ ) {
+
+			if ( sp500TradesPrevious.length > 1 && !isNaN( sp500Trades[ i ][ 1 ] ) &&  sp500Trades[ i ][ 1 ] !== sp500TradesPrevious[ i ][ 1 ] ) {
+
+console.log( 'toot toot', i,  sp500Trades[ i ], sp500TradesPrevious[ i ]);
+
+			diff = true;
+
+					break;
+
+			} else if ( sp500TradesPrevious.length === 0 && sp500Trades.length > 500 ) {
+
+				diff = true;
+
+			} else {
+
+				diff = false;
+
+			}
+
+		}
+
+console.log( 'diff', diff,  new Date().toLocaleTimeString() );
+
+
+		if ( window.self !== window.top && diff ) {
+
+			parent.sp500Trades = sp500Trades;
+			parent.updateTime = new Date().toLocaleTimeString();
+			parent.updateText = txt;
+			parent.updateSymbols();
+
+		} else {
+
+			msg1.innerHTML = new Date().toLocaleTimeString();
+			msg2.innerHTML = txt;
+
+		}
+
+		tim = setTimeout( loadJSON, 10000 );
+	}
+
+</script>
+</body>
+</html>

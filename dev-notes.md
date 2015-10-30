@@ -1,6 +1,12 @@
 Dev Notes
 ===
 
+
+2015-10-30 ~ Theo
+
+Heads-up display now working on mobile devices - but UE could be better
+
+
 2015-10-29 ~ Theo
 
 Lots of fun to be back here. And lots of cool updates to R3.
