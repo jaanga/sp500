@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset=utf-8 >
-<title>📈 jaanga sp500 r4.1</title>
+<title>📈 jaanga sp500 r4.2</title>
 <meta name=viewport content='initial-scale=1, minimal-ui, minimum-scale=1, maximum-scale=1, user-scalable=no, width=device-width' >
 </head>
 <body>
@@ -131,10 +131,10 @@
 // Ground Plane
 		geometry = new THREE.BoxGeometry( 150, 5, 400 );
 
-		var material = new THREE.MeshLambertMaterial( {
+		var material = new THREE.MeshBasicMaterial( {
 			color: 0x00ff00 * Math.random(),
-			specular: 0xffffff * Math.random(),
-			shininess: 10
+//			specular: 0xffffff * Math.random(),
+//			shininess: 10
 		} );
 
 		mesh = new THREE.Mesh( geometry, material );
