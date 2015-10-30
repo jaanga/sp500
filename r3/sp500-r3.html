@@ -3,7 +3,7 @@
 <head>
 <meta charset=utf-8 >
 <title>📈 jaanga sp500 r3</title>
-<meta name=viewport content=width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0 >
+<meta name=viewport content='width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0' >
 </head>
 <body>
 <script src=http://mrdoob.github.io/three.js/build/three.min.js ></script>
@@ -14,7 +14,7 @@
 
 	var info, renderer, scene, camera, controls, stats, light;
 
-	var fileDir = window.location.origin === 'file://' ? '' : 'http://jaanga.github.io/sp500/r3/';
+	var fileDir = window.location.origin.indexOf( 'file://' ) > -1 ? './' : 'http://jaanga.github.io/sp500/r3/';
 
 	var sp500, sp500Trades;
 	var updateTime, updateText, updateTextPrevious;
@@ -439,7 +439,8 @@
 
 		event.clientX = event.touches[0].clientX;
 		event.clientY = event.touches[0].clientY;
-		onDocumentMouseDown( event );
+		
+		onDocumentMouseMove( event );
 
 	}
 
