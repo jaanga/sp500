@@ -5,6 +5,7 @@ Dev Notes
 2015-10-30 ~ Theo
 
 Heads-up display now working on mobile devices - but UE could be better
+No more iframes - loads nice and fast
 
 
 2015-10-29 ~ Theo

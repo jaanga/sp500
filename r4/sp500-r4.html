@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset=utf-8 >
-<title>📈 jaanga sp500 r4.2</title>
+<title>📈 jaanga sp500 r4</title>
 <meta name=viewport content='initial-scale=1, minimal-ui, minimum-scale=1, maximum-scale=1, user-scalable=no, width=device-width' >
 </head>
 <body>
@@ -131,10 +131,10 @@
 // Ground Plane
 		geometry = new THREE.BoxGeometry( 150, 5, 400 );
 
-		var material = new THREE.MeshBasicMaterial( {
-			color: 0x00ff00 * Math.random(),
-//			specular: 0xffffff * Math.random(),
-//			shininess: 10
+		var material = new THREE.MeshPhongMaterial( {
+			color: 0x22cc55,
+			specular: 0xffffff * Math.random(),
+			shininess: 10
 		} );
 
 		mesh = new THREE.Mesh( geometry, material );
@@ -148,7 +148,7 @@
 		scene.add( helper );
 
 		var material = new THREE.MeshPhongMaterial( {
-			color: 0xaa2222,
+			color: 0x992222,
 			specular: 0xffffff * Math.random(),
 			shininess: 10
 		} );
@@ -359,7 +359,7 @@ console.log( 'update', sp500[ i ][ 0 ],  sp500Trades[ i ], sp500TradesPrevious[ 
 
 			}
 
-console.log( 'difference:', diff,  new Date().toLocaleTimeString() );
+//console.log( 'difference:', diff,  new Date().toLocaleTimeString() );
 
 			updateTime = new Date().toLocaleTimeString();
 			updateText = txt;
