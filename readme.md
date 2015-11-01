@@ -4,15 +4,16 @@
 [Jaanga]( http://jaanga.github.io/ ) &raquo;
 
 [Jaanga SP500 Read Me]( index.html )
-===========
+===
 
-### Live Demo / Source Code
+[Jaanga SP500 Demo Full Screen]( http://jaanga.github.io/sp500/r4/sp500-r4.html )
+
+## Web Page / Source Code
 <iframe class=ifr src="http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/sp500/r4/sp500-r4.html" width=100% height=600px class='overview' >
 There is an `iframe` here. It is not visible when viewed on github.com/jaanga/sp500. To view, click 'Web page view' just above.
 </iframe>
 ###### _Jaanga SP500 - Dev Revision - Code Edit View_ / [Open Full Screen]( http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/sp500/r4/sp500-r4.html )
 
-[Jaanga SP500 Demo Full Screen]( http://jaanga.github.io/sp500/r4/sp500-r4.html )
 
 ## Concept
 
