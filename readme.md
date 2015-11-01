@@ -1,18 +1,18 @@
-[Jaanga]( http://jaanga.github.io/ ) &raquo;
-
-[SP500 Read Me]( index.html )
-===========
-
 <span style=display:none; >[You are now in GitHub source code view - click this button to view Read Me file as a web page]( http://jaanga.github.io/sp500/ "View file as a web page." ) </span>
 <input type=button value='You are now in GitHub web page view - Click this button to view Read Me file as source code' onclick=window.location.href='https://github.com/jaanga/sp500/'; />
 
+[Jaanga]( http://jaanga.github.io/ ) &raquo;
 
-### Live Demo
-<iframe src="http://jaanga.github.io/sp500/dev/index.html" width=100% height=600px class='overview' >
+[Jsaanga SP500 Read Me]( index.html )
+===========
+
+### Live Demo / Source Code
+<iframe class=ifr src="http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/sp500/r4/sp500-r4.html" width=100% height=600px class='overview' >
 There is an `iframe` here. It is not visible when viewed on github.com/jaanga/sp500. To view, click 'Web page view' just above.
 </iframe>
-#### _SP500 - latest revision_ / [Open Full Screen]( http://jaanga.github.io/sp500/devt/index.html )
+###### _Jaanga SP500 - Dev Revision - Code Edit View_ / [Open Full Screen]( http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/sp500/r4/sp500-r4.html )
 
+[Jaanga SP500 Demo Full Screen]( http://jaanga.github.io/sp500/r4/sp500-r4.html )
 
 ## Concept
 
@@ -25,7 +25,7 @@ It is quite difficult to not which are the outliers and which are in the middle 
 <!-- a statement of a rationale, applicable now as well as in the future -->
 
 * View hundreds of market symbols in a non-reductionist manner
-* Be able to get a pixture of how the market is flowing
+* Be able to get a picture of how the market is flowing
 
 
 ### Vision  
