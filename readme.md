@@ -3,7 +3,7 @@
 
 [Jaanga]( http://jaanga.github.io/ ) &raquo;
 
-[Jsaanga SP500 Read Me]( index.html )
+[Jaanga SP500 Read Me]( index.html )
 ===========
 
 ### Live Demo / Source Code
@@ -79,7 +79,7 @@ Click on an empty space to clear selection before clicking on another symbol
 * Works on desktops, laptops, tablets and phones
 
 
-## Road Map
+## Things To Do / Road Map
 
 * Highlight your own and others portfolios
 * Display bounding boxes around the symbols in a particular industry sector
