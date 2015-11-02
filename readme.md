@@ -1,4 +1,4 @@
-<span style=display:none; >[You are now in GitHub source code view - click this button to view Read Me file as a web page]( http://jaanga.github.io/sp500/ "View file as a web page." ) </span>
+<span style=display:none; >[You are now in a GitHub source code view - click this button to view this read me file as a web page]( http://jaanga.github.io/sp500/ "View file as a web page." ) </span>
 <input type=button value='You are now in GitHub web page view - Click this button to view Read Me file as source code' onclick=window.location.href='https://github.com/jaanga/sp500/'; />
 
 [Jaanga]( http://jaanga.github.io/ ) &raquo;
@@ -11,7 +11,7 @@
 
 ## Web Page / Source Code
 <iframe class=ifr src="http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/sp500/r4/sp500-r4.html" width=100% height=600px class='overview' >
-There is an `iframe` here. It is not visible when viewed on github.com/jaanga/sp500. To view, click 'Web page view' just above.
+There is an 'iframe' here. It is not visible when viewed on github.com/jaanga/sp500. To view, click the 'web page' link at the top.
 </iframe>
 ###### _Jaanga SP500 - Dev Revision - Code Edit View_ / [Open Full Screen]( http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/sp500/r4/sp500-r4.html )
 
