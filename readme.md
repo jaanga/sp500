@@ -8,6 +8,7 @@
 
 [Jaanga SP500 Demo Full Screen]( http://jaanga.github.io/sp500/r4/sp500-r4.html )
 
+
 ## Web Page / Source Code
 <iframe class=ifr src="http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/sp500/r4/sp500-r4.html" width=100% height=600px class='overview' >
 There is an `iframe` here. It is not visible when viewed on github.com/jaanga/sp500. To view, click 'Web page view' just above.
@@ -16,6 +17,8 @@ There is an `iframe` here. It is not visible when viewed on github.com/jaanga/sp
 
 
 ## Concept
+
+_It's all very beta - including this documentation_
 
 ### Issues / Problems
 
@@ -28,26 +31,39 @@ It is quite difficult to not which are the outliers and which are in the middle 
 * View hundreds of market symbols in a non-reductionist manner
 * Be able to get a picture of how the market is flowing
 
-
 ### Vision  
 <!--  a descriptive picture of a desired future state -->
 
 * Help traders find interesting trading circumstances
 * Can tackle: financial markets, currencies, weather, Internet traffic
 
+
 ## Usage Notes
 
-Navigation
+The first time you run the Jaanga SP500 script, you may need to refresh the page in order for everything to load properly.
+The script only runs on devices that support [WebGL]( https://get.webgl.org/ ).
+
+Once the script is running, updates will occur every minute or so - and you will see the symbols move just a bit,
+
+**Navigation**
 * Roll = left or 1 finger
 * Zoom = scroll or 2 finger
 * Move = right or 3 finger
 
-Desktop/laptop
-* Move cursor over symbol to see its chart. Click on empty area to clear.
+**Desktop/laptop**
+* Move your cursor over symbols to see their charts pop up. Click on empty area to clear.
 
-Tablet/phone
-* Not quite as easy as desktop. You may need to smudge or wiggle your finger in order to show the heads-up. 
+**Tablet/phone**
+* Not quite as easy as desktop. You may need to smudge or wiggle your finger in order to show the pop-up. 
 Click on an empty space to clear selection before clicking on another symbol
+
+**Indicators**  
+During the trading day the symbols move across the table
+* Left/Red - Right/Green. Symbols in the green area are gainers. Symbols in the red are losers. 
+The further the symbols are from the centerline the more they are gaining or losing.
+Symbol stuck at the edges of the table have gained or lost over 20%
+* Front/Start - Back/Finish. Movement from start to finish is based on volume - the current volume divided by the average daily volume.
+All symbols start at zero. Symbols at the back have reached or exceeded 600% of the symbols average daily volume in that session 
 
 ## Features
 <!-- and benefits -->
@@ -60,64 +76,52 @@ Click on an empty space to clear selection before clicking on another symbol
 * Heads-up display with links and charts for individual symbols
 * Symbols colored by sector
 * Data wrangling
-	* Keep all the data visible always
+	* Keeps all the data visible always
 * Large amounts of data
-	* No server. No server management. Little that is hackable.
+	* No server. No server management. Little that is hackable
 	* All data in the cloud
+* Storage likely to last until the end of time
 * Supports many data type possibilities
-	* Augmented Unreality / heads-up display
-* Storage likely to last until the end of time.
-* A UI that is not a skeumorph of the meatworld/scond life
+	* Augmented unreality / heads-up display
+
+* A UI that is not a [skeumorph]( https://en.wikipedia.org/wiki/Skeuomorph ) of the meatworld/second life
 * UI that allows access to huge amounts of choices
 	* non-reductionist ways or presenting data
-* Run-time updates of data and/or code
+	* Run-time updates of data and/or code
 * Single language - JavaScript - for the whole thing - no HTML or CSS
-* Very CORS oriented
-* Themable
-* Code Customizable
-* Many sorts of triage/representation/selection possibilities
-* No crashes. It just works
-* Works on desktops, laptops, tablets and phones
+	* Code is highly customizable
+	* Very CORS oriented
+	* Themable
+	* Many sorts of triage/representation/selection possibilities
+	* No crashes. It just works
+	* Works on desktops, laptops, tablets and phones
+
 
 
 ## Things To Do / Road Map
 
+_One day this list will be as long as you arm_
+
+* Create alternative color schemes
 * Highlight your own and others portfolios
 * Display bounding boxes around the symbols in a particular industry sector
 * Display trails of the movements
-
-## Issues /Bugs
-
-
-## Project Links
-
-Jaanga is a [GitHub]( http://github.com) [organization account]( https://help.github.com/articles/what-s-the-difference-between-user-and-organization-accounts ) and has multiple owners and admins. 
-All Jaanga scripts are [FOSS]( https://en.wikipedia.org/wiki/Free_and_open-source_software ).
+* Select a symbol from menu and see its position highlighted in the 3D display
 
 
-## System Requirements
+## Contact
 
-In order to run the script you will need a device and browser that provides good support for [WebGL](http://get.webgl.org/)
-WebGL is the JavaScript API for rendering interactive 3D graphics and 2D graphics within any compatible web browser without the use of plug-ins. 
-
-Generally this means a computer with an Intel Core i5 processor or better with an external GPU such as one made by Nvidia. 
-Successful use of the script on a phone or tablet is highly unlikely. 
-A mouse or other pointing device with a scroll wheel is also highly recommended so that you can zoom, pant and rotate in 3D.
- 
-The script is currently being built and tested with the Google Chrome browser. 
-Bugs on browsers other than Chrome need not be reported until such time as the work settles down and an effort to support more browsers is initiated.
+* jaanga@googlegroups.com
 
 
 ## Copyright and License
 
-copyright &copy; 2015 Jaanga authors ~ 
-All work herein is under the [MIT License]( http://jaanga.github.io/libs/jaanga-copyright-and-mit-license.md )
+* [Copyright and License]( http://jaanga.github.io/#http://jaanga.github.io/jaanga-copyright-and-mit-license.md ) 
 
-This repository contains files that are at an early and volatile stage. Not all licensing requirements may have been fully met let alone identified. It is the intension of the authors to play fair and all such requirements will either be met or the feature in question will turned off.
+***
 
-
-## Change Log
-
-
+<center title="dingbat" >
+# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; >❦</a>
+</center>
 
 

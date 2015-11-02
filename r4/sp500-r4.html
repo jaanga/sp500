@@ -257,19 +257,19 @@
 
 	function drawSymbols() {
 
-		geometry = new THREE.BoxGeometry( 1, 1, 1 );
+		geometry = new THREE.BoxGeometry( 5, 1, 5 );
 
 		for (var i = 0; i < sp500.length; i++) {
 
 			symbol = new THREE.Object3D();
 
 			material = new THREE.MeshPhongMaterial( {
-				color: colors[ sp500[i][3] ] // 0xffffff * Math.random(),
-//				opacity: Math.random(),
+				color: colors[ sp500[i][3] ], // 0xffffff * Math.random(),
+				opacity: 0.85,
 //				specular: 0xffffff * Math.random(),
 //				shading: THREE.FlatShading,
 //				shininess: 10,
-//				transparent: true
+				transparent: true
 			} );
 
 			mesh = new THREE.Mesh( geometry, material );
