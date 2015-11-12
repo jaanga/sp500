@@ -83,7 +83,8 @@
 
 		renderer = new THREE.WebGLRenderer( { alpha: 1, antialias: true, clearColor: 0xffffff }  );
 		renderer.setSize( window.innerWidth, window.innerHeight );
-		renderer.shadowMap.enabled = true;
+
+		renderer.shadowMap.enabled = location.hash === '#intelhd' ? false : true;
 		document.body.appendChild( renderer.domElement );
 
 		scene = new THREE.Scene();
