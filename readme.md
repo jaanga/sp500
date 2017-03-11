@@ -1,13 +1,13 @@
-<span style=display:none; >[You are now in a GitHub source code view - click this button to view this read me file as a web page]( http://jaanga.github.io/sp500/ "View file as a web page." ) </span>
+<span style=display:none; >[You are now in a GitHub source code view - click this button to view this read me file as a web page]( https://jaanga.github.io/sp500/ "View file as a web page." ) </span>
 <input type=button value='You are now in GitHub web page view - Click this button to view Read Me file as source code' onclick=window.location.href='https://github.com/jaanga/sp500/'; />
 
-[Jaanga]( http://jaanga.github.io/ ) &raquo;
+[Jaanga]( https://jaanga.github.io/ ) &raquo;
 
 [Jaanga SP500 Read Me]( index.html )
 ===
 
 
-### Full Screen Demo: [Jaanga SP500]( http://jaanga.github.io/build/ )
+### Full Screen Demo: [Jaanga SP500]( https://jaanga.github.io/sp500/build/ )
 
 
 ## Web Page / Source Code
