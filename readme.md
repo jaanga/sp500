@@ -6,7 +6,8 @@
 [Jaanga SP500 Read Me]( index.html )
 ===
 
-[Jaanga SP500 Demo Full Screen]( http://jaanga.github.io/sp500/r5/sp500-r5.html )
+
+### Full Screen Demo: [Jaanga SP500]( http://jaanga.github.io/sp500/r5/sp500-r5.html )
 
 
 ## Web Page / Source Code
@@ -23,7 +24,7 @@ _It's all very beta - including this documentation_
 ### Issues / Problems
 
 Trying to gauge the movements of hundreds of stocks while they are trading is not easy.
-It is quite difficult to not which are the outliers and which are in the middle of the pack.
+It is quite difficult to note which are the outliers and which are in the middle of the pack.
 
 ### Mission
 <!-- a statement of a rationale, applicable now as well as in the future -->
@@ -35,7 +36,7 @@ It is quite difficult to not which are the outliers and which are in the middle 
 <!--  a descriptive picture of a desired future state -->
 
 * Help traders find interesting trading circumstances
-* Can tackle: financial markets, currencies, weather, Internet traffic
+* Spin-offs might tackle: financial markets, currencies, weather, Internet traffic
 
 
 ## Usage Notes
@@ -68,8 +69,8 @@ All symbols start at zero. Symbols at the back have reached or exceeded 600% of 
 ## Features
 <!-- and benefits -->
 
-* Displays the positions of the entire SP500
-* Data is updated every minute or so
+* Displays the positions of the entire SP500 in 3D
+* Market data is updated every minute or so
 * Automatic acquisition and storage of data
 * Full 3D ~ rotate, and and zoom in real-time
 	* Real-time animation or real-time data
@@ -83,7 +84,6 @@ All symbols start at zero. Symbols at the back have reached or exceeded 600% of 
 * Storage likely to last until the end of time
 * Supports many data type possibilities
 	* Augmented unreality / heads-up display
-
 * A UI that is not a [skeumorph]( https://en.wikipedia.org/wiki/Skeuomorph ) of the meatworld/second life
 * UI that allows access to huge amounts of choices
 	* non-reductionist ways or presenting data
@@ -91,7 +91,7 @@ All symbols start at zero. Symbols at the back have reached or exceeded 600% of 
 * Single language - JavaScript - for the whole thing - no HTML or CSS
 	* Code is highly customizable
 	* Very CORS oriented
-	* Themable
+	* Theme-able
 	* Many sorts of triage/representation/selection possibilities
 	* No crashes. It just works
 	* Works on desktops, laptops, tablets and phones
@@ -100,14 +100,27 @@ All symbols start at zero. Symbols at the back have reached or exceeded 600% of 
 
 ## Things To Do / Road Map
 
-_One day this list will be as long as you arm_
+_One day this list will be as long as your arm_
 
+### User Interface
+* Full hamburger menu
+	* Rotation
+* Select a symbol from menu and see its position highlighted in the 3D display
+* Select a symbol by typing
+* Alternative menu layouts
 * Create alternative color schemes
+
+### Portfolios / Sectors /Groups
 * Highlight your own and others portfolios
 * Display bounding boxes around the symbols in a particular industry sector
-* Display trails of the movements
-* Select a symbol from menu and see its position highlighted in the 3D display
 
+### 3D Display
+* Display trails of the movements
+* Light tracks sun position
+
+### Heads-Up Display
+
+### Links to Social Networks
 
 ## Contact
 
