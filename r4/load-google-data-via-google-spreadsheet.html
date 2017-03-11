@@ -11,12 +11,14 @@
 <script>
 
 // https://docs.google.com/spreadsheets/d/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/edit#gid=1750244370
+// https://drive.google.com/drive/u/0/folders/0B0g809SWki8teEJ6UUI3MDRxRzg
+// My Drive / GAS / jaanga2014
 
-	var xmlhttp;
-	var sp500Trades = [];
-	var sp500TradesPrevious;
+	let xhr;
+	let sp500Trades = [];
+	let sp500TradesPrevious = [];
 
-	var fname = 'https://spreadsheets.google.com/feeds/list/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/1/public/values?alt=json';
+	let fname = 'https://spreadsheets.google.com/feeds/list/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/1/public/values?alt=json';
 
 	init();
 
@@ -26,10 +28,10 @@
 
 			document.body.style.cssText = 'font: 12pt monospace;' ;
 
-			var info = document.body.appendChild( document.createElement( 'div' ) );
+			let info = document.body.appendChild( document.createElement( 'div' ) );
 			info.innerHTML = '<h1><a href="" >' + document.title + '</a></h1>' +
-				'<div id=msg1>1</div>' +
-				'<div id=msg2>2</div>';
+				'<div id=msgTime >1</div>' +
+				'<div id=msgData >2</div>';
 
 //		}
 
@@ -37,30 +39,36 @@
 
 	}
 
+
 	function loadJSON() {
 
-		xmlhttp = new XMLHttpRequest();
-		xmlhttp.open( 'GET', fname + '&t=' + Math.random(), true );
-		xmlhttp.onload = callbackJSON;
-		xmlhttp.send( null );
+		xhr = new XMLHttpRequest();
+		xhr.open( 'GET', fname + '&t=' + Math.random(), true );
+		xhr.onload = callbackJSON;
+		xhr.send( null );
 
 	}
 
 	function callbackJSON() {
 
-		var data = xmlhttp.responseText;
-		data = JSON.parse( data );
-		entries = data.feed.entry;
+		let data, entries, entry, symbol, txt;
+
+
 		sp500TradesPrevious = sp500Trades.slice( 0 );
 		sp500Trades = [];
-		var txt = '';
+		txt = '';
+		data = xhr.responseText;
+		data = JSON.parse( data );
+		entries = data.feed.entry;
 
-		for ( var i = 0; i < entries.length; i++  ) {
+		for ( let i = 0; i < entries.length; i++  ) {
 
-			var entry = entries[i];
-			var symbol = [
+			entry = entries[i];
+			symbol = [
+
 				parseFloat( entry.gsx$changepct.$t ),
 				parseInt( entry.gsx$volume.$t, 10 )
+
 			];
 
 			sp500Trades.push( symbol );
@@ -70,7 +78,7 @@
 		}
 
 
-		for ( var i = 0; i < sp500Trades.length ; i++ ) {
+		for ( let i = 0; i < sp500Trades.length ; i++ ) {
 
 			if ( sp500TradesPrevious.length > 1 && !isNaN( sp500Trades[ i ][ 1 ] ) &&  sp500Trades[ i ][ 1 ] !== sp500TradesPrevious[ i ][ 1 ] ) {
 
@@ -104,8 +112,8 @@ console.log( 'diff', diff,  new Date().toLocaleTimeString() );
 
 		} else {
 
-			msg1.innerHTML = new Date().toLocaleTimeString();
-			msg2.innerHTML = txt;
+			msgTime.innerHTML = new Date().toLocaleTimeString();
+			msgData.innerHTML = txt;
 
 		}
 

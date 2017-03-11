@@ -6,14 +6,14 @@
 [Jaanga SP500 Read Me]( index.html )
 ===
 
-[Jaanga SP500 Demo Full Screen]( http://jaanga.github.io/sp500/r4/sp500-r4.html )
+[Jaanga SP500 Demo Full Screen]( http://jaanga.github.io/sp500/r5/sp500-r5.html )
 
 
 ## Web Page / Source Code
-<iframe class=ifr src="http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/sp500/r4/sp500-r4.html" width=100% height=600px class='overview' >
+<iframe class=ifr src="http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/sp500/r5/sp500-r5.html" width=100% height=600px class='overview' >
 There is an 'iframe' here. It is not visible when viewed on github.com/jaanga/sp500. To view, click the 'web page' link at the top.
 </iframe>
-###### _Jaanga SP500 - Dev Revision - Code Edit View_ / [Open Full Screen]( http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/sp500/r4/sp500-r4.html )
+###### _Jaanga SP500 - Dev Revision - Code Edit View_ / [Open Full Screen]( http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/sp500/r5/sp500-r5.html )
 
 
 ## Concept
@@ -25,13 +25,13 @@ _It's all very beta - including this documentation_
 Trying to gauge the movements of hundreds of stocks while they are trading is not easy.
 It is quite difficult to not which are the outliers and which are in the middle of the pack.
 
-### Mission  
+### Mission
 <!-- a statement of a rationale, applicable now as well as in the future -->
 
 * View hundreds of market symbols in a non-reductionist manner
 * Be able to get a picture of how the market is flowing
 
-### Vision  
+### Vision
 <!--  a descriptive picture of a desired future state -->
 
 * Help traders find interesting trading circumstances
@@ -54,16 +54,16 @@ Once the script is running, updates will occur every minute or so - and you will
 * Move your cursor over symbols to see their charts pop up. Click on empty area to clear.
 
 **Tablet/phone**
-* Not quite as easy as desktop. You may need to smudge or wiggle your finger in order to show the pop-up. 
+* Not quite as easy as desktop. You may need to smudge or wiggle your finger in order to show the pop-up.
 Click on an empty space to clear selection before clicking on another symbol
 
-**Indicators**  
+**Indicators**
 During the trading day the symbols move across the table
-* Left/Red - Right/Green. Symbols in the green area are gainers. Symbols in the red are losers. 
+* Left/Red - Right/Green. Symbols in the green area are gainers. Symbols in the red are losers.
 The further the symbols are from the centerline the more they are gaining or losing.
 Symbol stuck at the edges of the table have gained or lost over 20%
 * Front/Start - Back/Finish. Movement from start to finish is based on volume - the current volume divided by the average daily volume.
-All symbols start at zero. Symbols at the back have reached or exceeded 600% of the symbols average daily volume in that session 
+All symbols start at zero. Symbols at the back have reached or exceeded 600% of the symbols average daily volume in that session
 
 ## Features
 <!-- and benefits -->
@@ -72,7 +72,7 @@ All symbols start at zero. Symbols at the back have reached or exceeded 600% of 
 * Data is updated every minute or so
 * Automatic acquisition and storage of data
 * Full 3D ~ rotate, and and zoom in real-time
-	* Real-time animation or real-time data   
+	* Real-time animation or real-time data
 * Heads-up display with links and charts for individual symbols
 * Symbols colored by sector
 * Data wrangling
@@ -116,7 +116,7 @@ _One day this list will be as long as you arm_
 
 ## Copyright and License
 
-* [Copyright and License]( http://jaanga.github.io/#http://jaanga.github.io/jaanga-copyright-and-mit-license.md ) 
+* [Copyright and License]( http://jaanga.github.io/#http://jaanga.github.io/jaanga-copyright-and-mit-license.md )
 
 ***
 
