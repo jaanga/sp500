@@ -7,7 +7,7 @@
 ===
 
 
-### Full Screen Demo: [Jaanga SP500]( http://jaanga.github.io/sp500/r5/sp500-r5.html )
+### Full Screen Demo: [Jaanga SP500]( http://jaanga.github.io/build/ )
 
 
 ## Web Page / Source Code
