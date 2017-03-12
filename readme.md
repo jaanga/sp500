@@ -115,12 +115,17 @@ _One day this list will be as long as your arm_
 * Display bounding boxes around the symbols in a particular industry sector
 
 ### 3D Display
-* Display trails of the movements
-* Light tracks sun position
+* Display trails of the movements of symbols
+* Lights and shadows tracks sun position
 
 ### Heads-Up Display
 
+* ???
+
 ### Links to Social Networks
+
+* ???
+
 
 ## Contact
 

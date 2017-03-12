@@ -97,6 +97,7 @@
 		controls.minDistance = 10;
 		controls.maxDistance = 800;
 		controls.target.set( 0, 20, -150 );
+		controls.autoRotate = true;
 
 		toggleBackgroundGradient();
 		addLights();
@@ -105,6 +106,8 @@
 
 // Events
 		window.addEventListener( 'resize', onWindowResize, false );
+		window.addEventListener( 'keyup', onKeyUp, false );
+		renderer.domElement.addEventListener( 'click', function() {  controls.autoRotate = false; }, false );
 		renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );
 		renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
 		renderer.domElement.addEventListener( 'touchmove', onDocumentTouchStart, false ); // for mobile
@@ -551,6 +554,21 @@ console.log( 'update', sp500[ i ][ 0 ],  sp500Trades[ i ], sp500TradesPrevious[ 
 
 	}
 
+	function onKeyUp ( event ) {
+
+//console.log( 'key', event.keyCode );
+
+		controls.enableKeys = false;
+		event.preventDefault();
+
+		switch( event.keyCode ) {
+
+//			case 32: controls.autoRotate = !controls.autoRotate; chkRotate.checked = controls.autoRotate; break; // space bar
+			case 32: controls.autoRotate = !controls.autoRotate; break; // space bar
+
+		}
+
+	}
 
 	function onDocumentMouseMove( event ) {
 
