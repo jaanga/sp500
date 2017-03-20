@@ -9,13 +9,14 @@
 
 ### Full Screen Demo: [Jaanga SP500]( https://jaanga.github.io/sp500/build/ )
 
-### Full Screen Demo: [Jaanga SP500 Replay]( https://jaanga.github.io/sp500/trades-replay-meshlines/ )
+### Full Screen Demo: [Jaanga SP500 Replay]( https://jaanga.github.io/sp500/trades-replay-lines/ )
 
 ## Web Page / Source Code
-<iframe class=ifr src="http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/sp500/r5/sp500-r5.html" width=100% height=600px class='overview' >
+<iframe class=ifr src="https://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#https://jaanga.github.io/sp500/r5/sp500-r5.html" width=100% height=600px class='overview' >
 There is an 'iframe' here. It is not visible when viewed on github.com/jaanga/sp500. To view, click the 'web page' link at the top.
 </iframe>
-###### _Jaanga SP500 - Dev Revision - Code Edit View_ / [Open Full Screen]( http://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#http://jaanga.github.io/sp500/r5/sp500-r5.html )
+
+###### _Jaanga SP500 - Dev Revision - Code Edit View_ / [Open Full Screen]( https://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#https://jaanga.github.io/sp500/r5/sp500-r5.html )
 
 
 ## Concept
@@ -135,7 +136,7 @@ _One day this list will be as long as your arm_
 
 ## Copyright and License
 
-* [Copyright and License]( http://jaanga.github.io/#http://jaanga.github.io/jaanga-copyright-and-mit-license.md )
+* [Copyright and License]( https://jaanga.github.io/#https://jaanga.github.io/jaanga-copyright-and-mit-license.md )
 
 ***
 
