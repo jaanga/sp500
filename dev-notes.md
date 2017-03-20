@@ -2,6 +2,21 @@ Dev Notes
 ===
 
 
+2017-03-19 ~ Theo
+
+* Add TooToo R6.1 as the file viewer
+	* Add features to TooToo R6.2 and copied back to TooToo
+* Add trades-replay-lines
+	* Reads trades data and replays the day
+	* Wonky, primitive presentation but it works in
+
+
+---
+
+Previously: many updates
+
+R4 and R5
+
 2015-10-30 ~ Theo
 
 Heads-up display now working on mobile devices - but UE could be better
@@ -27,14 +42,14 @@ Currently the script is using an iframe. It may not need to use one. Must invest
 All going well
 
 
-*Create two ground planes: 
+*Create two ground planes:
 	* one green, one red << done
 	* with gradient textures
 * Add gradient background << done
 * Add average volume << done
 * How to handle mouseover on mobile?
 * Start adding labels << done / pullouts
-* Wrangle the excessive volume << done and change percent outliers 
+* Wrangle the excessive volume << done and change percent outliers
 
 * Consider how to store values for replay
 * Create a spreadsheet with day's opening or day's high / low
