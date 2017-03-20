@@ -2,7 +2,7 @@ Dev Notes
 ===
 
 
-2017-03-19 ~ Theo
+### 2017-03-19 ~ Theo
 
 * Add TooToo R6.1 as the file viewer
 	* Add features to TooToo R6.2 and copied back to TooToo
@@ -17,13 +17,13 @@ Previously: many updates
 
 R4 and R5
 
-2015-10-30 ~ Theo
+### 2015-10-30 ~ Theo
 
 Heads-up display now working on mobile devices - but UE could be better
 No more iframes - loads nice and fast
 
 
-2015-10-29 ~ Theo
+### 2015-10-29 ~ Theo
 
 Lots of fun to be back here. And lots of cool updates to R3.
 
@@ -33,11 +33,11 @@ Lots of fun to be back here. And lots of cool updates to R3.
 Currently the script is using an iframe. It may not need to use one. Must investigate.
 
 
-2015-01-17 ~ Theo
+### 2015-01-17 ~ Theo
 
 * As yesterday
 
-2015-01-16 ~ Theo
+### 2015-01-16 ~ Theo
 
 All going well
 
@@ -54,6 +54,6 @@ All going well
 * Create a spreadsheet with day's opening or day's high / low
 
 
-2015-01-14 ~ Theo
+### 2015-01-14 ~ Theo
 
 * Create folders and files
