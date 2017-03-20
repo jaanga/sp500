@@ -9,7 +9,7 @@ Dev Notes
 * Add trades-replay-lines
 	* Reads trades data and replays the day
 	* Wonky, primitive presentation but it works in
-
+* Update read me and index files
 
 ---
 
@@ -50,7 +50,6 @@ All going well
 * How to handle mouseover on mobile?
 * Start adding labels << done / pullouts
 * Wrangle the excessive volume << done and change percent outliers
-
 * Consider how to store values for replay
 * Create a spreadsheet with day's opening or day's high / low
 
