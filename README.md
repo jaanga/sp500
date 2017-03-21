@@ -8,7 +8,7 @@
 ===
 
 
-### Full Screen Demo: [Jaanga SP500 Realtime]( https://jaanga.github.io/sp500-realtime/ )
+### Full Screen Demo: [Jaanga SP500 Realtime]( https://jaanga.github.io/sp500/sp500-realtime/ )
 
 ### Full Screen Demo: [Jaanga SP500 Replay]( https://jaanga.github.io/sp500/trades-replay-lines/ )
 
