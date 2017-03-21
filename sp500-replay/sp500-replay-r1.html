@@ -1,0 +1,1054 @@
+<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>jaanga sp500 realtime r1</title>
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
+<meta name=description content='SP500 realtime' >
+<meta name=keywords content='Jaanga,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2017-03-20' >
+</head>
+<body>
+<script src=https://cdn.rawgit.com/mrdoob/three.js/dev/build/three.min.js ></script>
+<script src=https://cdn.rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js ></script>
+<script src=https://cdn.rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
+<script>
+// Copyright 2017 Jaanga authors ~ MIT license
+
+
+// https://docs.google.com/spreadsheets/d/1_sv-QsJvHCfTCjRlpgv5ZwAUZetMCu-SfQHERAOuGZE/edit#gid=0
+	var WikipediaDataFileName = 'https://spreadsheets.google.com/feeds/list/1_sv-QsJvHCfTCjRlpgv5ZwAUZetMCu-SfQHERAOuGZE/1/public/values?alt=json';
+
+// https://docs.google.com/spreadsheets/d/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/edit#gid=1750244370
+	var TradeDataFileName = 'https://spreadsheets.google.com/feeds/list/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/1/public/values?alt=json';
+
+	var folder, fileName;
+
+	folder = '../trades/';
+	fileName = '2017-03-21.csv';
+
+	var started;
+
+	started = new Date( parseFloat( fileName.slice( 0, 4 ) ), parseFloat( fileName.slice( 5, 7 ) ) - 1,
+	parseFloat( fileName.slice( 8, 10 ) ) - 1, 6, 30 );
+
+	started = started.getTime() / 1000;
+
+	var start, count;
+	var obj, meshes;
+
+	var symbols, symbolList;
+
+	var sp500ticks = [];
+	var sp500Trades = [];
+	var sp500TradesPrevious;
+
+	var updateTime, updateText, updateTextPrevious;
+
+	var lightDirectional;
+
+	var objs = [];
+	var touchables = [];
+	var colors = [0x575757,0xAD2323,0x2A4BD7,0x1D6914,0x814A19,0x8126C0,0x81C57A,0x9DAFFF,0x29D0D0,0xFF9233,0xE9DEBB,0xFFCDF3,0xFFEE33,0xA0A0A0,0x000000,0xFFFFFF];
+
+	var mouse = new THREE.Vector2();
+	var offset = new THREE.Vector3();
+	var intersected;
+
+	function v( x, y, z ){ return new THREE.Vector3( x, y, z ); }
+
+	var stats, renderer, scene, camera, controls, mesh;
+	var ground, gridHelper, axisHelper;
+
+	init();
+	animate();
+
+	function init() {
+
+		var css, menu, hamburger;
+		var geometry, material;
+
+		var txt = '<p>lorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?</p>';
+		var b = '<br>';
+
+		css = document.head.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
+			'body { font: 12pt monospace; margin: 0; overflow: hidden; }' +
+			'a { color: crimson; text-decoration: none; }' +
+			'button, input[type=button] { background-color: #ccc; border: 2px #fff solid; color: #322; }' +
+			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: #ddd; width: 160px; }' +
+			'input[type=range]::-moz-range-thumb { background-color: #888; border-radius: 0; width: 10px; }' +
+			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
+			'summary { outline: none; }' +
+			'summary h3 { display:inline; }' +
+			'.popUp { background-color: white; left: 180px; border: 1px solid red; opacity: 1.0; padding: 5px; position: absolute; width: 120px; z-index: 10; }' +
+			'#bars { color: crimson; cursor: pointer; font-size: 24pt; text-decoration: none; }' +
+			'#container { left: 0; position: absolute; transition: left 1s; }' +
+			'#hamburger { background-color: #eee; left: 325px; position: absolute; top: 20px; }' +
+			'#menu { background-color: #eee; border: 1px #ccc solid; max-height: ' + window.innerHeight + 'px; overflow: auto; padding: 0 10px; position: absolute; width: 300px; }' +
+			'#menu h2 { margin: 0; }' +
+
+		'';
+
+		container = document.body.appendChild( document.createElement( 'div' ) );
+		container.id = 'container';
+		container.innerHTML =
+			'<div id=menu >' +
+
+				'<h2>' +
+					'<a href=http://jaanga.github.io title="Jaanga - your 3D happy place" > &#x2766 </a>' + b +
+					'<a href="" title="Click here to refresh this page" >' + location.pathname.split( '/' ).pop().slice( 0, -5).replace( /-/g, ' ' ) + '</a>' +
+					' ~ <a href=index.html#READE.md onmouseover=popHelp.style.display=""; onmouseout=popHelp.style.display="none"; > &#x24D8; </a>' +
+				'</h2>' +
+				'<div class=popUp id=popHelp style=display:none; ><p>Hi there!</p>Click the i-in-circle, info icon for latest updates.</div>' +
+				'<p><small><i>' + document.head.querySelector("[name=description]").content + '</i></small></p>' +
+
+
+				'<details open>' +
+					'<summary><h3>Menu</h3></summary>' +
+
+					'<p><button onclick=replay(); >Replay the day</button></p>' +
+
+					'<p id=menuReplay></p>' +
+
+					'<div id=msg1 ></div>' +
+					'<div id=msg2 ></div>' +
+					'<div id=msg3 ></div>' +
+					'<p id=menuInfo >' +
+//						'This is a template or boilerplate file that is frequently used to start-off a Jaanga projects. ' +
+					'</p>' +
+				'</details>' +
+
+				'<details>' +
+					'<summary><h3>Settings</h3></summary>' +
+					'<p><input type=checkbox id=chkWire onchange=toggleWireframe(); > Wireframe</p>' +
+					'<p><input type=checkbox onchange=ground.visible=!ground.visible; checked > Ground plane</p>' +
+					'<p><input type=checkbox onchange=axisHelper.visible=!axisHelper.visible; checked > Axes</p>' +
+					'<p><input type=checkbox onchange=lightDirectional.shadow.camera.visible=!lightDirectional.shadow.camera.visible; checked > lightbox</p>' +
+					'<p><input type=checkbox id=chkBackground onchange=toggleBackgroundGradient(); checked > Gradient background</p>' +
+					'<p title="Press spacebar or click in window to stop." >' +
+						'<input type=checkbox id=chkRotate onchange=controls.autoRotate=!controls.autoRotate checked > Rotation ' +
+					'</p>'  +
+				'</details>' +
+
+				'<details>' +
+					'<summary><h3>About</h3></summary>' +
+					'<p>' +
+						'&bull; Rotate|Zoom|Pan => 1|2|3' + b +
+						'&nbsp; fingers/buttons' + b +
+						'&bull; Rotation => spacebar' + b +
+						'&bull; Slide menu => \'hamburger\' icon' +
+					'<p>' +
+
+
+					'<p>Click the \'i in a circle\' icon for more <a href=index.html#readme.md title="Click here for help and information" >help</a>.</p>' +
+					'<p>' +
+					'Keywords:' + b +
+					document.head.querySelector("[name=keywords]").content.replace( /,/g, ', ' ) + b + b +
+					'Revision Date:' + b +
+					document.head.querySelector("[name=date]").content + b + b +
+					'File name:' + b +
+						location.pathname.split( '/' ).pop() + b +
+					'</p>' +
+					'<p>Copyright &copy; ' + ( new Date() ).getFullYear() + ' Jaanga authors. <a href=http://jaanga.github.io/home/r4/index.html#http://jaanga.github.io/jaanga-copyright-and-mit-license.md >MIT license</a>.</p>' +
+				'</details>' +
+
+				'<hr>' +
+
+				'<center><a href=javascript:menu.scrollTop=0; style=text-decoration:none; onmouseover=pop2.style.display=""; onmouseout=pop2.style.display="none"; ><h1> &#x2766 <h1></a></center>' +
+				'<div class=popUp id=pop2 style=display:none;bottom:100px; >Jaanga - your 3D happy place.<br>Click here to return to the top of the page</div>' +
+
+			'</div>' +
+
+			'<div id=hamburger onclick=container.style.left=container.style.left===""?"-325px":""; >' +
+				'<div id=bars title="Click this hamburger to slide the menu" > &#9776 </div>' +
+			'</div>' +
+
+		'';
+
+// Heads Up
+		headsUp = document.body.appendChild( document.createElement( 'div' ) );
+		headsUp.style.cssText = 'background-color: #ddd; border-radius: 8px; display: none; padding: 0 5px 10px 5px; opacity: 0.85; ' +
+			'position: absolute; ';
+
+//
+		stats = new Stats();
+		stats.domElement.style.cssText = 'position: absolute; right: 0; top: 0;' ;
+		document.body.appendChild( stats.domElement );
+		stats.domElement.style.display = window.innerWidth < 500 ? 'none' : '';
+
+
+		renderer = new THREE.WebGLRenderer( { alpha: 1, antialias: true }  );
+//		renderer.setClearColor( 0xf0f0f0 );
+//		renderer.setPixelRatio( window.devicePixelRatio );
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		document.body.appendChild( renderer.domElement );
+
+
+		scene = new THREE.Scene();
+
+		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 5000 );
+		camera.position.set( 120, 100, 110 );
+//		scene.add( camera ); // for light to follow
+
+// Controls
+		controls = new THREE.OrbitControls( camera, renderer.domElement );
+		controls.minDistance = 10;
+		controls.maxDistance = 800;
+		controls.target.set( 0, 20, -150 );
+		controls.autoRotate = true;
+
+		toggleBackgroundGradient();
+		addLights();
+		addShadows();
+		drawTable();
+
+// Events
+
+		window.addEventListener( 'resize', onWindowResize, false );
+		window.addEventListener( 'keyup', onKeyUp, false );
+		renderer.domElement.addEventListener( 'click', function() {  controls.autoRotate = false; }, false );
+		renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );
+		renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
+		renderer.domElement.addEventListener( 'touchmove', onDocumentTouchStart, false ); // for mobile
+
+		requestFileTrades();
+
+	}
+
+
+	function requestFileTrades() {
+
+//		var text, lines;
+
+		xhr = new XMLHttpRequest();
+		xhr.crossOrigin = 'anonymous';
+		xhr.open( 'GET', folder + fileName, true );
+		xhr.onload = callback;
+		xhr.send( null );
+
+		function callback( xhr ) {
+
+			symbols = {};
+			symbolList = [];
+
+			text = xhr.target.response;
+
+			lines = text.split( '\n' ).map( function( line ) { return line.split( ',' ); } );
+
+			for ( var i = 0; i < lines.length - 1; i++ ) {
+
+				line = lines[ i ];
+				trades = [];
+				previousVolume = 0;
+				vol = 0;
+
+				symbolList.push( line[ 0 ] );
+
+				symbol = symbols[ line[ 0 ] ] = {
+
+					symbol: line.shift(),
+					name: line.shift(),
+					sector: line.shift(),
+					sectorID: line.shift(),
+					industry: line.shift(),
+					marketCap: line.shift(),
+					volumeAvg: line.shift(),
+
+				}
+
+				for ( var j = 0; j < line.length - 1; j = j + 6 ) {
+
+					timestamp = parseFloat( line[ j ] );
+
+					minute = Math.round( ( timestamp - started ) / 60 );
+					vol += parseInt( line[ j + 5 ], 10 )
+					trades.push(
+
+						[ timestamp, parseFloat( line[ j + 1 ] ), parseFloat( line[ j + 2 ] ),
+						parseFloat( line[ j + 3 ] ), parseFloat( line[ j + 4 ] ),
+						vol , minute ]
+					)
+
+					//previousVolume = previousVolume + parseFloat( line[ j + 5 ] );
+
+				}
+
+				symbol.trades = trades;
+				symbol.open = trades[ 0 ][ 1 ];
+
+			}
+
+			drawSymbols();
+			getVertices();
+
+		}
+
+	}
+
+
+	function drawSymbols() {
+
+		var geometry, material, mesh;
+		var edgesGeometry, edgesMaterial, edges;
+		var obj, sp;
+
+		geometry = new THREE.BoxGeometry( 5, 1, 5 );
+
+		for (var i = 0; i < symbolList.length; i++) {
+
+			obj = new THREE.Object3D();
+			symbol = symbols[ symbolList[ i ] ];
+
+			material = new THREE.MeshPhongMaterial( {
+				color: colors[ symbol.sectorID ], // 0xffffff * Math.random(),
+				opacity: 0.85,
+//				specular: 0xffffff * Math.random(),
+//				shading: THREE.FlatShading,
+//				shininess: 10,
+				transparent: true
+			} );
+
+			mesh = new THREE.Mesh( geometry, material );
+			mesh.name = mesh.userData.symbol = symbol.symbol;
+			mesh.userData.name = symbol.name;
+			mesh.userData.sector = symbol.sector;
+			mesh.userData.sectorID = symbol.sectorID;
+
+//subindustry
+//clic
+			mesh.userData.volumeAvg = symbol.volumeAvg;
+			mesh.userData.marketCap = symbol.marketCap;
+			mesh.userData.volume = 0;
+			mesh.userData.changePct = 0;
+
+			scale = 2 + 0.0000000002 * symbol.marketCap;
+//			mesh.position.set( 10 * sp500[i][2], 0.5 * scale, -200 * Math.log( 1 + sp500[i][4] / sp500[i][3] ) + 100 );
+			mesh.position.set( 0, 0.5 * scale, 0 );
+			mesh.scale.y = scale;
+			mesh.castShadow = true;
+			mesh.receiveShadow = true;
+			obj.add( mesh );
+
+			edgesGeometry = new THREE.EdgesGeometry( mesh.geometry ); // or WireframeGeometry
+			edgesMaterial = new THREE.LineBasicMaterial();
+			edgesMaterial.color.setRGB( 0.3, 0.3, 0.3 );
+			edges = new THREE.LineSegments( edgesGeometry, edgesMaterial );
+			mesh.add( edges ); // add wireframe as a child of the parent mesh
+
+			sp = drawSprite( mesh.userData.symbol, (0.05 ), '#ffff00', mesh.position.x, ( 2 * mesh.position.y + 3 ), mesh.position.z);
+			sp.material.opacity = 0.5;
+			obj.add( sp );
+
+			objs.push( obj );
+			touchables.push( mesh );
+			scene.add( obj );
+
+		}
+
+//		tradesParse();
+
+	}
+
+
+	function tradesParse( lines ) {
+
+//		var trades, previousVolume, line, symbol;
+
+		for ( var i = 0; i < lines.length - 1; i++ ) {
+
+			trades = [];
+			previousVolume = 0;
+
+			line = lines[ i ];
+			symbol = line.shift();
+
+			for ( var j = 2; j < line.length - 1; j = j + 6 ) {
+
+				timestamp = parseFloat( line[ j ] );
+
+				minute = Math.round( ( timestamp - started ) / 60000 );
+
+				trades.push(
+
+					[ timestamp, parseFloat( line[ j + 1 ] ), parseFloat( line[ j + 2 ] ),
+					parseFloat( line[ j + 3 ] ), parseFloat( line[ j + 4 ] ),
+					previousVolume + parseFloat( line[ j + 5 ] ), minute ]
+				)
+
+				previousVolume =  previousVolume + parseFloat( line[ j + 5 ] );
+
+			}
+
+			if ( symbolList.indexOf( symbol ) < 0 ) { console.log( 'no symbol', symbol ); continue; }
+
+			symbols[ symbol ].symbol = symbol;
+			symbols[ symbol ].trades = trades;
+			symbols[ symbol ].open = trades[ 0 ][ 1 ];
+
+		}
+
+//console.log( 'goog', symbols[ 'GOOG' ] );
+//console.log( 'zts', symbols[ 'ZTS' ] );
+
+		getVertices();
+
+	}
+
+
+	function getVertices() {
+
+		var len, symbol, trade, verts;
+
+		len = symbolList.length;
+
+		for ( var i = 0; i < len; i++ ) {
+
+			symbol = symbols[ symbolList[ i ] ];
+
+//console.log( 'sym', symbol );
+
+			verts = [];
+
+			if ( !symbol.trades ) { console.log( 'no trades', symbol.symbol );continue; }
+
+			for ( var j = 0; j < symbol.trades.length; j++ ) {
+
+				trade = symbol.trades[ j ];
+				verts.push( new THREE.Vector3( 3000 * ( trade[ 1 ] - symbol.open ) / symbol.open, 0,  -50 * trade[ 5 ] /  symbol.volumeAvg ) );
+
+			}
+
+			symbol.vertices = verts;
+
+			drawLine( symbol );
+
+		}
+
+	}
+
+
+	function drawLine( symbol ) {
+
+		var geometry, material, line;
+
+		geometry = new THREE.Geometry();
+		geometry.vertices = symbol.vertices;
+		material = new THREE.LineBasicMaterial( { color: colors[ symbol.sectorID ] } );
+		line = new THREE.Line( geometry, material );
+		line.userData.symbol = symbol.symbol;
+		scene.add( line );
+
+	}
+
+
+	function replay() {
+
+/*
+//		var geometry, material, mesh;
+		scene.remove( obj );
+
+		obj = new THREE.Object3D();
+		meshes = [];
+
+		for ( var i = 0; i < symbolList.length; i++ ) {
+
+			symbol = symbols[ symbolList[ i ] ];
+			geometry = new THREE.BoxGeometry( 2, 10, 2 );
+			material = new THREE.MeshBasicMaterial( { color: colors[ symbol.sectorID ] } );
+			mesh = new THREE.Mesh( geometry, material );
+			scene.add( mesh );
+			obj.add( mesh );
+			meshes.push( mesh );
+
+		}
+		scene.add( obj );
+*/
+		index = 0;
+
+		updatePosition();
+
+	}
+
+
+	function updatePosition() {
+
+		for ( var j = 0; j < symbolList.length; j++ ) {
+
+			symbol = symbols[ symbolList[ j ] ];
+
+			if ( !symbol.vertices ) { continue; }
+
+			vertex = symbol.vertices[ index ];
+
+			if ( !vertex ) { continue; }
+
+			touchables[ j ].userData.changePct = 100 * ( symbol.trades[ index ][1] - symbol.open ) / symbol.open;
+			touchables[ j ].userData.volume = symbol.trades[ index ][5];
+			objs[ j ].position.copy( vertex );
+
+		}
+
+
+		menuReplay.innerHTML = 'minute: ' + index;
+
+		index++;
+
+		if ( index <= 390 ) {
+
+			t = setTimeout( updatePosition, 50 )
+
+		}
+
+	}
+
+////////////////////////
+
+	function loadTradeJSON() {
+
+		var xhr, data, entries, txt;
+		var entry, trade;
+
+		xhr = new XMLHttpRequest();
+		xhr.open( 'GET', TradeDataFileName + '&t=' + Math.random(), true );
+		xhr.onload = callbackJSON;
+		xhr.send( null );
+
+		function callbackJSON() {
+
+			data = xhr.responseText;
+			data = JSON.parse( data );
+			entries = data.feed.entry;
+			sp500TradesPrevious = sp500Trades.slice( 0 );
+			sp500Trades = [];
+			txt = '';
+
+			for ( var i = 0; i < entries.length; i++  ) {
+
+				entry = entries[i];
+
+				trade = [
+
+					parseFloat( entry.gsx$changepct.$t ),
+					parseInt( entry.gsx$volume.$t, 10 )
+
+				];
+
+				sp500Trades.push( trade );
+
+				txt += i + ' ' + entry.gsx$symbol.$t + ' ' + trade.toString() + '<br>';
+
+			}
+
+			for ( i = 0; i < sp500Trades.length ; i++ ) {
+
+				if ( sp500TradesPrevious.length > 1 && !isNaN( sp500Trades[ i ][ 1 ] ) &&  sp500Trades[ i ][ 1 ] !== sp500TradesPrevious[ i ][ 1 ] ) {
+
+//console.log( 'update', sp500[ i ][ 0 ],  sp500Trades[ i ], sp500TradesPrevious[ i ]);
+
+				diff = true;
+
+						break;
+
+				} else if ( sp500TradesPrevious.length === 0 && sp500Trades.length > 500 ) {
+
+					diff = true;
+
+				} else {
+
+					diff = false;
+
+				}
+
+			}
+
+//console.log( 'difference:', diff,  new Date().toLocaleTimeString() );
+
+			updateTime = new Date().toLocaleTimeString();
+			updateText = ''; //txt;
+			updateSymbols();
+
+// use the wait for free time thing
+
+			tim = setTimeout( loadTradeJSON, 10000 );
+
+		}
+
+	}
+
+
+	function updateSymbols() {
+
+		var pos, note;
+
+		for ( var i = 0; i < symbolList.length; i++ ) {
+
+			symbol = symbols[ symbolList[ i ] ];
+
+			touchables[i].userData.changePct = sp500Trades[i][0];
+			touchables[i].userData.volume = sp500Trades[i][1];
+			pos = 10 * sp500Trades[i][0];
+			pos = pos > 150 ? 150 : pos;
+			pos = pos < -150 ? -150 : pos;
+			objs[i].position.x = pos;
+			pos = -200 * Math.log( 1 + sp500Trades[i][1] / symbol.volumeAvg );
+			objs[i].position.z = pos < -400 ? -400 : pos;
+
+		}
+
+		if ( updateText === updateTextPrevious ) {
+
+			note = '<br>no update';
+
+		} else {
+
+			note = '<br><span style=color:red; >update</span>';
+			sp500ticks.push( sp500Trades );
+
+		}
+
+		msg1.innerHTML = 'Debug info:<br>' + updateTime + note;
+		msg2.innerHTML = 'ticks:' + sp500ticks.length;
+		msg3.innerHTML = updateText;
+		updateTextPrevious = updateText;
+
+	}
+
+
+	function toggleBackgroundGradient() {
+
+// 2016-07-18
+
+		var col = function() { return ( 0.5 + 0.5 * Math.random() ).toString( 16 ).slice( 2, 8 ); };
+		var pt = function() { return ( Math.random() * window.innerWidth ).toFixed( 0 ); }
+		var image = document.body.style.backgroundImage;
+
+		document.body.style.backgroundImage = image ? '' : 'radial-gradient( circle farthest-corner at ' +
+				pt() + 'px ' + pt() + 'px, #' + col() + ' 0%, #' + col() + ' 50%, #' + col() + ' 100% ) ';
+
+	}
+
+
+	function addLights( size ) {
+
+// 2016-02-21 ~ http://jaanga.github.io/cookbook-threejs/templates/add-lights/template-threejs-lights-r2.html
+
+		var size = size ? size : 100;
+		var lightAmbient, lightPoint;
+
+		lightAmbient = new THREE.AmbientLight( 0x444444 );
+		scene.add( lightAmbient );
+
+		lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.5 );
+		lightDirectional.position.set( -size, size, size );
+		lightDirectional.shadow.camera.scale.set( 50, 50, 1 );
+
+		lightDirectional.shadow.mapSize.width = 2048;  // default 512
+		lightDirectional.shadow.mapSize.height = 2048;
+
+		lightDirectional.castShadow = true;
+		scene.add( lightDirectional );
+
+		scene.add( new THREE.CameraHelper( lightDirectional.shadow.camera ) );
+
+		lightPoint = new THREE.PointLight( 0xffffff, 0.95 );
+		camera.add( lightPoint );
+		lightPoint.position = new THREE.Vector3( 0, 0, 1 );
+
+		scene.add( camera );
+
+	}
+
+
+	function addShadows() {
+
+// 2017-01-02 ~ http://jaanga.github.io/cookbook-threejs/templates/add-lights/template-threejs-lights-r3.html
+
+		renderer.shadowMap.enabled = true;
+//		renderer.shadowMap.cullFace = THREE.CullFaceBack;
+//		renderer.gammaInput = true;
+//		renderer.gammaOutput = true;
+		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+		scene.traverse( function ( child ) {
+
+			if ( child instanceof THREE.Mesh ) {
+
+				child.castShadow = true
+				child.receiveShadow = true;
+//				child.material.needsUpdate = true;
+
+			}
+
+		} );
+
+	}
+
+
+	function drawTable() {
+
+		var geometry, material, mesh;
+		var edgesGeometry, edgesMaterial, edges;
+
+// Ground Plane
+
+		ground = new THREE.Object3D();
+
+		geometry = new THREE.BoxGeometry( 150, 5, 400 );
+
+		var material = new THREE.MeshPhongMaterial( {
+			color: 0x22cc55,
+			specular: 0xffffff * Math.random(),
+			shininess: 10
+		} );
+
+		mesh = new THREE.Mesh( geometry, material );
+		mesh.position.set( 75, -2.6, -200 );
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
+		ground.add( mesh );
+
+		edgesGeometry = new THREE.EdgesGeometry( mesh.geometry ); // or WireframeGeometry
+		edgesMaterial = new THREE.LineBasicMaterial();
+		edgesMaterial.color.setRGB( 0.3, 0.3, 0.3 );
+		edges = new THREE.LineSegments( edgesGeometry, edgesMaterial );
+		mesh.add( edges ); // add wireframe as a child of the parent mesh
+
+
+		material = new THREE.MeshPhongMaterial( {
+			color: 0x992222,
+			specular: 0xffffff * Math.random(),
+			shininess: 10
+		} );
+
+		mesh = new THREE.Mesh( geometry, material );
+		mesh.position.set( -75, -2.51, -200 );
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
+		ground.add( mesh );
+
+		edgesGeometry = new THREE.EdgesGeometry( mesh.geometry ); // or WireframeGeometry
+		edgesMaterial = new THREE.LineBasicMaterial();
+		edgesMaterial.color.setRGB( 0.3, 0.3, 0.3 );
+		edges = new THREE.LineSegments( edgesGeometry, edgesMaterial );
+		mesh.add( edges ); // add wireframe as a child of the parent mesh
+
+// Bar
+		geometry = new THREE.BoxGeometry( 300, 1, 5 );
+
+		material = new THREE.MeshPhongMaterial( {
+			color: 0xaaaaaa,
+			specular: 0xffffff * Math.random(),
+			shininess: 10
+		} );
+
+		mesh = new THREE.Mesh( geometry, material );
+		mesh.position.set( 0, 0.5, -200 * Math.log( 2 ) );
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
+		ground.add( mesh );
+
+
+		edgesGeometry = new THREE.EdgesGeometry( mesh.geometry ); // or WireframeGeometry
+		edgesMaterial = new THREE.LineBasicMaterial();
+		edgesMaterial.color.setRGB( 0.3, 0.3, 0.3 );
+		edges = new THREE.LineSegments( edgesGeometry, edgesMaterial );
+		mesh.add( edges ); // add wireframe as a child of the parent mesh
+
+
+// Labels
+		var sp, ar, axis;
+
+		sp = drawSprite( '0% vol avg', 0.1, '#ff00ff', -150, 12 , 0 );
+		sp.material.opacity = 0.5;
+		scene.add( sp );
+
+		ar = new THREE.ArrowHelper( v( 0, 1, 0 ), v( -150, 0, 0 ), 8, 0xff8888, 4, 3 );
+		ground.add( ar );
+
+		sp = drawSprite( '100% vol avg', 0.1, '#ff00ff', -150, 12 , mesh.position.z );
+		sp.material.opacity = 0.5;
+		ground.add( sp );
+
+		sp = drawSprite( '>600% vol avg', 0.1, '#ff00ff', -150, 12 , -200 * Math.log( 7 ) );
+		sp.material.opacity = 0.5;
+		ground.add( sp );
+
+		axisHelper = new THREE.AxisHelper( 50 );
+		ground.add( axisHelper );
+
+		scene.add( ground );
+
+	}
+
+
+
+	function drawSprite( text, scale, color, x, y, z ) {
+
+		var texture, spritMaterial, sprite;
+
+		texture = canvasText( text, color );
+		spriteMaterial = new THREE.SpriteMaterial( { map: texture, opacity: 1 } );
+		sprite = new THREE.Sprite( spriteMaterial );
+		sprite.position.set( x, y, z ) ;
+		sprite.scale.set( scale * texture.image.width, scale * texture.image.height );
+		return sprite;
+
+	}
+
+
+	function canvasText( textArray, color ) {
+
+		var canvas = document.createElement( 'canvas' );
+		var context = canvas.getContext( '2d' );
+		var width = 0, texture;
+
+		if ( typeof textArray === 'string' ) textArray = [ textArray ];
+
+		context.font = '48px sans-serif';
+
+		for (var i = 0, len = textArray.length; i < len; i++) {
+
+			width = context.measureText( textArray[i] ).width > width ? context.measureText( textArray[i] ).width : width;
+
+		}
+
+		canvas.width = width + 20; // 480
+		canvas.height = textArray.length * 60;
+
+		context.fillStyle = color;
+		context.fillRect( 0, 0, canvas.width, canvas.height);
+
+		context.lineWidth = 1 ;
+		context.strokeStyle = '#000';
+		context.strokeRect( 0, 0, canvas.width, canvas.height);
+
+		context.fillStyle = '#000' ;
+		context.font = '48px sans-serif';
+
+		for (var i = 0, len = textArray.length; i < len; i++) {
+
+			context.fillText( textArray[i], 10, 48  + i * 60 );
+
+		}
+
+		texture = new THREE.Texture( canvas );
+		texture.minFilter = texture.magFilter = THREE.NearestFilter;
+		texture.needsUpdate = true;
+		return texture;
+
+	}
+
+
+	function toggleWireframe() {
+
+		scene.traverse( function ( child ) {
+
+			if ( child instanceof THREE.Mesh ) {
+
+				child.material.wireframe = chkWire.checked;
+
+			}
+
+		} );
+
+	}
+
+
+	function toggleBackgroundGradient() {
+
+// 2016-07-18
+
+		var col = function() { return ( 0.5 + 0.5 * Math.random() ).toString( 16 ).slice( 2, 8 ); };
+		var pt = function() { return ( Math.random() * window.innerWidth ).toFixed( 0 ); }
+		var image = document.body.style.backgroundImage;
+
+		document.body.style.backgroundImage = image ? '' : 'radial-gradient( circle farthest-corner at ' +
+				pt() + 'px ' + pt() + 'px, #' + col() + ' 0%, #' + col() + ' 50%, #' + col() + ' 100% ) ';
+
+	}
+
+	function onKeyUp ( event ) { //console.log( 'key', event.keyCode );
+
+		controls.enableKeys = false;
+		event.preventDefault();
+
+		switch( event.keyCode ) {
+
+			case 32: controls.autoRotate = !controls.autoRotate; chkRotate.checked = controls.autoRotate; break; // space bar
+
+		}
+
+	}
+
+
+	function onKeyUp ( event ) {
+
+//console.log( 'key', event.keyCode );
+
+		controls.enableKeys = false;
+		event.preventDefault();
+
+		switch( event.keyCode ) {
+
+//			case 32: controls.autoRotate = !controls.autoRotate; chkRotate.checked = controls.autoRotate; break; // space bar
+			case 32: controls.autoRotate = !controls.autoRotate; break; // space bar
+
+		}
+
+	}
+
+	function onDocumentMouseMove( event ) {
+
+		var vector, raycaster, intersects, txt;
+
+		event.preventDefault();
+
+		mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+		mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+		vector = new THREE.Vector3( mouse.x, mouse.y, 0.5 ).unproject( camera );
+
+		raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+
+		intersects = raycaster.intersectObjects( touchables );
+
+		if ( intersects.length > 0 ) {
+
+			if ( intersected != intersects[ 0 ].object ) {
+
+				if ( intersected && intersected.material.emissive ) {
+
+					intersected.material.emissive.setHex( intersected.currentHex );
+
+				}
+
+				intersected = intersects[ 0 ].object;
+
+				if ( intersected.material.emissive ) {
+
+					intersected.currentHex = intersected.material.emissive.getHex();
+					intersected.material.emissive.setHex( 0xff0000 );
+
+
+
+					if ( intersected.userData.name ) {
+
+						headsUp.style.left = 50 + 0.5 * window.innerWidth + mouse.x * 0.5 * window.innerWidth + 'px';
+						headsUp.style.top = -50 + 0.5 * window.innerHeight - mouse.y * 0.5 * window.innerHeight + 'px';
+						headsUp.style.display = '';
+
+						txt =
+
+						'<h2 style="margin:0;" >' + intersected.userData.symbol + '</h2>' +
+						'<div>' + intersected.userData.name + '</div>' +
+						'<div style="margin:0; background-color: #' + intersected.material.color.getHexString() + ';" >' + intersected.userData.sector + '</div>' +
+						'<img src="https://www.google.com/finance/chart?tlf=12&q=' + 'NASDAQ:' + intersected.userData.symbol +
+							'"  style="background: white;" /><br>' +
+						'<a href="https://www.google.com/finance?q=' + 'NASDAQ:' + intersected.name + '" target="_blank">Google Finance: ' + intersected.name + '</a><br>' +
+						'chg: ' + intersected.userData.changePct.toFixed(2) + '%<br>' +
+						'vol: ' + intersected.userData.volume.toLocaleString() + '<br>' +
+						'vol avg :' + intersected.userData.volumeAvg.toLocaleString() + '<br>' +
+						'vol/vol avg: ' + ( 100 * intersected.userData.volume / intersected.userData.volumeAvg ).toFixed(1) + '%<br>' +
+						'mkt cap: ' + intersected.userData.marketCap.toLocaleString() +
+
+						'';
+
+						headsUp.innerHTML = txt;
+
+					}
+
+				}
+
+			}
+
+			document.body.style.cursor = 'pointer';
+
+		} else {
+
+			if ( intersected && intersected.material.emissive ) {
+
+				intersected.material.emissive.setHex( intersected.currentHex );
+
+			}
+
+			intersected = null;
+
+			document.body.style.cursor = 'auto';
+
+		}
+
+	}
+
+	function highlight( intersected ) {
+
+console.log( '', intersected );
+		headsUp.style.left = 50 + 0.5 * window.innerWidth + 'px';
+		headsUp.style.top = -50 + 0.5 * window.innerHeight + 'px';
+		headsUp.style.display = '';
+
+		txt =
+
+		'<h2 style="margin:0;" >' + intersected.userData.symbol + '</h2>' +
+		'<div>' + intersected.userData.name + '</div>' +
+		'<div style="margin:0; background-color: #' + intersected.material.color.getHexString() + ';" >' + intersected.userData.sector + '</div>' +
+		'<img src="https://www.google.com/finance/chart?tlf=12&q=' + 'NASDAQ:' + intersected.userData.symbol +
+			'"  style="background: white;" /><br>' +
+		'<a href="https://www.google.com/finance?q=' + 'NASDAQ:' + intersected.name + '" target="_blank">Google Finance: ' + intersected.name + '</a><br>' +
+		'chg: ' + intersected.userData.changePct + '%<br>' +
+		'vol: ' + intersected.userData.volume.toLocaleString() + '<br>' +
+		'vol avg :' + intersected.userData.volumeAvg.toLocaleString() + '<br>' +
+		'vol/vol avg: ' + ( 100 * intersected.userData.volume / intersected.userData.volumeAvg ).toFixed(1) + '%<br>' +
+		'mkt cap: ' + intersected.userData.marketCap.toLocaleString() +
+
+		'';
+
+		headsUp.innerHTML = txt;
+
+
+	}
+
+
+	function onDocumentMouseDown( event ) {
+
+		headsUp.style.display = 'none';
+
+	}
+
+	function onDocumentTouchStart( event ) {
+
+//		event.preventDefault();
+
+		event.clientX = event.touches[0].clientX;
+		event.clientY = event.touches[0].clientY;
+
+		onDocumentMouseMove( event );
+
+	}
+
+
+	function onWindowResize() {
+
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+
+		renderer.setSize( window.innerWidth, window.innerHeight );
+
+		stats.domElement.style.display = window.innerWidth < 500 ? 'none' : '';
+
+	}
+
+
+
+	function animate() {
+
+		controls.update();
+		stats.update();
+		renderer.render( scene, camera );
+		requestAnimationFrame( animate );
+
+	}
+
+</script>
+</body>
+</html>

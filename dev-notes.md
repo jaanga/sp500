@@ -2,6 +2,29 @@ Dev Notes
 ===
 
 
+## 2017-03-21
+
+### get trades r3
+
+* getting google data looking good
+* have first full day CSV file
+
+
+
+## 2017-03-20
+
+Yahoo data is dirty / has incorrect values for volumes
+
+Found simple fix: Google works if you don't change symbols to lower case.
+
+
+## 2017-03-19 ~ Theo
+
+### SP500 Realtime
+
+* Add full hamburger menu
+
+
 ### 2017-03-19 ~ Theo
 
 * Add TooToo R6.1 as the file viewer

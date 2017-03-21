@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title></title>
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
+<meta name=description content='Three.js template with basic slide in and slide out menu with three bar icon that adjusts for small screen size' >
+<meta name=keywords content='Jaanga,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2017-03-10' >
+</head>
+<body>
+<!--
+<script src=https://mrdoob.github.io/three.js/build/three.min.js ></script>
+<script src=https://mrdoob.github.io/three.js/examples/js/controls/OrbitControls.js ></script>
+<script src=https://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
+-->
+<script src=https://cdn.rawgit.com/mrdoob/three.js/dev/build/three.min.js ></script>
+<script src=https://cdn.rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js ></script>
+<script src=https://cdn.rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
+<script>
+// Copyright 2017 Jaanga authors ~ MIT license
+
+// https://docs.google.com/spreadsheets/d/1_sv-QsJvHCfTCjRlpgv5ZwAUZetMCu-SfQHERAOuGZE/edit#gid=0
+	var WikipediaDataFileName = 'https://spreadsheets.google.com/feeds/list/1_sv-QsJvHCfTCjRlpgv5ZwAUZetMCu-SfQHERAOuGZE/1/public/values?alt=json';
+
+	var folder, fileName;
+
+	folder = '../trades/';
+	fileName = '2017-03-17-timestamps.csv';
+
+	var symbols, symbolList;
+	var start, count;
+	var obj, meshes;
+
+	var colors = [0x575757,0xAD2323,0x2A4BD7,0x1D6914,0x814A19,0x8126C0,0x81C57A,0x9DAFFF,0x29D0D0,0xFF9233,0xE9DEBB,0xFFCDF3,0xFFEE33,0xA0A0A0,0x000000,0xFFFFFF];
+
+//	var started;
+
+	started = new Date( parseFloat( fileName.slice( 0, 4 ) ), parseFloat( fileName.slice( 5, 7 ) ) - 1,
+	parseFloat( fileName.slice( 8, 10 ) ), 6, 30 );
+
+	started = started.getTime() / 1000;
+
+//console.log( 'started', started );
+
+	var stats, renderer, scene, camera, controls, mesh;
+	var ground, gridHelper, axisHelper;
+
+	init();
+	animate();
+
+	function init() {
+
+		var css, hamburger, menu;
+		var geometry, material;
+		var txt = '<p>lorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?</p>';
+		var b = '<br>';
+
+		css = document.head.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
+			'body { font: 12pt monospace; margin: 0; overflow: hidden; }' +
+			'a { color: crimson; text-decoration: none; }' +
+			'button, input[type=button] { background-color: #ccc; border: 2px #fff solid; color: #322; }' +
+			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: #ddd; width: 160px; }' +
+			'input[type=range]::-moz-range-thumb { background-color: #888; border-radius: 0; width: 10px; }' +
+			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
+			'summary { outline: none; }' +
+			'summary h3 { display:inline; }' +
+			'.popUp { background-color: white; left: 180px; border: 1px solid red; opacity: 1.0; padding: 5px; position: absolute; width: 120px; z-index: 10; }' +
+			'#bars { color: crimson; cursor: pointer; font-size: 24pt; text-decoration: none; }' +
+			'#container { left: 0; position: absolute; transition: left 1s; }' +
+			'#hamburger { background-color: #eee; left: 325px; position: absolute; top: 20px; }' +
+			'#menu { background-color: #eee; border: 1px #ccc solid; max-height: ' + window.innerHeight + 'px; overflow: auto; padding: 0 10px; position: absolute; width: 300px; }' +
+			'#menu h2 { margin: 0; }' +
+		'';
+
+		container = document.body.appendChild( document.createElement( 'div' ) );
+		container.id = 'container';
+		container.innerHTML =
+			'<div id=menu >' +
+
+				'<h2>' +
+					'<a href=http://jaanga.github.io title="Jaanga - your 3D happy place" > &#x2766 </a>' + b +
+					'<a href="" title="Click here to refresh this page" >' + location.pathname.split( '/' ).pop().slice( 0, -5).replace( /-/g, ' ' ) + '</a>' +
+					' ~ <a href=index.html#READE.md onmouseover=popHelp.style.display=""; onmouseout=popHelp.style.display="none"; > &#x24D8; </a>' +
+				'</h2>' +
+				'<div class=popUp id=popHelp style=display:none; ><p>Hi there!</p>Click the i-in-circle, info icon for latest updates.</div>' +
+				'<p><small><i>' + document.head.querySelector("[name=description]").content + '</i></small></p>' +
+
+				'<details open>' +
+					'<summary><h3>Menu</h3></summary>' +
+
+					'<p><button onclick=replay(); >Replay the day</button></p>' +
+
+					'<p id=menuReplay>' +
+						'' +
+					'</p>' +
+				'</details>' +
+
+				'<details>' +
+					'<summary><h3>Settings</h3></summary>' +
+					'<p><input type=checkbox id=chkWire onchange=toggleWireframe(); > Wireframe</p>' +
+					'<p><input type=checkbox onchange=ground.material.visible=!ground.material.visible; checked > Ground plane</p>' +
+					'<p><input type=checkbox onchange=axisHelper.visible=!axisHelper.visible; checked > Axes</p>' +
+					'<p><input type=checkbox onchange=gridHelper.visible=!gridHelper.visible; checked > Grid</p>' +
+					'<p><input type=checkbox id=chkBackground onchange=toggleBackgroundGradient(); checked > Gradient background</p>' +
+					'<p title="Press spacebar or click in window to stop." >' +
+						'<input type=checkbox id=chkRotate onchange=controls.autoRotate=!controls.autoRotate checked > Rotation ' +
+					'</p>'  +
+				'</details>' +
+
+				'<details>' +
+					'<summary><h3>About</h3></summary>' +
+					'<p>' +
+						'&bull; Rotate|Zoom|Pan => 1|2|3' + b +
+						'&nbsp; fingers/buttons' + b +
+						'&bull; Rotation => spacebar' + b +
+						'&bull; Slide menu => \'hamburger\' icon' +
+					'<p>' +
+
+
+					'<p>Click the \'i in a circle\' icon for more <a href=index.html#readme.md title="Click here for help and information" >help</a>.</p>' +
+					'<p>' +
+					'Keywords:' + b +
+					document.head.querySelector("[name=keywords]").content.replace( /,/g, ', ' ) + b + b +
+					'Revision Date:' + b +
+					document.head.querySelector("[name=date]").content + b + b +
+					'File name:' + b +
+						location.pathname.split( '/' ).pop() + b +
+					'</p>' +
+					'<p>Copyright &copy; ' + ( new Date() ).getFullYear() + ' Jaanga authors. <a href=http://jaanga.github.io/home/r4/index.html#http://jaanga.github.io/jaanga-copyright-and-mit-license.md >MIT license</a>.</p>' +
+				'</details>' +
+
+				'<hr>' +
+
+				'<center><a href=javascript:menu.scrollTop=0; style=text-decoration:none; onmouseover=pop2.style.display=""; onmouseout=pop2.style.display="none"; ><h1> &#x2766 <h1></a></center>' +
+				'<div class=popUp id=pop2 style=display:none;bottom:100px; >Jaanga - your 3D happy place.<br>Click here to return to the top of the page</div>' +
+
+			'</div>' +
+
+			'<div id=hamburger onclick=container.style.left=container.style.left===""?"-325px":""; >' +
+				'<div id=bars title="Click this hamburger to slide the menu" > &#9776 </div>' +
+			'</div>' +
+
+		'';
+
+		stats = new Stats();
+		stats.domElement.style.cssText = 'position: absolute; right: 0; top: 0;' ;
+		document.body.appendChild( stats.domElement );
+		stats.domElement.style.display = window.innerWidth < 500 ? 'none' : '';
+
+
+		renderer = new THREE.WebGLRenderer( { alpha: 1, antialias: true }  );
+//		renderer.setClearColor( 0xf0f0f0 );
+//		renderer.setPixelRatio( window.devicePixelRatio );
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		document.body.appendChild( renderer.domElement );
+
+		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
+		camera.position.set( 100, 100, 100 );
+
+		controls = new THREE.OrbitControls( camera, renderer.domElement );
+		controls.maxDistance = 800;
+		controls.autoRotate = true;
+
+		scene = new THREE.Scene();
+
+		window.addEventListener( 'resize', onWindowResize, false );
+		window.addEventListener( 'keyup', onKeyUp, false );
+		renderer.domElement.addEventListener( 'click', function() {  controls.autoRotate = false; chkRotate.checked = false; }, false );
+
+// helpers
+
+		geometry = new THREE.BoxGeometry( 100, 2, 100 );
+		material = new THREE.MeshNormalMaterial();
+		ground = new THREE.Mesh( geometry, material );
+		ground.position.set( 0, -11, 0 );
+		scene.add( ground );
+
+		gridHelper  = new THREE.GridHelper( 100, 10 );
+		gridHelper.position.set( 0, -10, 0 );
+		scene.add( gridHelper );
+
+		axisHelper = new THREE.AxisHelper( 50 );
+		scene.add( axisHelper );
+
+// assets
+
+		toggleBackgroundGradient();
+
+		loadWikiJSON();
+
+	}
+
+	function loadWikiJSON() {
+
+//		var xhr, data, entries, txt, entry, symbol;
+
+		xhr = new XMLHttpRequest();
+		xhr.open( 'GET', WikipediaDataFileName + '&t=' + Math.random(), true );
+		xhr.onload = callbackJSON;
+		xhr.send( null );
+
+		function callbackJSON() {
+
+			data = xhr.responseText;
+			data = JSON.parse( data );
+			entries = data.feed.entry;
+			symbols = {};
+			symbolList = [];
+
+			txt = '';
+
+			for ( var i = 0; i < entries.length; i++  ) {
+
+				entry = entries[i];
+
+				symbol = {
+					symbol: entry.gsx$tickersymbol.$t.replace( '.', '-' ),
+					name: entry.gsx$security.$t,
+					sector: entry.gsx$gicssector.$t,
+					sectorID: parseInt( entry.gsx$sectorid.$t, 10 ),
+					industry: entry.gsx$gicssubindustry.$t,
+					cik: parseInt( entry.gsx$cik.$t, 10),
+					volumeAvg: parseInt( entry.gsx$volumeavg.$t, 10 ),
+					marketCap: parseInt( entry.gsx$marketcap.$t, 10 )
+				};
+
+				symbolList[ i ] = symbol.symbol;
+				symbols[ symbol.symbol ] = symbol;
+
+			}
+
+console.log( 'loaded', symbolList.length );
+
+			requestFileTrades();
+		}
+
+	}
+
+
+
+	function requestFileTrades() {
+
+//		var text, lines;
+
+		xhr = new XMLHttpRequest();
+		xhr.crossOrigin = 'anonymous';
+		xhr.open( 'GET', folder + fileName, true );
+		xhr.onload = callback;
+		xhr.send( null );
+
+		function callback( xhr ) {
+
+			text = xhr.target.response;
+
+//			lines = text.split(/\r\n|\n/);
+			lines = text.split( '\n' ).map( function( line ) { return line.split( ',' ); } );
+
+//console.log( lines[ 0 ] );
+//console.log( lines.length );
+
+			tradesParse( lines );
+
+		}
+
+	}
+
+	function tradesParse( lines ) {
+
+//		var trades, previousVolume, line, symbol;
+
+		for ( var i = 0; i < lines.length - 1; i++ ) {
+
+			trades = [];
+			previousVolume = 0;
+
+			line = lines[ i ];
+			symbol = line.shift();
+
+			for ( var j = 2; j < line.length - 1; j = j + 6 ) {
+
+				timestamp = parseFloat( line[ j ] );
+
+				minute = Math.round( ( timestamp - started ) / 60 );
+
+				trades.push(
+
+					[ timestamp, parseFloat( line[ j + 1 ] ), parseFloat( line[ j + 2 ] ),
+					parseFloat( line[ j + 3 ] ), parseFloat( line[ j + 4 ] ),
+					previousVolume + parseFloat( line[ j + 5 ] ), minute ]
+				)
+
+				previousVolume =  previousVolume + parseFloat( line[ j + 5 ] );
+
+			}
+
+			if ( symbolList.indexOf( symbol ) < 0 ) { console.log( 'no symbol', symbol ); continue; }
+
+			symbols[ symbol ].symbol = symbol;
+			symbols[ symbol ].trades = trades;
+			symbols[ symbol ].open = trades[ 0 ][ 1 ];
+
+		}
+
+//console.log( 'goog', symbols[ 'GOOG' ] );
+//console.log( 'zts', symbols[ 'ZTS' ] );
+
+		getVertices();
+
+	}
+
+
+	function getVertices() {
+
+		var len, symbol, trade, verts;
+
+		len = symbolList.length;
+
+		for ( var i = 0; i < len; i++ ) {
+
+			symbol = symbols[ symbolList[ i ] ];
+
+//console.log( 'sym', symbol );
+
+			verts = [];
+
+			if ( !symbol.trades ) { console.log( 'no trades', symbol.symbol );continue; }
+
+			for ( var j = 0; j < symbol.trades.length; j++ ) {
+
+				trade = symbol.trades[ j ];
+				verts.push( new THREE.Vector3( 3000 * ( trade[ 1 ] - symbol.open ) / symbol.open, 0,  50 * trade[ 5 ] /  symbol.volumeAvg ) );
+
+			}
+
+			symbol.vertices = verts;
+
+			drawLine( symbol );
+
+		}
+
+	}
+
+
+	function drawLine( symbol ) {
+
+		var geometry, material, line;
+
+		geometry = new THREE.Geometry();
+		geometry.vertices = symbol.vertices;
+		material = new THREE.LineBasicMaterial( { color: colors[ symbol.sectorID ] } );
+		line = new THREE.Line( geometry, material );
+		line.userData.symbol = symbol.symbol;
+		scene.add( line );
+
+	}
+
+
+	function replay() {
+
+//		var geometry, material, mesh;
+		scene.remove( obj );
+
+		obj = new THREE.Object3D();
+		meshes = [];
+
+		for ( var i = 0; i < symbolList.length; i++ ) {
+
+			symbol = symbols[ symbolList[ i ] ];
+			geometry = new THREE.BoxGeometry( 2, 10, 2 );
+			material = new THREE.MeshBasicMaterial( { color: colors[ symbol.sectorID ] } );
+			mesh = new THREE.Mesh( geometry, material );
+			scene.add( mesh );
+			obj.add( mesh );
+			meshes.push( mesh );
+
+		}
+		scene.add( obj );
+
+		index = 0;
+
+		updatePosition();
+
+	}
+
+	function updatePosition() {
+
+		for ( var j = 0; j < symbolList.length; j++ ) {
+
+			symbol = symbols[ symbolList[ j ] ];
+
+			if ( !symbol.vertices ) { continue; }
+
+			vertex = symbol.vertices[ index ];
+
+			if ( !vertex ) { continue; }
+
+			meshes[ j ].position.copy( vertex );
+
+		}
+
+
+		menuReplay.innerHTML = 'minute: ' + index;
+
+		index++;
+
+		if ( index <= 390 ) {
+
+			t = setTimeout( updatePosition, 50 )
+
+		}
+
+	}
+
+
+	function toggleWireframe() {
+
+		scene.traverse( function ( child ) {
+
+			if ( child instanceof THREE.Mesh ) {
+
+				child.material.wireframe = chkWire.checked;
+
+			}
+
+		} );
+
+	}
+
+
+	function toggleBackgroundGradient() {
+
+// 2016-07-18
+
+		var col = function() { return ( 0.5 + 0.5 * Math.random() ).toString( 16 ).slice( 2, 8 ); };
+		var pt = function() { return ( Math.random() * window.innerWidth ).toFixed( 0 ); }
+		var image = document.body.style.backgroundImage;
+
+		document.body.style.backgroundImage = image ? '' : 'radial-gradient( circle farthest-corner at ' +
+				pt() + 'px ' + pt() + 'px, #' + col() + ' 0%, #' + col() + ' 50%, #' + col() + ' 100% ) ';
+
+	}
+
+	function onKeyUp ( event ) { //console.log( 'key', event.keyCode );
+
+		controls.enableKeys = false;
+		event.preventDefault();
+
+		switch( event.keyCode ) {
+
+			case 32: controls.autoRotate = !controls.autoRotate; chkRotate.checked = controls.autoRotate; break; // space bar
+
+		}
+
+	}
+
+
+	function onWindowResize() {
+
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+
+		renderer.setSize( window.innerWidth, window.innerHeight );
+
+		stats.domElement.style.display = window.innerWidth < 500 ? 'none' : '';
+
+	}
+
+
+	function animate() {
+
+		controls.update();
+		stats.update();
+		renderer.render( scene, camera );
+		requestAnimationFrame( animate );
+	}
+
+</script>
+</body>
+</html>

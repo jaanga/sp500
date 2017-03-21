@@ -8,7 +8,7 @@
 ===
 
 
-### Full Screen Demo: [Jaanga SP500]( https://jaanga.github.io/sp500/build/ )
+### Full Screen Demo: [Jaanga SP500 Realtime]( https://jaanga.github.io/sp500-realtime/ )
 
 ### Full Screen Demo: [Jaanga SP500 Replay]( https://jaanga.github.io/sp500/trades-replay-lines/ )
 
@@ -70,7 +70,7 @@ Symbol stuck at the edges of the table have gained or lost over 20%
 * Front/Start - Back/Finish. Movement from start to finish is based on volume - the current volume divided by the average daily volume.
 All symbols start at zero. Symbols at the back have reached or exceeded 600% of the symbols average daily volume in that session
 
-## Features
+## Features SP500 Realtime
 <!-- and benefits -->
 
 * Displays the positions of the entire SP500 in 3D
@@ -107,8 +107,7 @@ All symbols start at zero. Symbols at the back have reached or exceeded 600% of 
 _One day this list will be as long as your arm_
 
 ### User Interface
-* Full hamburger menu
-	* Rotation
+
 * Select a symbol from menu and see its position highlighted in the 3D display
 * Select a symbol by typing
 * Alternative menu layouts
@@ -129,12 +128,6 @@ _One day this list will be as long as your arm_
 ### Links to Social Networks
 
 * ???
-
-
-## Contact
-
-* jaanga@googlegroups.com
-
 
 ## Copyright and License
 

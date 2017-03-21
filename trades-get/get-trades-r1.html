@@ -200,7 +200,6 @@ console.log( 'loaded', symbolList.length );
 		trades = [];
 		tim = new Date();
 
-/*
 //		fileName = 'https://crossorigin.me/http://chartapi.finance.yahoo.com/instrument/1.0/GOOG/chartdata;type=quote;range=1d/csv';
 
 		fileName =
@@ -212,15 +211,16 @@ console.log( 'loaded', symbolList.length );
 			'/csv' +
 
 		'';
-*/
 
+
+/*
 
 		fileName =
 
 			'https://crossorigin.me/http://www.google.com/finance/getprices?q=' +
 			symbol +
 		'';
-
+*/
 
 //console.log( 'fileName', fileName );
 
@@ -229,7 +229,7 @@ console.log( 'loaded', symbolList.length );
 		xhr = new XMLHttpRequest();
 		xhr.crossOrigin = 'anonymous';
 		xhr.open( 'GET', fileName, true );
-		xhr.onerror = function() { console.log( '23'  ); getTrades(); };
+		xhr.onerror = function() { console.log( 'error - try again', symbol  ); getTrades(); };
 		xhr.onload = callback;
 		xhr.send( null );
 
