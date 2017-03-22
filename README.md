@@ -12,6 +12,8 @@
 
 ### Full Screen Demo: [Jaanga SP500 Replay]( https://jaanga.github.io/sp500/sp500-replay/ )
 
+### Full Screen Demo: [Jaanga SP500 Replay Dev]( https://jaanga.github.io/sp500/sp500-replay/dev/ )
+
 ## Web Page / Source Code
 
 <div><iframe class=ifr src="https://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#https://jaanga.github.io/sp500/sp500-realtime/sp500-realtime-r1.html" width=100% height=600px class='overview' >
