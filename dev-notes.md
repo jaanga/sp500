@@ -9,7 +9,18 @@ Dev Notes
 * getting google data looking good
 * have first full day CSV file
 
+## Realtime & Replay
 
+Both settling down quite nicely
+
+## To Do
+
+* Download multiple days of data
+* Add date select to replay
+* Add graph icons to the apps
+* Add select and highlight symbol by text entry
+* show/hide snail slime
+* Move 100% bar
 
 ## 2017-03-20
 
