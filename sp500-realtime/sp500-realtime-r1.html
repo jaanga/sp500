@@ -345,9 +345,9 @@ console.log( 'loaded', symbolList.length );
 
 //console.log( 'update', sp500[ i ][ 0 ],  sp500Trades[ i ], sp500TradesPrevious[ i ]);
 
-				diff = true;
+					diff = true;
 
-						break;
+					break;
 
 				} else if ( sp500TradesPrevious.length === 0 && sp500Trades.length > 500 ) {
 
@@ -361,14 +361,13 @@ console.log( 'loaded', symbolList.length );
 
 			}
 
+// no need diff??
 //console.log( 'difference:', diff,  new Date().toLocaleTimeString() );
-
 			updateTime = new Date().toLocaleTimeString();
 			updateText = ''; //txt;
 			updateSymbols();
 
 // use the wait for free time thing
-
 			tim = setTimeout( loadTradeJSON, 10000 );
 
 		}
