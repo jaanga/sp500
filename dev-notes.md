@@ -16,6 +16,18 @@ Dev Notes
 * show/hide snail slime
 * Move 100% bar
 
+### Get Trades
+
+* Add drop-down to get data per symbol
+* Display period input, start end indexes
+* Add display date that will be saved
+
+## 2017-03-23 ~ Theo
+
+### Get Trades
+
+* Code cleanup
+* Adds current day trades to list of trades that can be downloaded
 
 ## 2017-03-22 ~ Theo
 

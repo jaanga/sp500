@@ -4,9 +4,9 @@
 <meta charset=utf-8 >
 <title></title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
-<meta name=description content='' >
-<meta name=keywords content='WebGL,Three.js,Tween.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='' >
+<meta name=description content='Obtain stock market intraday data sourced from from Wikipedia, Googlr and Yahoo' >
+<meta name=keywords content='YQL,JavaScript,GitHub,FOSS,STEM' >
+<meta name=date content='2017-03-23' >
 </head>
 <body>
 <script>
@@ -18,12 +18,11 @@
 // https://docs.google.com/spreadsheets/d/1_sv-QsJvHCfTCjRlpgv5ZwAUZetMCu-SfQHERAOuGZE/edit#gid=0
 	var WikipediaDataFileName = 'https://spreadsheets.google.com/feeds/list/1_sv-QsJvHCfTCjRlpgv5ZwAUZetMCu-SfQHERAOuGZE/1/public/values?alt=json';
 
-	var symbols, symbolList, symbolsLength;
-	var start, count;
+	var symbols, symbolList;
+	var getStart, getEnd;
 
-	symbolList = [];
-	symbols = {};
 	var tradesDate;
+	var b = '<br>';
 
 	init();
 
@@ -54,15 +53,15 @@
 
 			'<h2>' +
 				'<a href="" >' + location.pathname.split( '/' ).pop().slice( 0, -5).replace( /-/g, ' ' ) + '</a>' +
-				'<a href=http://jaanga.github.io/ > &#x24D8; </a>' +
+				'<a href=https://jaanga.github.io/sp500/ > &#x24D8; </a>' +
 			'</h2>' +
 
 			'<p>' +
 				'epoch timestamp <input id=inpTimestamp value=' + Date.now().toString().slice(0,-3) + ' >' +
+				' <button onclick=getDateObjFromEpochTime(inpTimestamp.value); >get date object</button>' +
 				' <output id=outTimestamp ></output>' +
-				' <button onclick=inpTimestamp.value=inpTimestamp.value-111400;inpTimestamp.onchange(); >-1 Day</button>' +
-
 			'</p>' +
+
 			'<p id=log ></p>' +
 
 			'<p><button onclick=initGetTrades(); >Get Trades </button></p>' +
@@ -77,19 +76,7 @@
 
 		'';
 
-// turn into standalone function
-
-		inpTimestamp.onchange = function() {
-
-			var d, msecs;
-			d = new Date();
-			msecs = parseInt( inpTimestamp.value + '000' );
-			d.setTime( msecs );
-			outTimestamp.value = d.toLocaleString();
-
-		}
-
-		inpTimestamp.onchange();
+		getDateObjFromEpochTime( inpTimestamp.value )
 
 		loadWikiJSON();
 
@@ -102,6 +89,7 @@
 		d = new Date();
 		msecs = parseInt( epoch + '000' );
 		d.setTime( msecs );
+		outTimestamp.value=d.toLocaleString();
 		return d;
 
 	}
@@ -109,9 +97,13 @@
 
 	function initGetTrades(){
 
-		console.time('time');
+		divTrades.innerText = '';
 
-		symbols.count=start=count=0;
+		getEnd = symbolList.length;
+
+		console.time( 'time' );
+
+		symbols.index = getStart = getCount = 0;
 
 		getTrades();
 
@@ -119,8 +111,11 @@
 
 	function loadWikiJSON() {
 
-		var xhr, data, entries, txt;
+		var xhr, data, entries;
 		var entry, symbol;
+
+		symbolList = [];
+		symbols = {};
 
 		xhr = new XMLHttpRequest();
 		xhr.open( 'GET', WikipediaDataFileName + '&t=' + Math.random(), true );
@@ -132,15 +127,14 @@
 			data = xhr.responseText;
 			data = JSON.parse( data );
 			entries = data.feed.entry;
-			symbols = { count: 0 };
-			txt = '';
+			symbols = { index: 0 };
 
 			for ( var i = 0; i < entries.length; i++  ) {
 
-				entry = entries[i];
+				entry = entries[ i ];
 
 				symbol = {
-					symbol: entry.gsx$tickersymbol.$t, //.replace( '.', '-' ), // for Yahoo
+					symbol: entry.gsx$tickersymbol.$t, // .replace( '-', '.' ), // was for Yahoo. fix in ss?
 					name: entry.gsx$security.$t.replace( /,/g, '' ),
 					sector: entry.gsx$gicssector.$t,
 					sectorID: parseInt( entry.gsx$sectorid.$t, 10 ),
@@ -164,16 +158,9 @@
 
 	function getTrades() {
 
-		var txt, symbol;
+		if ( symbols.index < getEnd ) {
 
-		txt = '';
-		divTrades.innerText = '';
-
-		symbolsLength = symbolList.length;
-
-		if ( symbols.count < symbolsLength ) {
-
-			requestFileYQL( symbolList[ count ] );
+			requestFileYQL( symbolList[ symbols.index ] );
 
 		} else {
 
@@ -187,11 +174,11 @@ console.timeEnd( 'time' );
 
 	function getTradeDay( day ) {
 
-		var txt;
+		var txt, symbol;
 
 		txt = '';
 
-		for ( var i = 0; i < symbolsLength; i++ ) {
+		for ( var i = getStart; i < getEnd; i++ ) {
 
 			symbol = symbols[ symbolList[ i ] ];
 
@@ -221,17 +208,14 @@ console.timeEnd( 'time' );
 
 	}
 
+
 	function requestFileYQL( symbol ) {
 
-		var trades, tim, secs, fileName;
-		var xhr, text, lines, line;
-		var period = ''; // '&p=2d';
+		var statement, encodedStatement, query;
+		var xhr, txt, lines, line;
+		var period = '&p=2d';
 
-		tim = new Date();
-
-		var statement, scr, query;
-
-// Symbols must be uppercase
+// Symbols must be uppercase for Google
 //		statement = 'select%20*%20from%20html%20where%20url%3D%22http%3A%2F%2Fwww.google.com%2Ffinance%2Fgetprices%3Fq%3DGOOG%26i%3D60%22';
 		statement =
 
@@ -248,16 +232,19 @@ console.timeEnd( 'time' );
 		xhr = new XMLHttpRequest();
 		xhr.crossOrigin = 'anonymous';
 		xhr.open( 'GET', query, true );
-		xhr.onerror = function() { console.log( 'error', count, symbol  ); getTrades(); };
+		xhr.onerror = function() { console.log( 'error', symbols.index, symbol  ); getTrades(); };
 		xhr.onload = callbackQuery;
 		xhr.send( null );
 
 		function callbackQuery( xhr ) {
 
-			text = xhr.target.response;
-			text = JSON.parse( text );
+//			var trades, epochTime;
+//			var tradeDays, tradeStart, tradeFinish;
 
-			if ( text.query.results === null ) {
+			txt = xhr.target.response;
+			txt = JSON.parse( txt );
+
+			if ( txt.query.results === null ) {
 
 console.log( xhr.target.response );
 
@@ -266,7 +253,7 @@ console.log( xhr.target.response );
 
 			}
 
-			lines = text.query.results.body.split( '\n' ).slice( 7 );
+			lines = txt.query.results.body.split( '\n' ).slice( 7 );
 
 			if ( lines.length === 0 ) {
 
@@ -303,7 +290,18 @@ console.log( text );
 
 			}
 
-// console.log( 'days', tradeDays[ 5 ].trades.length );
+// catch last day
+
+			epochTime = lines[ tradeFinish ].slice( 1, 11 );
+
+			str = getDateFromEpochTime( epochTime );
+
+			trades = lines.slice( tradeFinish, -1 ).join( '\n' );
+
+			tradeDays.push( { date: str, epoch: epochTime, length: ( trades.split( '\n' ).length + 1 ) , trades: trades } );
+
+
+// console.log( );
 
 			txt = '';
 
@@ -315,13 +313,11 @@ console.log( text );
 
 			log2.innerHTML = txt;
 
-			log.innerHTML = count + ' ' + symbolList[ count ] + ' trades:' + trades.length + ' ' + lines[ 0 ];
+			log.innerHTML = symbols.index + ' ' + symbolList[ symbols.index ] + ' trades:' + trades.length + ' ' + lines[ 0 ];
 
-			symbols[ symbolList[ count ] ].tradeDays = tradeDays;
+			symbols[ symbolList[ symbols.index ] ].tradeDays = tradeDays;
 
-			count++;
-
-			symbols.count++;
+			symbols.index++;
 
 			getTrades();
 
