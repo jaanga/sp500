@@ -240,6 +240,11 @@
 
 		var xhr, text, len, lines, line;
 
+		symbols = {};
+		symbolList = [];
+		symbols.touchables = [];
+		symbols.objs = [];
+
 		xhr = new XMLHttpRequest();
 		xhr.crossOrigin = 'anonymous';
 		xhr.open( 'GET', folder + fname, true );
@@ -248,10 +253,7 @@
 
 		function callback( xhr ) {
 
-			symbols = {};
-			symbolList = [];
-			symbols.touchables = [];
-			symbols.objs = [];
+
 
 			text = xhr.target.response;
 
