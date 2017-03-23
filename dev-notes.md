@@ -16,6 +16,19 @@ Dev Notes
 * show/hide snail slime
 * Move 100% bar
 
+
+## 2017-03-22 ~ Theo
+
+Stuart had a look at demo. He's onboard.
+
+### get trades r4
+
+* downloading two weeks of data, day by day
+
+### Replay
+
+* Replays data from any day
+
 ## 2017-03-21
 
 ### get trades r3
