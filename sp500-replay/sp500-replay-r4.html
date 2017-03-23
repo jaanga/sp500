@@ -15,6 +15,12 @@
 <script>
 // Copyright 2017 Jaanga authors ~ MIT license
 
+	var tradeDays = [
+		'2017-03-02.csv', '2017-03-03.csv', '2017-03-06.csv', '2017-03-07.csv',
+		'2017-03-08.csv', '2017-03-09.csv', '2017-03-10.csv', '2017-03-13.csv',
+		'2017-03-14.csv', '2017-03-15.csv', '2017-03-16.csv', '2017-03-17.csv',
+		'2017-03-20.csv', '2017-03-21.csv', '2017-03-22.csv', '2017-03-23.csv'
+	];
 
 // https://docs.google.com/spreadsheets/d/1_sv-QsJvHCfTCjRlpgv5ZwAUZetMCu-SfQHERAOuGZE/edit#gid=0
 	var WikipediaDataFileName = 'https://spreadsheets.google.com/feeds/list/1_sv-QsJvHCfTCjRlpgv5ZwAUZetMCu-SfQHERAOuGZE/1/public/values?alt=json';
@@ -108,6 +114,11 @@
 				'<details open>' +
 					'<summary><h3>Menu</h3></summary>' +
 
+				'<p>' +
+					'<select id=selFiles onchange="requestFileTrades( this.value );" size=10 style=width:100%; ></select>' +
+				'</p>' +
+
+/*
 					'<p>' +
 						'<button onclick=requestFileTrades("2017-03-02.csv"); >2017-03-02</button>' +
 						'<button onclick=requestFileTrades("2017-03-03.csv"); >2017-03-03</button>' +
@@ -126,6 +137,7 @@
 						'<button onclick=requestFileTrades("2017-03-22.csv"); >2017-03-22</button>' +
 						'<button onclick=requestFileTrades("2017-03-23.csv"); >2017-03-23</button>' +
 					'</p>' +
+*/
 
 					'<p><button onclick=replay(); >Replay the day</button></p>' +
 
@@ -191,6 +203,14 @@
 		headsUp.style.cssText = 'background-color: #ddd; border-radius: 8px; display: none; padding: 0 5px 10px 5px; opacity: 0.85; ' +
 			'position: absolute; ';
 
+
+		for ( var i = 0; i < tradeDays.length; i++ ) {
+
+			selFiles[ tradeDays.length - i - 1 ] = new Option( tradeDays[ i ] );
+
+
+		}
+
 //
 		stats = new Stats();
 		stats.domElement.style.cssText = 'position: absolute; right: 0; top: 0;' ;
@@ -236,6 +256,7 @@
 
 	}
 
+	selFiles.selectedIndex = 0;
 
 	function requestFileTrades( fname ) {
 
