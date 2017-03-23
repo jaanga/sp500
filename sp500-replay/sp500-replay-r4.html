@@ -2,11 +2,11 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>jaanga sp500 replay r3</title>
+<title></title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
-<meta name=description content='SP500 replay ~ follow an entire day of trading' >
+<meta name=description content='SP500 replay ~ select and follow entire days of one minute intraday trading' >
 <meta name=keywords content='Jaanga,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2017-03-20' >
+<meta name=date content='2017-03-23' >
 </head>
 <body>
 <script src=https://cdn.rawgit.com/mrdoob/three.js/dev/build/three.min.js ></script>
@@ -28,35 +28,18 @@
 // https://docs.google.com/spreadsheets/d/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/edit#gid=1750244370
 	var TradeDataFileName = 'https://spreadsheets.google.com/feeds/list/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/1/public/values?alt=json';
 
-	var folder, fileName;
-
+	var folder;
 	folder = '../trades/';
-	fileName = '2017-03-23.csv';
-
-	var started;
-
-	started = new Date( parseFloat( fileName.slice( 0, 4 ) ), parseFloat( fileName.slice( 5, 7 ) ) - 1,
-	parseFloat( fileName.slice( 8, 10 ) ) - 1, 6, 30 );
-
-	started = started.getTime() / 1000;
-
-	var start, count;
-	var obj, meshes;
 
 	var symbols, symbolList;
-	var symbolsObj;
+	var symbolsObjects;
+	var index;
 
-	var sp500ticks = [];
-	var sp500Trades = [];
-	var sp500TradesPrevious;
-
-	var updateTime, updateText, updateTextPrevious;
-
-	var lightDirectional;
-
-	var objs = [];
-	var touchables = [];
 	var colors = [0x575757,0xAD2323,0x2A4BD7,0x1D6914,0x814A19,0x8126C0,0x81C57A,0x9DAFFF,0x29D0D0,0xFF9233,0xE9DEBB,0xFFCDF3,0xFFEE33,0xA0A0A0,0x000000,0xFFFFFF];
+	var sectors = [
+		'Consumer Discretionary','Consumer Staples','Energy','Financials','Health Care','Industrials',
+		'Information Technology', 'Materials','Real Estate','Telecommunication Services','Utilities'
+	];
 
 	var mouse = new THREE.Vector2();
 	var offset = new THREE.Vector3();
@@ -65,6 +48,7 @@
 	function v( x, y, z ){ return new THREE.Vector3( x, y, z ); }
 
 	var stats, renderer, scene, camera, controls, mesh;
+	var lightDirectional;
 	var ground, gridHelper, axisHelper;
 
 	init();
@@ -104,7 +88,7 @@
 
 				'<h2>' +
 					'<a href=http://jaanga.github.io title="Jaanga - your 3D happy place" > &#x2766 </a>' + b +
-					'<a href="" title="Click here to refresh this page" >' + location.pathname.split( '/' ).pop().slice( 0, -5).replace( /-/g, ' ' ) + '</a>' +
+					'<a href="" title="Click here to refresh this page" >📈' + location.pathname.split( '/' ).pop().slice( 0, -5).replace( /-/g, ' ' ) + '</a>' +
 					' ~ <a href=../index.html onmouseover=popHelp.style.display=""; onmouseout=popHelp.style.display="none"; > &#x24D8; </a>' +
 				'</h2>' +
 				'<div class=popUp id=popHelp style=display:none; ><p>Hi there!</p>Click the i-in-circle, info icon for latest updates.</div>' +
@@ -114,30 +98,9 @@
 				'<details open>' +
 					'<summary><h3>Menu</h3></summary>' +
 
-				'<p>' +
-					'<select id=selFiles onchange="requestFileTrades( this.value );" size=10 style=width:100%; ></select>' +
-				'</p>' +
-
-/*
 					'<p>' +
-						'<button onclick=requestFileTrades("2017-03-02.csv"); >2017-03-02</button>' +
-						'<button onclick=requestFileTrades("2017-03-03.csv"); >2017-03-03</button>' +
-						'<button onclick=requestFileTrades("2017-03-06.csv"); >2017-03-06</button>' +
-						'<button onclick=requestFileTrades("2017-03-07.csv"); >2017-03-07</button>' +
-						'<button onclick=requestFileTrades("2017-03-08.csv"); >2017-03-08</button>' +
-						'<button onclick=requestFileTrades("2017-03-09.csv"); >2017-03-09</button>' +
-						'<button onclick=requestFileTrades("2017-03-10.csv"); >2017-03-10</button>' +
-						'<button onclick=requestFileTrades("2017-03-13.csv"); >2017-03-13</button>' +
-						'<button onclick=requestFileTrades("2017-03-14.csv"); >2017-03-14</button>' +
-						'<button onclick=requestFileTrades("2017-03-15.csv"); >2017-03-15</button>' +
-						'<button onclick=requestFileTrades("2017-03-16.csv"); >2017-03-16</button>' +
-						'<button onclick=requestFileTrades("2017-03-17.csv"); >2017-03-17</button>' +
-						'<button onclick=requestFileTrades("2017-03-20.csv"); >2017-03-20</button>' +
-						'<button onclick=requestFileTrades("2017-03-21.csv"); >2017-03-21</button>' +
-						'<button onclick=requestFileTrades("2017-03-22.csv"); >2017-03-22</button>' +
-						'<button onclick=requestFileTrades("2017-03-23.csv"); >2017-03-23</button>' +
+						'<select id=selFiles onchange="requestFileTrades( this.value );" size=10 style=width:100%; ></select>' +
 					'</p>' +
-*/
 
 					'<p><button onclick=replay(); >Replay the day</button></p>' +
 
@@ -149,6 +112,13 @@
 					'<p id=menuInfo >' +
 //						'This is a template or boilerplate file that is frequently used to start-off a Jaanga projects. ' +
 					'</p>' +
+				'</details>' +
+
+				'<details>' +
+					'<summary><h3>Legend</h3></summary>' +
+
+					'<p id=legend ></p>' +
+
 				'</details>' +
 
 				'<details>' +
@@ -208,8 +178,19 @@
 
 			selFiles[ tradeDays.length - i - 1 ] = new Option( tradeDays[ i ] );
 
+		}
+
+		selFiles.selectedIndex = 0;
+
+		txt = '';
+
+		for ( var i = 0; i < sectors.length; i++ ) {
+
+			txt += '<span style=background-color:#' + colors[ i ].toString( 16 ) + '; >&nbsp; &nbsp; &nbsp; </span> &nbsp;' + sectors[ i ] + b;
 
 		}
+
+		legend.innerHTML = txt;
 
 //
 		stats = new Stats();
@@ -224,12 +205,10 @@
 		renderer.setSize( window.innerWidth, window.innerHeight );
 		document.body.appendChild( renderer.domElement );
 
-
 		scene = new THREE.Scene();
 
 		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 5000 );
 		camera.position.set( 120, 100, 110 );
-//		scene.add( camera ); // for light to follow
 
 // Controls
 		controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -252,20 +231,14 @@
 		renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
 		renderer.domElement.addEventListener( 'touchmove', onDocumentTouchStart, false ); // for mobile
 
-		requestFileTrades( fileName );
+		requestFileTrades( selFiles.value );
 
 	}
 
-	selFiles.selectedIndex = 0;
 
 	function requestFileTrades( fname ) {
 
-//		var text, len, lines, line;
-
-		sp500ticks = [];
-		sp500Trades = [];
-		objs = [];
-		touchables = [];
+		var xhr, text, len, lines, line;
 
 		xhr = new XMLHttpRequest();
 		xhr.crossOrigin = 'anonymous';
@@ -277,6 +250,8 @@
 
 			symbols = {};
 			symbolList = [];
+			symbols.touchables = [];
+			symbols.objs = [];
 
 			text = xhr.target.response;
 
@@ -291,7 +266,6 @@
 				trades = [];
 				previousVolume = 0;
 				vol = 0;
-
 
 				symbolList.push( info[ 0 ] );
 
@@ -331,7 +305,6 @@
 				symbol.trades = trades;
 				symbol.open = parseFloat( trades[ 0 ][ 1 ] );
 
-
 			}
 
 			drawSymbols();
@@ -346,15 +319,15 @@
 
 		var geometry, material, mesh;
 		var edgesGeometry, edgesMaterial, edges;
-		var obj, sp;
+		var scale,  obj, sp;
 
-		scene.remove( symbolsObj );
+		scene.remove( symbolsObjects );
 
-		symbolsObj = new THREE.Object3D();
+		symbolsObjects = new THREE.Object3D();
 
 		geometry = new THREE.BoxGeometry( 5, 1, 5 );
 
-		for (var i = 0; i < symbolList.length; i++) {
+		for ( var i = 0; i < symbolList.length; i++) {
 
 			obj = new THREE.Object3D();
 			symbol = symbols[ symbolList[ i ] ];
@@ -399,13 +372,14 @@
 			sp.material.opacity = 0.5;
 			obj.add( sp );
 
-			objs.push( obj );
-			touchables.push( mesh );
-			symbolsObj.add( obj );
+			symbols.objs.push( obj );
+			symbols.touchables.push( mesh );
+			symbolsObjects.add( obj );
 
 		}
 
-		scene.add( symbolsObj );
+		scene.add( symbolsObjects );
+
 	}
 
 
@@ -419,8 +393,6 @@
 		for ( var i = 0; i < len; i++ ) {
 
 			symbol = symbols[ symbolList[ i ] ];
-
-//console.log( 'sym', symbol );
 
 			verts = [];
 
@@ -451,7 +423,7 @@
 		material = new THREE.LineBasicMaterial( { color: colors[ symbol.sectorID ] } );
 		line = new THREE.Line( geometry, material );
 		line.userData.symbol = symbol.symbol;
-		symbolsObj.add( line );
+		symbolsObjects.add( line );
 
 	}
 
@@ -467,9 +439,11 @@
 
 	function updatePosition() {
 
-		for ( var j = 0; j < symbolList.length; j++ ) {
+		var symbol, vertex, t;
 
-			symbol = symbols[ symbolList[ j ] ];
+		for ( var i = 0; i < symbolList.length; i++ ) {
+
+			symbol = symbols[ symbolList[ i ] ];
 
 			if ( !symbol.vertices ) { continue; }
 
@@ -477,9 +451,9 @@
 
 			if ( !vertex ) { continue; }
 
-			touchables[ j ].userData.changePct = 100 * ( symbol.trades[ index ][1] - symbol.open ) / symbol.open;
-			touchables[ j ].userData.volume = symbol.trades[ index ][5];
-			objs[ j ].position.copy( vertex );
+			symbols.touchables[ i ].userData.changePct = 100 * ( symbol.trades[ index ][1] - symbol.open ) / symbol.open;
+			symbols.touchables[ i ].userData.volume = symbol.trades[ index ][5];
+			symbols.objs[ i ].position.copy( vertex );
 
 		}
 
@@ -488,13 +462,14 @@
 
 		index++;
 
-		if ( index <= 390 ) {
+		if ( index <= 390 ) { // ???
 
 			t = setTimeout( updatePosition, 50 )
 
 		}
 
 	}
+
 
 ////////////////////////
 
@@ -548,9 +523,6 @@
 // 2017-01-02 ~ http://jaanga.github.io/cookbook-threejs/templates/add-lights/template-threejs-lights-r3.html
 
 		renderer.shadowMap.enabled = true;
-//		renderer.shadowMap.cullFace = THREE.CullFaceBack;
-//		renderer.gammaInput = true;
-//		renderer.gammaOutput = true;
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 		scene.traverse( function ( child ) {
@@ -559,7 +531,6 @@
 
 				child.castShadow = true
 				child.receiveShadow = true;
-//				child.material.needsUpdate = true;
 
 			}
 
@@ -579,7 +550,7 @@
 
 		geometry = new THREE.BoxGeometry( 150, 5, 400 );
 
-		var material = new THREE.MeshPhongMaterial( {
+		material = new THREE.MeshPhongMaterial( {
 			color: 0x22cc55,
 			specular: 0xffffff * Math.random(),
 			shininess: 10
@@ -794,9 +765,9 @@
 
 		raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
 
-		intersects = raycaster.intersectObjects( touchables );
+		intersects = raycaster.intersectObjects( symbols.touchables );
 
-		if ( intersects.length > 0 ) {
+		if ( intersects.length > 0 && event.buttons < 1 ) {
 
 			if ( intersected != intersects[ 0 ].object ) {
 

@@ -3,18 +3,21 @@ Dev Notes
 
 ## To Do
 
-### realtime
+### Realtime
 
 * Make trade variables properties of symbols
+* Add graph icons to the apps
 
+### Replay
+
+* Add date and time for each minute
+* Move 100% bar to correct position
 
 ### Both
-* Download multiple days of data
-* Add date select to replay
-* Add graph icons to the apps
+
 * Add select and highlight symbol by text entry
 * show/hide snail slime
-* Move 100% bar
+
 
 ### Get Trades
 
@@ -22,12 +25,25 @@ Dev Notes
 * Display period input, start end indexes
 * Add display date that will be saved
 
+
+
 ## 2017-03-23 ~ Theo
 
 ### Get Trades
 
 * Code cleanup
 * Adds current day trades to list of trades that can be downloaded
+* Fixed BRK.B not showing chart in heads-up
+
+### sp500 replay R4
+
+* Add select date from list. Drop buttons
+* Add yesterday and today trades
+* Heads-up no longer pops up when mouse down
+* Add 'logo'
+* Add legend
+* Good code cleanup
+
 
 ## 2017-03-22 ~ Theo
 
