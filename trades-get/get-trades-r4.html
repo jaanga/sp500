@@ -19,7 +19,7 @@
 	var WikipediaDataFileName = 'https://spreadsheets.google.com/feeds/list/1_sv-QsJvHCfTCjRlpgv5ZwAUZetMCu-SfQHERAOuGZE/1/public/values?alt=json';
 
 	var symbols, symbolList;
-	var getStart, getEnd;
+	var getStart, getEnd, period;
 
 	var tradesDate;
 	var b = '<br>';
@@ -51,10 +51,10 @@
 		contents.id = 'contents';
 		contents.innerHTML =
 
-			'<h2>' +
+			'<h1>' +
 				'<a href="" >' + location.pathname.split( '/' ).pop().slice( 0, -5).replace( /-/g, ' ' ) + '</a>' +
 				'<a href=https://jaanga.github.io/sp500/ > &#x24D8; </a>' +
-			'</h2>' +
+			'</h1>' +
 
 			'<p>' +
 				'epoch timestamp <input id=inpTimestamp value=' + Date.now().toString().slice(0,-3) + ' >' +
@@ -64,7 +64,9 @@
 
 			'<p id=log ></p>' +
 
-			'<p><button onclick=initGetTrades(); >Get Trades </button></p>' +
+			'<p id=symData ></p>' +
+
+			'<p><button onclick=initGetTrades(); >Get Trades </button> end: <input id=inpEnd value=505 onClick=this.select(); size=4 > <output id=outTrades ></output></p>' +
 
 			'<p id=log2 ></p>' +
 
@@ -72,9 +74,16 @@
 
 			'<p id=divTradesMeta ></p>' +
 
-			'<div id=divTrades style="border: 1px red solid;" ></div>' +
+			'<div id=divTrades style="border: 1px red solid;" >trade data will appear here</div>' +
 
 		'';
+
+
+
+		selSymbols = document.body.appendChild( document.createElement( 'select' ) );
+		selSymbols.size = 25;
+		selSymbols.style.cssText = 'left: 20px; position: absolute; top: 20px; width: 100px;';
+		selSymbols.onchange = function() { setSymData( selSymbols.selectedIndex ); }
 
 		getDateObjFromEpochTime( inpTimestamp.value )
 
@@ -94,20 +103,6 @@
 
 	}
 
-
-	function initGetTrades(){
-
-		divTrades.innerText = '';
-
-		getEnd = symbolList.length;
-
-		console.time( 'time' );
-
-		symbols.index = getStart = getCount = 0;
-
-		getTrades();
-
-	}
 
 	function loadWikiJSON() {
 
@@ -151,7 +146,47 @@
 
 			log.innerText = 'loaded symbols: ' + symbolList.length;
 
+			for ( var i = 0; i < symbolList.length; i++ ) {
+
+				selSymbols[ i ] = new Option( symbolList[ i ] );
+
+			}
+
+			selSymbols.selectedIndex = Math.floor( Math.random() * symbolList.length );
+
+			setSymData( selSymbols.selectedIndex );
+
+			getEnd = parseInt( inpEnd.value );
+
+			period = '&p=2d';
+
+			outTrades.innerHTML = 'period: ' + period;
+
 		}
+
+	}
+
+
+	function setSymData( index ) {
+
+			var s;
+
+			s = symbols[ symbolList[ index ] ];
+			symData.innerText = s.symbol + ' - ' + s.name + ' - sector: ' + s.sector + ' - mc: ' + s.marketCap.toLocaleString() ;
+
+	}
+
+	function initGetTrades(){
+
+		divTrades.innerText = '';
+
+		console.time( 'time' );
+
+		symbols.index = getStart = getCount = 0;
+
+		getEnd = parseInt( inpEnd.value );
+
+		getTrades();
 
 	}
 
@@ -213,7 +248,7 @@ console.timeEnd( 'time' );
 
 		var statement, encodedStatement, query;
 		var xhr, txt, lines, line;
-		var period = '&p=2d';
+
 
 // Symbols must be uppercase for Google
 //		statement = 'select%20*%20from%20html%20where%20url%3D%22http%3A%2F%2Fwww.google.com%2Ffinance%2Fgetprices%3Fq%3DGOOG%26i%3D60%22';

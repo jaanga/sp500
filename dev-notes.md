@@ -21,11 +21,17 @@ Dev Notes
 
 ### Get Trades
 
+* Select exchange & portfolio
+* Get trades for selected symbols or portfolio of issues not in sp500
+* Display start indexes
+* Add display date that will be saved << make more apparent
+
+
+## 2017-03-24 ~ Theo
+
 * Add drop-down to get data per symbol
-* Display period input, start end indexes
-* Add display date that will be saved
-
-
+* Display period
+* Display input and end indexes
 
 ## 2017-03-23 ~ Theo
 
