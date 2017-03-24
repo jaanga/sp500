@@ -297,6 +297,8 @@
 
 	}
 
+
+
 // try to pick the most logical file to display, highlight it and display it contents
 
 	TOO.setDefaultContents = function( path, filesText ) {
