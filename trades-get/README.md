@@ -15,7 +15,7 @@ _amusing saying_
 
 ## Web Page
 
-<iframe class=ifr src="https://jaanga.github.io/sp500/trades-get/index.html" width=100% height=600px class='overview' ></iframe>
+<button><iframe class=ifr src="https://jaanga.github.io/sp500/trades-get/index.html" width=100% height=600px class='overview' ></iframe></button>
 
 
 ## Concept
