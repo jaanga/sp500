@@ -207,6 +207,9 @@
 		renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
 		renderer.domElement.addEventListener( 'touchmove', onDocumentTouchStart, false ); // for mobile
 
+		symbols = {};
+		symbols.touchables = [];
+
 		requestTradesFileNames();
 
 	}
