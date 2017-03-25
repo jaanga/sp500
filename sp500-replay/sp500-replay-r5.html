@@ -18,9 +18,6 @@
 // https://docs.google.com/spreadsheets/d/1_sv-QsJvHCfTCjRlpgv5ZwAUZetMCu-SfQHERAOuGZE/edit#gid=0
 	var WikipediaDataFileName = 'https://spreadsheets.google.com/feeds/list/1_sv-QsJvHCfTCjRlpgv5ZwAUZetMCu-SfQHERAOuGZE/1/public/values?alt=json';
 
-// https://docs.google.com/spreadsheets/d/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/edit#gid=1750244370
-	var TradeDataFileName = 'https://spreadsheets.google.com/feeds/list/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/1/public/values?alt=json';
-
 	var folder;
 	folder = '../trades/';
 
@@ -95,16 +92,14 @@
 						'<select id=selFiles onchange="requestFileTrades( this.value );" size=10 style=width:100%; ></select>' +
 					'</p>' +
 
-					'<p><button onclick=replay(); >Replay the day</button></p>' +
+					'<p><button onclick=replay(); >Replay the day</button> <output id=outDate ><output> </p>' +
 
 					'<p id=menuReplay></p>' +
 
 					'<div id=msg1 ></div>' +
 					'<div id=msg2 ></div>' +
 					'<div id=msg3 ></div>' +
-					'<p id=menuInfo >' +
-//						'This is a template or boilerplate file that is frequently used to start-off a Jaanga projects. ' +
-					'</p>' +
+
 				'</details>' +
 
 				'<details>' +
@@ -182,10 +177,7 @@
 		document.body.appendChild( stats.domElement );
 		stats.domElement.style.display = window.innerWidth < 500 ? 'none' : '';
 
-
 		renderer = new THREE.WebGLRenderer( { alpha: 1, antialias: true }  );
-//		renderer.setClearColor( 0xf0f0f0 );
-//		renderer.setPixelRatio( window.devicePixelRatio );
 		renderer.setSize( window.innerWidth, window.innerHeight );
 		document.body.appendChild( renderer.domElement );
 
@@ -207,7 +199,6 @@
 		drawTable();
 
 // Events
-
 		window.addEventListener( 'resize', onWindowResize, false );
 		window.addEventListener( 'keyup', onKeyUp, false );
 		renderer.domElement.addEventListener( 'click', function() {  controls.autoRotate = false; }, false );
@@ -216,8 +207,6 @@
 		renderer.domElement.addEventListener( 'touchmove', onDocumentTouchStart, false ); // for mobile
 
 		requestTradesFileNames();
-
-		requestFileTrades( selFiles.value );
 
 	}
 
@@ -229,9 +218,9 @@
 		fileName = 'https://api.github.com/repos/jaanga/sp500/contents/trades';
 
 		xhr = new XMLHttpRequest();
-		xhr.crossOrigin = 'anonymous';
+//		xhr.crossOrigin = 'anonymous';
 		xhr.open( 'GET', fileName, true );
-		xhr.onerror = function( xhr ) { console.log( 'error', xhr  ); };
+//		xhr.onerror = function( xhr ) { console.log( 'error', xhr  ); };
 		xhr.onload = callback;
 		xhr.send( null );
 
@@ -240,26 +229,27 @@
 			text = xhr.target.response;
 			files = JSON.parse( text );
 
-console.log( text);
+// console.log( text);
 
-			txt = '';
+			files2 = [];
 
 			for ( var i = 0; i < files.length; i++ ) {
 
 				file = files[ i ].name;
 
-				if ( file.endsWith( '.csv' ) ) {
-
-					selFiles[ files.length - i - 1 ] = new Option( file );
-
-				}
-
-				selFiles.selectedIndex = 0;
+				if ( file.endsWith( '.csv' ) ) { files2.push( file ); }
 
 			}
 
-			info.innerHTML = txt;
+			for ( i = 0; i < files2.length; i++ ) {
 
+				selFiles[ files2.length - i - 1 ] = new Option( files2[ i ] );
+
+			}
+
+			selFiles.selectedIndex = 0;
+
+			requestFileTrades( selFiles.value );
 
 		}
 
@@ -269,7 +259,7 @@ console.log( text);
 
 	function requestFileTrades( fname ) {
 
-		var xhr, text, len, lines, line;
+//		var xhr, text, len, lines, line;
 
 		symbols = {};
 		symbolList = [];
@@ -284,11 +274,18 @@ console.log( text);
 
 		function callback( xhr ) {
 
-
-
 			text = xhr.target.response;
 
 			lines = text.split( '###\n' ).map( function( line ) { return line.split( '\n' ); } );
+
+			var timeOpen;
+			symbols.timeOpen = parseInt( lines[ 0 ][ 1 ].slice( 1, 11 ) + '000', 0 );
+
+			symbols.date = new Date();
+			symbols.date.setTime( symbols.timeOpen );
+
+			outDate.innerHTML = symbols.date.toLocaleDateString();
+			menuReplay.innerHTML = '';
 
 			len = lines.length - 1;
 
@@ -313,8 +310,6 @@ console.log( text);
 					volumeAvg: parseInt( info[ 6 ], 10 ),
 
 				}
-
-//console.log( 'symbol', symbol );
 
 				for ( var j = 1; j < symbolData.length - 1; j++ ) {
 
@@ -368,9 +363,6 @@ console.log( text);
 			material = new THREE.MeshPhongMaterial( {
 				color: colors[ symbol.sectorID ], // 0xffffff * Math.random(),
 				opacity: 0.85,
-//				specular: 0xffffff * Math.random(),
-//				shading: THREE.FlatShading,
-//				shininess: 10,
 				transparent: true
 			} );
 
@@ -414,7 +406,6 @@ console.log( text);
 		scene.add( symbolsObjects );
 
 	}
-
 
 
 	function getVertices() {
@@ -491,7 +482,9 @@ console.log( text);
 		}
 
 
-		menuReplay.innerHTML = 'minute: ' + index;
+		symbols.date.setTime( symbols.timeOpen + 60000 * index );
+
+		menuReplay.innerHTML = 'minute: ' + index + ' - time: ' + symbols.date.toLocaleTimeString();
 
 		index++;
 

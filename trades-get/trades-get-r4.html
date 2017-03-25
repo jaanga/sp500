@@ -5,8 +5,8 @@
 <title></title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
 <meta name=description content='Obtain stock market intraday data sourced from from Wikipedia, Googlr and Yahoo' >
-<meta name=keywords content='YQL,JavaScript,GitHub,FOSS,STEM' >
-<meta name=date content='2017-03-23' >
+<meta name=keywords content='Yahoo YQL,Google Finance,JavaScript,GitHub,FOSS,STEM' >
+<meta name=date content='2017-03-24' >
 </head>
 <body>
 <script>
@@ -175,6 +175,7 @@
 			symData.innerText = s.symbol + ' - ' + s.name + ' - sector: ' + s.sector + ' - mc: ' + s.marketCap.toLocaleString() ;
 
 	}
+
 
 	function initGetTrades(){
 
@@ -376,13 +377,13 @@ console.log( text );
 
 	function saveFile() {
 
-//		var date, blob, a;
+		var date, blob, a;
 
 		date = new Date();
 		blob = new Blob( [ divTrades.innerText ] );
 		a = document.body.appendChild( document.createElement( 'a' ) );
 		a.href = window.URL.createObjectURL( blob );
-		a.download = date.getFullYear() + '-' + ( '0' + ( 1 + date.getUTCMonth() ) ).slice( -2 ) + '-' + date.getUTCDate() + '.csv';
+//		a.download = date.getFullYear() + '-' + ( '0' + ( 1 + date.getUTCMonth() ) ).slice( -2 ) + '-' + date.getUTCDate() + '.csv';
 		a.download = tradesDate + '.csv';
 		a.click();
 		a = null;

@@ -7,31 +7,41 @@ Dev Notes
 
 * Make trade variables properties of symbols
 * Add graph icons to the apps
+* Add date and time for each minute
 
 ### Replay
 
-* Add date and time for each minute
+
 * Move 100% bar to correct position
 
 ### Both
-
+* Add minute slider bar
+* Add sun movement
+* prevent objects from going off the table
 * Add select and highlight symbol by text entry
 * show/hide snail slime
 
 
 ### Get Trades
-
 * Select exchange & portfolio
 * Get trades for selected symbols or portfolio of issues not in sp500
-* Display start indexes
+* Display start index
 * Add display date that will be saved << make more apparent
 
 
 ## 2017-03-24 ~ Theo
 
+### Replay
+* Trade files updated via GitHub API
+* Make trade variables properties of symbols
+* Add date and time for each minute
+
+### Get Trades
 * Add drop-down to get data per symbol
 * Display period
 * Display input and end indexes
+
+
 
 ## 2017-03-23 ~ Theo
 
