@@ -17,9 +17,8 @@ Dev Notes
 ### Both
 * Add minute slider bar
 * Add sun movement
-* prevent objects from going off the table
+* Prevent objects from going off the table
 * Add select and highlight symbol by text entry
-* show/hide snail slime
 
 
 ### Get Trades
@@ -32,7 +31,8 @@ Dev Notes
 ## 2017-03-24 ~ Theo
 
 ### Replay
-* Trade files updated via GitHub API
+* Toggle visibility of symbol 'snail slime'
+* List of trade files updated via GitHub API
 * Make trade variables properties of symbols
 * Add date and time for each minute
 

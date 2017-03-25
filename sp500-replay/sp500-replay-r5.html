@@ -22,7 +22,7 @@
 	folder = '../trades/';
 
 	var symbols, symbolList;
-	var symbolsObjects;
+	var symbolsObjects, symbolsLines;
 	var index;
 
 	var colors = [0x575757,0xAD2323,0x2A4BD7,0x1D6914,0x814A19,0x8126C0,0x81C57A,0x9DAFFF,0x29D0D0,0xFF9233,0xE9DEBB,0xFFCDF3,0xFFEE33,0xA0A0A0,0x000000,0xFFFFFF];
@@ -111,6 +111,7 @@
 
 				'<details>' +
 					'<summary><h3>Settings</h3></summary>' +
+					'<p><input type=checkbox onchange=symbolsLines.visible=!symbolsLines.visible; checked > Snail Slime</p>' +
 					'<p><input type=checkbox id=chkWire onchange=toggleWireframe(); > Wireframe</p>' +
 					'<p><input type=checkbox onchange=ground.visible=!ground.visible; checked > Ground plane</p>' +
 					'<p><input type=checkbox onchange=axisHelper.visible=!axisHelper.visible; checked > Axes</p>' +
@@ -256,10 +257,11 @@
 	}
 
 
-
 	function requestFileTrades( fname ) {
 
-//		var xhr, text, len, lines, line;
+		var xhr, text, len, lines, line;
+		var timeOpen;
+		var info, symbol, trade, vol;
 
 		symbols = {};
 		symbolList = [];
@@ -267,7 +269,7 @@
 		symbols.objs = [];
 
 		xhr = new XMLHttpRequest();
-		xhr.crossOrigin = 'anonymous';
+//		xhr.crossOrigin = 'anonymous';
 		xhr.open( 'GET', folder + fname, true );
 		xhr.onload = callback;
 		xhr.send( null );
@@ -278,7 +280,6 @@
 
 			lines = text.split( '###\n' ).map( function( line ) { return line.split( '\n' ); } );
 
-			var timeOpen;
 			symbols.timeOpen = parseInt( lines[ 0 ][ 1 ].slice( 1, 11 ) + '000', 0 );
 
 			symbols.date = new Date();
@@ -412,6 +413,10 @@
 
 		var len, symbol, trade, verts;
 
+		scene.remove( symbolsLines );
+
+		symbolsLines = new THREE.Object3D();
+
 		len = symbolList.length;
 
 		for ( var i = 0; i < len; i++ ) {
@@ -435,6 +440,7 @@
 
 		}
 
+		scene.add( symbolsLines );
 	}
 
 
@@ -447,7 +453,7 @@
 		material = new THREE.LineBasicMaterial( { color: colors[ symbol.sectorID ] } );
 		line = new THREE.Line( geometry, material );
 		line.userData.symbol = symbol.symbol;
-		symbolsObjects.add( line );
+		symbolsLines.add( line );
 
 	}
 
