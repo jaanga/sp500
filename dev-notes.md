@@ -10,11 +10,14 @@ Dev Notes
 * Add date and time for each minute
 
 ### Replay
-
-
 * Move 100% bar to correct position
 
 ### Both
+* Start creating issue blog posts
+* Set up read me files
+* Toggle log or linear table scales
+* Add sounds
+* Add auto replay
 * Add minute slider bar
 * Add sun movement
 * Prevent objects from going off the table
