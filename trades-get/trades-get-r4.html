@@ -43,7 +43,7 @@
 			'input[type=range]::-moz-range-thumb { background-color: #888; border-radius: 0; width: 10px; }' +
 			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
 
-//			'#contents { margin: 0 20px; max-width: 300px; position: absolute; }' +
+			'#contents { margin: 0 0 0 130px; }' +
 
 		'';
 
@@ -82,7 +82,7 @@
 
 		selSymbols = document.body.appendChild( document.createElement( 'select' ) );
 		selSymbols.size = 25;
-		selSymbols.style.cssText = 'left: 20px; position: absolute; top: 20px; width: 100px;';
+		selSymbols.style.cssText = 'left: 10px; position: absolute; top: 20px; width: 100px;';
 		selSymbols.onchange = function() { setSymData( selSymbols.selectedIndex ); }
 
 		getDateObjFromEpochTime( inpTimestamp.value )
