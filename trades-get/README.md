@@ -15,7 +15,7 @@ _get intraday trades for hundreds of symbols for a number of days_
 
 ## Web Page
 
-<iframe class=ifr src="https://jaanga.github.io/sp500/trades-get/index.html" width=100% height=600px class='overview' >![]( trades-get-r4.png )</iframe>
+<iframe class=ifr src="https://jaanga.github.io/sp500/trades-get/index.html" width=100% height=600px class='overview' ><img src="trades-get-r4.png" ></iframe>
 
 
 
