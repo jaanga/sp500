@@ -82,6 +82,7 @@
 		inpSearch = document.body.appendChild( document.createElement( 'input' ) );
 //		inpSearch.size = 25;
 		inpSearch.style.cssText = 'left: 10px; position: absolute; top: 20px; width: 100px;';
+		inpSearch.focus();
 		inpSearch.onclick = function() { this.select(); }
 		inpSearch.onkeyup = function() { setSearch(); }
 
