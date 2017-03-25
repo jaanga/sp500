@@ -16,7 +16,7 @@
 // Copyright 2017 Jaanga authors ~ MIT license
 
 // https://docs.google.com/spreadsheets/d/1_sv-QsJvHCfTCjRlpgv5ZwAUZetMCu-SfQHERAOuGZE/edit#gid=0
-	var WikipediaDataFileName = 'https://spreadsheets.google.com/feeds/list/1_sv-QsJvHCfTCjRlpgv5ZwAUZetMCu-SfQHERAOuGZE/1/public/values?alt=json';
+//	var WikipediaDataFileName = 'https://spreadsheets.google.com/feeds/list/1_sv-QsJvHCfTCjRlpgv5ZwAUZetMCu-SfQHERAOuGZE/1/public/values?alt=json';
 
 	var folder;
 	folder = '../trades/';
@@ -102,10 +102,18 @@
 
 				'</details>' +
 
+				'<details /* id=detSymbols onclick=console.log(23);inpSearch.focus(); */ open>' +
+					'<summary><h3>Symbol Highlight</h3></summary>' +
+
+					'<p ><input id=inpSearch size=5 ></p>' +
+					'<p ><select id=selSymbols size=10 ></select></p>' +
+
+				'</details>' +
+
 				'<details>' +
 					'<summary><h3>Legend</h3></summary>' +
 
-					'<p id=legend ></p>' +
+					'<p id=mnuLegend ></p>' +
 
 				'</details>' +
 
@@ -170,7 +178,7 @@
 
 		}
 
-		legend.innerHTML = txt;
+		mnuLegend.innerHTML = txt;
 
 //
 		stats = new Stats();
@@ -270,6 +278,7 @@
 		symbolList = [];
 		symbols.touchables = [];
 		symbols.objs = [];
+		index = 0;
 
 		xhr = new XMLHttpRequest();
 //		xhr.crossOrigin = 'anonymous';
@@ -339,10 +348,59 @@
 
 			}
 
+			setMenuSymbolSelect();
 			drawSymbols();
 			getVertices();
 
 		}
+
+	}
+
+	function setMenuSymbolSelect() {
+
+		inpSearch.onclick = function() { this.select(); }
+		inpSearch.onkeyup = function() { setSearch(); }
+
+		selSymbols.onchange = function() { highlight( selSymbols.value ); }
+
+		for ( var i = 0; i < symbolList.length; i++ ) {
+
+			selSymbols[ i ] = new Option( symbolList[ i ] );
+
+		}
+
+		selSymbols.selectedIndex = Math.floor( Math.random() * symbolList.length );
+
+	}
+
+
+	function setSearch() {
+
+		var syms, letters;
+
+		syms = [];
+
+		letters = inpSearch.value.toUpperCase();
+
+		for ( var i = 0; i < symbolList.length; i++ ) {
+
+			if ( symbolList[ i ].indexOf( letters ) > -1 ) {
+
+				syms.push( symbolList[ i ] );
+
+			}
+
+		}
+
+		selSymbols.innerHTML = '';
+
+		for ( var i = 0; i < syms.length; i++ ) {
+
+			selSymbols[ i ] = new Option( syms[ i ] );
+
+		}
+
+		selSymbols.selectedIndex = 0;
 
 	}
 
@@ -522,6 +580,8 @@
 	}
 
 
+// update
+
 	function addLights( size ) {
 
 // 2016-02-21 ~ http://jaanga.github.io/cookbook-threejs/templates/add-lights/template-threejs-lights-r2.html
@@ -671,7 +731,6 @@
 	}
 
 
-
 	function drawSprite( text, scale, color, x, y, z ) {
 
 		var texture, spritMaterial, sprite;
@@ -681,6 +740,7 @@
 		sprite = new THREE.Sprite( spriteMaterial );
 		sprite.position.set( x, y, z ) ;
 		sprite.scale.set( scale * texture.image.width, scale * texture.image.height );
+
 		return sprite;
 
 	}
@@ -724,6 +784,7 @@
 		texture = new THREE.Texture( canvas );
 		texture.minFilter = texture.magFilter = THREE.NearestFilter;
 		texture.needsUpdate = true;
+
 		return texture;
 
 	}
@@ -819,8 +880,6 @@
 					intersected.currentHex = intersected.material.emissive.getHex();
 					intersected.material.emissive.setHex( 0xff0000 );
 
-
-
 					if ( intersected.userData.name ) {
 
 						headsUp.style.left = 50 + 0.5 * window.innerWidth + mouse.x * 0.5 * window.innerWidth + 'px';
@@ -869,26 +928,27 @@
 
 	}
 
-	function highlight( intersected ) {
-
-console.log( '', intersected );
+	function highlight( s ) {
+		sym = symbols[ s ];
+console.log( '', sym );
 		headsUp.style.left = 50 + 0.5 * window.innerWidth + 'px';
 		headsUp.style.top = -50 + 0.5 * window.innerHeight + 'px';
 		headsUp.style.display = '';
 
 		txt =
 
-		'<h2 style="margin:0;" >' + intersected.userData.symbol + '</h2>' +
-		'<div>' + intersected.userData.name + '</div>' +
-		'<div style="margin:0; background-color: #' + intersected.material.color.getHexString() + ';" >' + intersected.userData.sector + '</div>' +
-		'<img src="https://www.google.com/finance/chart?tlf=12&q=' + 'NASDAQ:' + intersected.userData.symbol +
+		'<h2 style="margin:0;" >' + sym.symbol + '</h2>' +
+		'<div>' + sym.name + '</div>' +
+//		'<div style="margin:0; background-color: #' + intersected.material.color.getHexString() + ';" >' + sym.sector + '</div>' +
+		'<img src="https://www.google.com/finance/chart?tlf=12&q=' + 'NASDAQ:' + sym.symbol +
 			'"  style="background: white;" /><br>' +
-		'<a href="https://www.google.com/finance?q=' + 'NASDAQ:' + intersected.name + '" target="_blank">Google Finance: ' + intersected.name + '</a><br>' +
-		'chg: ' + intersected.userData.changePct + '%<br>' +
-		'vol: ' + intersected.userData.volume.toLocaleString() + '<br>' +
-		'vol avg :' + intersected.userData.volumeAvg.toLocaleString() + '<br>' +
-		'vol/vol avg: ' + ( 100 * intersected.userData.volume / intersected.userData.volumeAvg ).toFixed(1) + '%<br>' +
-		'mkt cap: ' + intersected.userData.marketCap.toLocaleString() +
+		'<a href="https://www.google.com/finance?q=' + 'NASDAQ:' + sym.name + '" target="_blank">Google Finance: ' +
+			sym.name + '</a><br>' +
+//		'chg: ' + sym.trades[ index ].changePct + '%<br>' +
+		'vol: ' + sym.trades[ index ][ 5 ].toLocaleString() + '<br>' +
+		'vol avg :' + sym.volumeAvg.toLocaleString() + '<br>' +
+		'vol/vol avg: ' + ( 100 * sym.volume / sym.volumeAvg ).toFixed(1) + '%<br>' +
+		'mkt cap: ' + sym.marketCap.toLocaleString() +
 
 		'';
 
