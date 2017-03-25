@@ -2,20 +2,20 @@
 <span style=display:none; >[You are now in a GitHub source code view - click this button to view this read me file as a web page]( https://jaanga.github.io/sp500/trades-get/ "View file as a web page." ) </span>
 <div><input type=button value='You are now in GitHub web page view - Click this button to view Read Me file as source code' onclick=window.location.href='https://github.com/jaanga/sp500/tree/gh-pages/trades-get/'; /></div>
 
-[Jaanga]( https://jaanga.github.io/ ) &raquo; [Jaanga SP500 Read Me]( https://jaanga.github.io/sp500/index.html ) &raquo;
+### [Jaanga]( https://jaanga.github.io/ ) &raquo; [Jaanga SP500 Read Me]( https://jaanga.github.io/sp500/index.html ) &raquo;
 
-[Jaanga SP500 Trades Get  Read Me]( index.html )
+[Jaanga SP500 Trades Get Read Me]( https://jaanga.github.io/sp500/#trades-get/README.md )
 ===
-_get intraday trades for hundreds of symbols for a number of days_
+_request and obtain intraday trades for hundreds of stock market symbols for a number of days_
 
 
-### Full Screen Demo: [Jaanga SP500 Trades Get ]( https://jaanga.github.io/sp500/trades-get/ )
+### Full Screen Demo: [Jaanga SP500 Trades Get ]( https://jaanga.github.io/sp500/trades-get/index.html )
 
 
 
 ## Web Page
 
-<iframe class=ifr src="https://jaanga.github.io/sp500/trades-get/index.html" width=100% height=600px class='overview' ><img src="trades-get-r4.png" ></iframe>
+<iframe src="https://jaanga.github.io/sp500/trades-get/index.html" width=100% height=600px ><img src="trades-get-r4.png" ></iframe>
 
 
 
@@ -36,6 +36,12 @@ _get intraday trades for hundreds of symbols for a number of days_
 ### Vision
 <!--  a descriptive picture of a desired future state -->
 
+### Get Trades
+* Select exchange & portfolio
+* Get trades for selected symbols or portfolio of issues not in sp500
+* Display start index
+* Add display date that will be saved << make more apparent
+
 
 ## Usage Notes
 
@@ -48,7 +54,14 @@ _get intraday trades for hundreds of symbols for a number of days_
 
 ## Change Log & Developer Notes
 
+### 2017-03-25 ~ Theo
 
+Search and select no really needed here but it's a simpler sandbox to play in compared to replay or realtime.
+But might help later with portfolio creation
+
+* Trades Get R5
+* Add search and select subset of symbols via text input
+* Add full read me
 
 
 ***

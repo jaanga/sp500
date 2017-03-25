@@ -15,7 +15,8 @@ _amusing saying_
 
 ## Web Page
 
-<iframe class=ifr src="https://jaanga.github.io/sp500/XXXXX/index.html" width=100% height=600px class='overview' ></iframe>
+<iframe src="https://jaanga.github.io/sp500/XXXXX/index.html" width=100% height=600px ></iframe>
+
 
 
 ## Concept
