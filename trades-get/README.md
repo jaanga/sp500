@@ -12,7 +12,6 @@ _request and obtain intraday trades for hundreds of stock market symbols for a n
 ### Full Screen Demo: [Jaanga SP500 Trades Get ]( https://jaanga.github.io/sp500/trades-get/index.html )
 
 
-
 ## Web Page
 
 <iframe src="https://jaanga.github.io/sp500/trades-get/index.html" width=100% height=600px ><img src="trades-get-r4.png" ></iframe>
@@ -35,6 +34,7 @@ _request and obtain intraday trades for hundreds of stock market symbols for a n
 
 ### Vision
 <!--  a descriptive picture of a desired future state -->
+
 
 ### Get Trades
 * Select exchange & portfolio

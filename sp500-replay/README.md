@@ -25,29 +25,23 @@ _did you gain or lose?_
 * 2017-03-26 ~ Replay bar needs much work
 * 2017-03-26 ~ Symbol highlight not yet highlighting symbols
 * 2017-03-26 ~ ****Colors, opacity, emissivity, lights, shading all need big looking at****
+* Move 100% bar to correct position
+* Toggle log or linear table scales
+	* Prevent objects from going off the table
+* Add sounds
+* Add sun movement
 
 
 ## Concept
 
 See top page
-
 <!---
-
-
 ### Mission
 <!-- a statement of a rationale, applicable now as well as in the future
-
-
-
-
 ### Vision
 <!--  a descriptive picture of a desired future state
-
-
 ## Usage Notes
-
 -->
-
 ## Copyright and License
 
 * [Copyright and License]( https://jaanga.github.io/#https://jaanga.github.io/jaanga-copyright-and-mit-license.md )
@@ -62,12 +56,22 @@ Code getting big and messy. Needs a cleanup
 
 * Add Sector Highlight
 * Add beginning of replay control bar
-
+	* Add auto replay
+	* Add minute slider bar
 ### 2017-03-25 ~ Theo
 
-* Add read me to Replay fol
-* R6Highlight
-* Add Symbol
+
+* Add read me to Replay folder
+* R6
+* Add Symbol Highlight
+	* Add select and highlight symbol by text entry
+
+
+### long ago
+
+#### 3D Display
+* Display trails of the movements of symbols
+* Lights and shadows tracks sun position
 
 ***
 

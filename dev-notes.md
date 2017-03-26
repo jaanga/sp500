@@ -10,7 +10,7 @@ Dev Notes
 * Add date and time for each minute
 
 ### Replay
-* Move 100% bar to correct position
+
 
 ### Both
 * Start creating issue blog posts
@@ -29,6 +29,12 @@ Dev Notes
 * Get trades for selected symbols or portfolio of issues not in sp500
 * Display start index
 * Add display date that will be saved << make more apparent
+
+
+## 2017-03-25
+
+* Replay, Realtime and Get Trades get their own read me files.
+	* Their updates will be documented there
 
 
 ## 2017-03-24 ~ Theo

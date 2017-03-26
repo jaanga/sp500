@@ -115,9 +115,6 @@ _One day this list will be as long as your arm_
 * Highlight your own and others portfolios
 * Display bounding boxes around the symbols in a particular industry sector
 
-### 3D Display
-* Display trails of the movements of symbols
-* Lights and shadows tracks sun position
 
 ### Heads-Up Display
 
