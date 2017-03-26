@@ -355,7 +355,7 @@
 		inpSearch.onclick = function() { this.select(); }
 		inpSearch.onkeyup = function() { setSearch(); }
 
-		selSymbols.onchange = function() { highlight( selSymbols.value ); }
+		selSymbols.onclick = function() { highlight( selSymbols.value ); }
 
 		for ( var i = 0; i < symbolList.length; i++ ) {
 
@@ -826,6 +826,7 @@
 
 	}
 
+
 	function onDocumentMouseMove( event ) {
 
 		var vector, raycaster, intersects, txt;
@@ -906,10 +907,13 @@
 
 	}
 
+
 	function highlight( s ) {
 
+		var sym, idx;
+
 		sym = symbols[ s ];
-console.log( '', sym );
+
 		idx = sym.trades.length - 1;
 
 		headsUp.style.left = 50 + 0.5 * window.innerWidth + 'px';
@@ -920,12 +924,13 @@ console.log( '', sym );
 
 		'<h2 style="margin:0;" >' + sym.symbol + '</h2>' +
 		'<div>' + sym.name + '</div>' +
-//		'<div style="margin:0; background-color: #' + intersected.material.color.getHexString() + ';" >' + sym.sector + '</div>' +
+		'<div style="margin:0; background-color: #' + colors[ sym.sectorID ].toString( 16 )  + ';" >' + sym.sector + '</div>' +
+
 		'<img src="https://www.google.com/finance/chart?tlf=12&q=' + 'NASDAQ:' + sym.symbol +
 			'"  style="background: white;" /><br>' +
 		'<a href="https://www.google.com/finance?q=' + 'NASDAQ:' + sym.symbol + '" target="_blank">Google Finance: ' +
 			sym.symbol + '</a><br>' +
-		'chg: ' + ( 100 * ( symbol.trades[ idx ][1] - symbol.open ) / symbol.open ).toFixed(1) + '%<br>' +
+		'chg: ' + ( 100 * ( sym.trades[ idx ][1] - sym.open ) / sym.open ).toFixed(1) + '%<br>' +
 		'vol: ' + sym.trades[ idx ][ 5 ].toLocaleString() + '<br>' +
 		'vol avg :' + sym.volumeAvg.toLocaleString() + '<br>' +
 		'vol/vol avg: ' + ( 100 * sym.trades[ idx ][ 5 ] / sym.volumeAvg ).toFixed(1) + '%<br>' +
