@@ -925,7 +925,7 @@ console.log( '', sym );
 			'"  style="background: white;" /><br>' +
 		'<a href="https://www.google.com/finance?q=' + 'NASDAQ:' + sym.symbol + '" target="_blank">Google Finance: ' +
 			sym.symbol + '</a><br>' +
-		'chg: ' + ( 100 * ( symbol.trades[ idx ][1] - symbol.open ) / symbol.open ) + '%<br>' +
+		'chg: ' + ( 100 * ( symbol.trades[ idx ][1] - symbol.open ) / symbol.open ).toFixed(1) + '%<br>' +
 		'vol: ' + sym.trades[ idx ][ 5 ].toLocaleString() + '<br>' +
 		'vol avg :' + sym.volumeAvg.toLocaleString() + '<br>' +
 		'vol/vol avg: ' + ( 100 * sym.trades[ idx ][ 5 ] / sym.volumeAvg ).toFixed(1) + '%<br>' +
