@@ -1,4 +1,6 @@
-// Copyright © 2017 Jaanga authors. MIT license.
+// TooToo enable you to browse public GitHub user or organization repos, gather their files names, create menus and displays the files
+// See https://pushme-pullyou.github.io
+// Copyright © 2017 Pushme Pullyou authors. MIT license.
 
 	let TOO = {};
 	var b = '<br>';
@@ -12,8 +14,8 @@
 		TOO.noIndex = user.noIndex,
 		TOO.rawgit  = user.rawgit
 
-		TOO.path = null;
-		TOO.file = null;
+//		TOO.path = null;
+//		TOO.file = null;
 
 		TOO.contents = contents;
 		TOO.breadcrumbs = menuBreadcrumbs;
@@ -24,6 +26,7 @@
 
 		TOO.setMenu = TOO.setMenuContents ? TOO.setMenuContents : TOO.setMenuDefault;
 
+/*
 		if ( location.hash ) {
 
 			params = (window.location.hash.substr(1)).split("&");
@@ -47,8 +50,7 @@
 
 //	console.log( 'path', TOO.path );
 //	console.log( 'file', TOO.file );
-
-		TOO.url = 'https://api.github.com/repos/' + TOO.user + '/' + TOO.repo + '/git/trees/' + TOO.branch + '?recursive=1';
+*/
 
 		if ( TOO.rawgit ) {
 
@@ -69,10 +71,10 @@
 
 	TOO.getButtons = function() {
 
-		button = document.body.appendChild( document.createElement( 'div' ) );
-		button.id = 'button';
-		button.innerHTML = 'Edit';
-		TOO.button = button;
+		editButton = document.body.appendChild( document.createElement( 'div' ) );
+		editButton.id = 'editButton';
+		editButton.innerHTML = 'Edit';
+		TOO.editButton = editButton;
 
 		nextFile = document.body.appendChild( document.createElement( 'div' ) );
 		nextFile.id = 'nextFile';
@@ -87,9 +89,13 @@
 	}
 
 
+// request all the file names in the user's repo
+
 	TOO.requestAPIContents = function() {
 
 		let xhr, obj, treeNode;
+
+		TOO.url = 'https://api.github.com/repos/' + TOO.user + '/' + TOO.repo + '/git/trees/' + TOO.branch + '?recursive=1';
 
 		TOO.requestFile( TOO.url, callbackRequestFile );
 
@@ -161,7 +167,7 @@
 			}
 
 			if ( location.hash ) {
-
+/*
 				params = (window.location.hash.substr(1)).split("&");
 
 				for ( let i = 0; i < params.length; i++ ) {
@@ -176,7 +182,9 @@
 					TOO.file   = a[ 0 ] === 'file'   ? a[ 1 ] : TOO.file;
 
 				}
+*/
 
+				TOO.path = TOO.folder !== '' && TOO.folder === TOO.path ? '' : TOO.path;
 				TOO.setMenu( TOO.path, TOO.file );
 
 			} else {
@@ -192,11 +200,12 @@
 
 	TOO.setMenuDefault = function( path, file ) {
 
-//console.log( 'path', path );
+		TOO.file = file;
+		TOO.path = path;
 
 		let folders, obj;
 		let foldersText, filesText;
-		let count, pathString;
+//		let count, pathString;
 		TOO.files = [];
 		TOO.menuTitle.innerHTML="All Files";
 		TOO.menuItems.innerHTML = '';
@@ -220,7 +229,7 @@
 		filesText = ''; // '<small> Use tag and shift-tab to browse files quickly </small>' + b;
 		count = 0;
 
-		pathString = path ? path + '/': '';
+		pathString = path ? path + '/' : '';
 
 		for ( let i = 0; i < TOO.keys.length; i++ ) {
 
@@ -260,9 +269,9 @@
 
 		'</div>';
 
-		if ( file ){
+		if ( TOO.file !== undefined ){
 
-			TOO.getFileSetContents( pathString, file );
+			TOO.getFileSetContents( pathString, TOO.file );
 
 		} else {
 
@@ -298,7 +307,6 @@
 	}
 
 
-
 // try to pick the most logical file to display, highlight it and display it contents
 
 	TOO.setDefaultContents = function( path, filesText ) {
@@ -307,13 +315,13 @@
 
 		txt = filesText.toLowerCase();
 
-		if ( location.hash ) { return; }
-
-		if ( txt.includes( 'index.html' ) && TOO.noIndex !== 'true' ) {
+		if ( txt.includes( 'index.html' ) && TOO.noIndex !== true ) {
 
 			start = txt.indexOf( 'index.html' );
 
 			file =  filesText.slice( start, start + 10 );
+
+			location.hash = path + file;
 
 			TOO.getFileHTML( TOO.urlGHPages + path + file );
 
@@ -322,6 +330,8 @@
 			start = txt.indexOf( 'readme.md' );
 
 			file =  filesText.slice( start, start + 9 );
+
+			location.hash = path + file;
 
 			TOO.getFileMD( TOO.urlGHPages + path + file );
 
@@ -333,11 +343,12 @@
 
 		} else {
 
-			file =  TOO.files[ 0 ];
+			file = TOO.files[ 0 ];
 			TOO.getFileSetContents( path, file  );
 
 		}
 
+		TOO.file = file;
 		TOO.setButtons( path, file );
 
 	}
@@ -348,7 +359,20 @@
 
 	TOO.getFileSetContents = function( path, file ){
 
+		if ( file === undefined ) {
+
+			folder = TOO.folder ? TOO.folder + '/' : '';
+			location.hash = path + folder;
+			TOO.contents.innerHTML = '<center>no files in this folder</center>';
+			return;
+
+		}
+
 		url = TOO.urlGHPages + path + encodeURI( file );
+
+		folder = TOO.folder ? TOO.folder + '/' : '';
+
+		location.hash = path + folder + file;
 
 		let u = url.toLowerCase();
 
@@ -378,9 +402,11 @@
 // edit, next and previous buttons
 	TOO.setButtons = function( path, file ) {
 
-		if ( TOO.button ) {
+		if ( TOO.editButton ) {
 
-			TOO.button.innerHTML = '<a href="https://github.com/' + TOO.user + '/' + TOO.repo + '/blob/' + TOO.branch + '/' + path + file + '" target="_blank"> Edit </a>';
+			folder = TOO.folder ? TOO.folder + '/' : '';
+
+			TOO.editButton.innerHTML = '<a href="https://github.com/' + TOO.user + '/' + TOO.repo + '/blob/' + TOO.branch + '/' + path + folder + file + '" target="_blank"> Edit </a>';
 		}
 
 		index = TOO.files.indexOf( file );
@@ -540,14 +566,15 @@
 	}
 
 
-	 TOO.getFileDataXHR = function( xhr ) {
+	TOO.getFileDataXHR = function( xhr ) {
 
 		let lastMod = xhr.target.getResponseHeader ( "Last-Modified" );
 
 		menuFileData.innerHTML =
 			'<small><i>Loaded maximum first 10,000 characters.<br></i></small>' + b +
 			'URL: ' + b + xhr.target.responseURL.slice( 8 ).link( xhr.target.responseURL ) + b +
-			'Size: ' + xhr.total.toLocaleString() + ' bytes' + b +
+// or xhr.total ??
+			'Size: ' + xhr.loaded.toLocaleString() + ' bytes' + b +
 			'Last modified: ' + b + lastMod + b +
 		'';
 
@@ -562,6 +589,7 @@
 		xhr = new XMLHttpRequest();
 		xhr.crossOrigin = 'anonymous';
 		xhr.open( 'GET', url, true );
+		xhr.onerror = function(){ console.log( xhr ); }
 		xhr.onload = callback;
 		xhr.send( null );
 
@@ -572,22 +600,22 @@
 
 		'<details>' +
 
-		'<summary><h3>Settings</h3></summary>' +
+			'<summary><h3>Settings</h3></summary>' +
 
-		'<div><button onclick=TOO.cssColorsDark();  >Dark</button>' +
-			' <button onclick=TOO.cssColorsLight(); >Light</button>' +
-			' <button onclick=TOO.cssColorsSepia(); >Sepia</button>' +
-		'</div>' + b +
+			'<div><button onclick=TOO.cssColorsDark();  >Dark</button>' +
+				' <button onclick=TOO.cssColorsLight(); >Light</button>' +
+				' <button onclick=TOO.cssColorsSepia(); >Sepia</button>' +
+			'</div>' + b +
 
-		'<div><button onclick=TOO.cssFontOpenSans(); >Open Sans</button>' +
-			' <button onclick=TOO.cssFontInconsolata(); >Inconsolata</button>' +
-			' <button onclick=TOO.cssFontMonospace(); >Monospace</button>' +
-		'</div>' + b +
+			'<div><button onclick=TOO.cssFontOpenSans(); >Open Sans</button>' +
+				' <button onclick=TOO.cssFontInconsolata(); >Inconsolata</button>' +
+				' <button onclick=TOO.cssFontMonospace(); >Monospace</button>' +
+			'</div>' + b +
 
-		'<div><button onclick=TOO.cssFontSizeNormal(); >Normal</button>' +
-			' <button onclick=TOO.cssFontSizeLarger(); >Larger</button>' +
-			' <button onclick=TOO.cssFontSizeLargest(); >Largest</button>' +
-		'</div>' + b +
+			'<div><button onclick=TOO.cssFontSizeNormal(); >Normal</button>' +
+				' <button onclick=TOO.cssFontSizeLarger(); >Larger</button>' +
+				' <button onclick=TOO.cssFontSizeLargest(); >Largest</button>' +
+			'</div>' + b +
 
 		'</details>' +
 	'';
