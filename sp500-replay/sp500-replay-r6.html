@@ -102,10 +102,10 @@
 
 				'</details>' +
 
-				'<details /* id=detSymbols onclick=console.log(23);inpSearch.focus(); */ open>' +
+				'<details  id=detSymbols onclick=inpSearch.focus(); open>' +
 					'<summary><h3>Symbol Highlight</h3></summary>' +
 
-					'<p ><input id=inpSearch size=5 ></p>' +
+					'<p >🔍 <input id=inpSearch size=5 ></p>' +
 					'<p ><select id=selSymbols size=10 ></select></p>' +
 
 				'</details>' +
@@ -230,7 +230,6 @@
 		fileName = 'https://api.github.com/repos/jaanga/sp500/contents/trades';
 
 		xhr = new XMLHttpRequest();
-//		xhr.crossOrigin = 'anonymous';
 		xhr.open( 'GET', fileName, true );
 //		xhr.onerror = function( xhr ) { console.log( 'error', xhr  ); };
 		xhr.onload = callback;
@@ -240,8 +239,6 @@
 
 			text = xhr.target.response;
 			files = JSON.parse( text );
-
-// console.log( text);
 
 			files2 = [];
 
@@ -281,7 +278,6 @@
 		index = 0;
 
 		xhr = new XMLHttpRequest();
-//		xhr.crossOrigin = 'anonymous';
 		xhr.open( 'GET', folder + fname, true );
 		xhr.onload = callback;
 		xhr.send( null );
@@ -327,8 +323,6 @@
 				for ( var j = 1; j < symbolData.length - 1; j++ ) {
 
 					trade = symbolData[ j ].split( ',' );
-
-//console.log( 'trade', trade );
 
 					minute = j === 1 ? 0 : parseInt( trade[ 0 ], 10 );
 
@@ -566,74 +560,6 @@
 
 ////////////////////////
 
-	function toggleBackgroundGradient() {
-
-// 2016-07-18
-
-		var col = function() { return ( 0.5 + 0.5 * Math.random() ).toString( 16 ).slice( 2, 8 ); };
-		var pt = function() { return ( Math.random() * window.innerWidth ).toFixed( 0 ); }
-		var image = document.body.style.backgroundImage;
-
-		document.body.style.backgroundImage = image ? '' : 'radial-gradient( circle farthest-corner at ' +
-				pt() + 'px ' + pt() + 'px, #' + col() + ' 0%, #' + col() + ' 50%, #' + col() + ' 100% ) ';
-
-	}
-
-
-// update
-
-	function addLights( size ) {
-
-// 2016-02-21 ~ http://jaanga.github.io/cookbook-threejs/templates/add-lights/template-threejs-lights-r2.html
-
-		var size = size ? size : 100;
-		var lightAmbient, lightPoint;
-
-		lightAmbient = new THREE.AmbientLight( 0x444444 );
-		scene.add( lightAmbient );
-
-		lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.5 );
-		lightDirectional.position.set( -size, size, size );
-		lightDirectional.shadow.camera.scale.set( 50, 50, 1 );
-
-		lightDirectional.shadow.mapSize.width = 2048;  // default 512
-		lightDirectional.shadow.mapSize.height = 2048;
-
-		lightDirectional.castShadow = true;
-		scene.add( lightDirectional );
-
-		scene.add( new THREE.CameraHelper( lightDirectional.shadow.camera ) );
-
-		lightPoint = new THREE.PointLight( 0xffffff, 0.95 );
-		camera.add( lightPoint );
-		lightPoint.position = new THREE.Vector3( 0, 0, 1 );
-
-		scene.add( camera );
-
-	}
-
-
-	function addShadows() {
-
-// 2017-01-02 ~ http://jaanga.github.io/cookbook-threejs/templates/add-lights/template-threejs-lights-r3.html
-
-		renderer.shadowMap.enabled = true;
-		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-		scene.traverse( function ( child ) {
-
-			if ( child instanceof THREE.Mesh ) {
-
-				child.castShadow = true
-				child.receiveShadow = true;
-
-			}
-
-		} );
-
-	}
-
-
 	function drawTable() {
 
 		var geometry, material, mesh;
@@ -703,7 +629,6 @@
 		edgesMaterial.color.setRGB( 0.3, 0.3, 0.3 );
 		edges = new THREE.LineSegments( edgesGeometry, edgesMaterial );
 		mesh.add( edges ); // add wireframe as a child of the parent mesh
-
 
 // Labels
 		var sp, ar, axis;
@@ -790,6 +715,58 @@
 	}
 
 
+	function addLights() {
+
+// 2016-02-21 ~ http://jaanga.github.io/cookbook-threejs/templates/add-lights/template-threejs-lights-r2.html
+
+		var lightAmbient, lightPoint;
+
+		lightAmbient = new THREE.AmbientLight( 0x444444 );
+		scene.add( lightAmbient );
+
+		lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.5 );
+		lightDirectional.position.set( -100, 100, 100 );
+		lightDirectional.shadow.camera.scale.set( 50, 50, 1 );
+
+		lightDirectional.shadow.mapSize.width = 2048;  // default 512
+		lightDirectional.shadow.mapSize.height = 2048;
+
+		lightDirectional.castShadow = true;
+		scene.add( lightDirectional );
+
+		scene.add( new THREE.CameraHelper( lightDirectional.shadow.camera ) );
+
+		lightPoint = new THREE.PointLight( 0xffffff, 0.95 );
+		camera.add( lightPoint );
+		lightPoint.position = new THREE.Vector3( 0, 0, 1 );
+
+		scene.add( camera );
+
+	}
+
+
+
+	function addShadows() {
+
+// 2017-01-02 ~ http://jaanga.github.io/cookbook-threejs/templates/add-lights/template-threejs-lights-r3.html
+
+		renderer.shadowMap.enabled = true;
+		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+		scene.traverse( function ( child ) {
+
+			if ( child instanceof THREE.Mesh ) {
+
+				child.castShadow = true
+				child.receiveShadow = true;
+
+			}
+
+		} );
+
+	}
+
+
 	function toggleWireframe() {
 
 		scene.traverse( function ( child ) {
@@ -817,6 +794,7 @@
 				pt() + 'px ' + pt() + 'px, #' + col() + ' 0%, #' + col() + ' 50%, #' + col() + ' 100% ) ';
 
 	}
+
 
 	function onKeyUp ( event ) { //console.log( 'key', event.keyCode );
 
@@ -929,8 +907,11 @@
 	}
 
 	function highlight( s ) {
+
 		sym = symbols[ s ];
 console.log( '', sym );
+		idx = sym.trades.length - 1;
+
 		headsUp.style.left = 50 + 0.5 * window.innerWidth + 'px';
 		headsUp.style.top = -50 + 0.5 * window.innerHeight + 'px';
 		headsUp.style.display = '';
@@ -942,18 +923,17 @@ console.log( '', sym );
 //		'<div style="margin:0; background-color: #' + intersected.material.color.getHexString() + ';" >' + sym.sector + '</div>' +
 		'<img src="https://www.google.com/finance/chart?tlf=12&q=' + 'NASDAQ:' + sym.symbol +
 			'"  style="background: white;" /><br>' +
-		'<a href="https://www.google.com/finance?q=' + 'NASDAQ:' + sym.name + '" target="_blank">Google Finance: ' +
-			sym.name + '</a><br>' +
-//		'chg: ' + sym.trades[ index ].changePct + '%<br>' +
-		'vol: ' + sym.trades[ index ][ 5 ].toLocaleString() + '<br>' +
+		'<a href="https://www.google.com/finance?q=' + 'NASDAQ:' + sym.symbol + '" target="_blank">Google Finance: ' +
+			sym.symbol + '</a><br>' +
+		'chg: ' + ( 100 * ( symbol.trades[ idx ][1] - symbol.open ) / symbol.open ) + '%<br>' +
+		'vol: ' + sym.trades[ idx ][ 5 ].toLocaleString() + '<br>' +
 		'vol avg :' + sym.volumeAvg.toLocaleString() + '<br>' +
-		'vol/vol avg: ' + ( 100 * sym.volume / sym.volumeAvg ).toFixed(1) + '%<br>' +
+		'vol/vol avg: ' + ( 100 * sym.trades[ idx ][ 5 ] / sym.volumeAvg ).toFixed(1) + '%<br>' +
 		'mkt cap: ' + sym.marketCap.toLocaleString() +
 
 		'';
 
 		headsUp.innerHTML = txt;
-
 
 	}
 
