@@ -7,20 +7,17 @@
 [Jaanga SP500 Read Me]( index.html )
 ===
 
-
-### Full Screen Demo: [Jaanga SP500 Realtime]( https://jaanga.github.io/sp500/sp500-realtime/ )
-
 ### Full Screen Demo: [Jaanga SP500 Replay]( https://jaanga.github.io/sp500/sp500-replay/ )
 
 ### Full Screen Demo: [Jaanga SP500 Replay Dev]( https://jaanga.github.io/sp500/sp500-replay/dev/ )
 
+### Full Screen Demo: [Jaanga SP500 Realtime]( https://jaanga.github.io/sp500/sp500-realtime/ )
 
-## Web Page / Source Code
 
-<iframe class=ifr src="https://jaanga.github.io/sp500/sp500-realtime/sp500-realtime-r1.html" width=100% height=600px class='overview' ></iframe>
 
-###### _Jaanga SP500 Realtime - Build Revision - Code Edit View_ / [Open Full Screen]( https://jaanga.github.io/cookbook-html/templates/code-edit-view/code-edit-view-r2.html#https://jaanga.github.io/sp500/sp500-realtime/sp500-realtime-r1.html )
+## Web Page
 
+<iframe src="https://jaanga.github.io/sp500/sp500-replay/index.html" width=100% height=600px ></iframe>
 
 ## Concept
 

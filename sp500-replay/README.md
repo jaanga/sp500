@@ -22,8 +22,9 @@ _did you gain or lose?_
 ### Issues / Problems
 
 * 2017-03-26 ~ Utilities not showing up
+* 2017-03-26 ~ Replay bar needs much work
+* 2017-03-26 ~ Symbol highlight not yet highlighting symbols
 * 2017-03-26 ~ ****Colors, opacity, emissivity, lights, shading all need big looking at****
-
 
 
 ## Concept
@@ -54,14 +55,17 @@ See top page
 
 ## Change Log & Developer Notes
 
-### 2017-03-26 ~ Tho
+### 2017-03-26 ~ Theo
+
+Code getting big and messy. Needs a cleanup
+
 
 * Add Sector Highlight
 * Add beginning of replay control bar
 
 ### 2017-03-25 ~ Theo
 
-* Add Read me
+* Add read me to Replay fol
 * R6Highlight
 * Add Symbol
 
