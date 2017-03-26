@@ -2,7 +2,7 @@
 <span style=display:none; >[You are now in a GitHub source code view - click this button to view this read me file as a web page]( https://jaanga.github.io/sp500/sp500-replay/ "View file as a web page." ) </span>
 <div><input type=button value='You are now in GitHub web page view - Click this button to view Read Me file as source code' onclick=window.location.href='https://github.com/jaanga/sp500/sp500-replay/'; /></div>
 
-[Jaanga]( https://jaanga.github.io/ ) &raquo; [Jaanga SP500 Read Me]( https://jaanga.github.io/sp500/index.html ) &raquo;
+### [Jaanga]( https://jaanga.github.io/ ) &raquo; [Jaanga SP500 Read Me]( https://jaanga.github.io/sp500/index.html ) &raquo;
 
 [Jaanga SP500 Replay Read Me]( index.html )
 ===
@@ -16,7 +16,7 @@ _did you gain or lose?_
 
 ## Web Page
 
-<iframe class=ifr src="https://jaanga.github.io/sp500/sp500-replay/index.html" width=100% height=600px class='overview' ></iframe>
+<iframe src="https://jaanga.github.io/sp500/sp500-replay/index.html" width=100% height=600px ></iframe>
 
 
 ### Issues / Problems
@@ -52,7 +52,6 @@ See top page
 ### 2017-03-26 ~ Theo
 
 Code getting big and messy. Needs a cleanup
-
 
 * Add Sector Highlight
 * Add beginning of replay control bar
