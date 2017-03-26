@@ -19,27 +19,33 @@ _did you gain or lose?_
 <iframe class=ifr src="https://jaanga.github.io/sp500/sp500-replay/index.html" width=100% height=600px class='overview' ></iframe>
 
 
-## Concept
-
-
-
 ### Issues / Problems
 
+* 2017-03-26 ~ Utilities not showing up
+* 2017-03-26 ~ ****Colors, opacity, emissivity, lights, shading all need big looking at****
+
+
+
+## Concept
+
+See top page
+
+<!---
 
 
 ### Mission
-<!-- a statement of a rationale, applicable now as well as in the future -->
+<!-- a statement of a rationale, applicable now as well as in the future
 
 
 
 
 ### Vision
-<!--  a descriptive picture of a desired future state -->
+<!--  a descriptive picture of a desired future state
 
 
 ## Usage Notes
 
-
+-->
 
 ## Copyright and License
 
@@ -48,12 +54,16 @@ _did you gain or lose?_
 
 ## Change Log & Developer Notes
 
+### 2017-03-26 ~ Tho
+
+* Add Sector Highlight
+* Add beginning of replay control bar
 
 ### 2017-03-25 ~ Theo
 
 * Add Read me
-* R6
-
+* R6Highlight
+* Add Symbol
 
 ***
 
