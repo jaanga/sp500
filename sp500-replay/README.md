@@ -4,7 +4,7 @@
 
 ### [Jaanga]( https://jaanga.github.io/ ) &raquo; [Jaanga SP500 Read Me]( https://jaanga.github.io/sp500/index.html ) &raquo;
 
-[Jaanga SP500 Replay Read Me]( index.html )
+[Jaanga SP500 Replay Read Me]( http://jaanga.github.io/sp500/index.html#sp500-replay/README.md )
 ===
 _did you gain or lose? SP500 replay ~ select and follow entire days of one minute intraday trading_
 

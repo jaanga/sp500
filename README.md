@@ -2,7 +2,7 @@
 <span style=display:none; >[You are now in a GitHub source code view - click this button to view this read me file as a web page]( https://jaanga.github.io/sp500/ "View file as a web page." ) </span>
 <div><input type=button value='You are now in GitHub web page view - Click this button to view Read Me file as source code' onclick=window.location.href='https://github.com/jaanga/sp500/'; /></div>
 
-[Jaanga]( https://jaanga.github.io/ ) &raquo;
+### [Jaanga]( https://jaanga.github.io/ ) &raquo;
 
 [Jaanga SP500 Read Me]( index.html )
 ===
@@ -49,13 +49,16 @@ It is quite difficult to note which are the outliers and which are in the middle
 
 Currently there is is a single app
 
-### [Trades Get]( https://jaanga.github.io/sp500/trades-get. )
+### [Trades Get]( https://jaanga.github.io/sp500/trades-get/ )
 
 * Request and obtain intraday trades for hundreds of stock market symbols for a number of days
+   * Save data to local drive
 
 ### Upcoming
 
 * Get official Twitter name for each symbol - using Twitter API
+* Save trades data directly to GitHub?
+* Gather trades data via Google Scripts Chron job?
 
 
 ## Data Visualization 3D
