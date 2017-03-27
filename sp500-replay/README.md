@@ -6,7 +6,7 @@
 
 [Jaanga SP500 Replay Read Me]( index.html )
 ===
-_did you gain or lose?_
+_did you gain or lose? SP500 replay ~ select and follow entire days of one minute intraday trading_
 
 
 ### Full Screen Demo: [Jaanga SP500 Replay ]( https://jaanga.github.io/sp500/sp500-replay/ )
@@ -19,6 +19,15 @@ _did you gain or lose?_
 <iframe src="https://jaanga.github.io/sp500/sp500-replay/index.html" width=100% height=600px ></iframe>
 
 
+### To Do / Upcoming
+
+* 2017-03-26 ~ update shapes to triangles, diaminds, stars, Xs and so on
+* Toggle log or linear table scales
+	* Prevent objects from going off the table
+* Add sounds
+* Add sun movement
+
+
 ### Issues / Problems
 
 * 2017-03-26 ~ Utilities not showing up
@@ -26,20 +35,17 @@ _did you gain or lose?_
 * 2017-03-26 ~ Symbol highlight not yet highlighting symbols
 * 2017-03-26 ~ ****Colors, opacity, emissivity, lights, shading all need big looking at****
 * Move 100% bar to correct position
-* Toggle log or linear table scales
-	* Prevent objects from going off the table
-* Add sounds
-* Add sun movement
 
 
 ## Concept
 
 See top page
+
 <!---
 ### Mission
-<!-- a statement of a rationale, applicable now as well as in the future
+a statement of a rationale, applicable now as well as in the future
 ### Vision
-<!--  a descriptive picture of a desired future state
+ a descriptive picture of a desired future state
 ## Usage Notes
 -->
 ## Copyright and License
