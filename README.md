@@ -40,8 +40,15 @@ It is quite difficult to note which are the outliers and which are in the middle
 * Help traders find interesting trading circumstances
 * Spin-offs might tackle: financial markets, currencies, weather, Internet traffic
 
+## Two types of Scripts here
 
-## Usage Notes
+* Data visualization
+* Data gathering
+
+
+
+
+## Data visualization Usage Notes
 
 The first time you run the Jaanga SP500 script, you may need to refresh the page in order for everything to load properly.
 The script only runs on devices that support [WebGL]( https://get.webgl.org/ ).
@@ -103,6 +110,11 @@ All symbols start at zero. Symbols at the back have reached or exceeded 600% of 
 ## Things To Do / Road Map
 
 _One day this list will be as long as your arm_
+
+## Upcoming
+
+* Get official Twitter name for each symbol - using Twitter API
+
 
 ### User Interface
 
