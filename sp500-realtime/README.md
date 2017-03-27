@@ -6,35 +6,37 @@
 
 [Jaanga SP500 Realtime Read Me]( index.html#sp500-realtime/README.md )
 ===
-_SP500 near realtime ~ updates about once a minute_
+_SP500 near realtime ~ tracks over 500 symbol with updates about once a minute_
+
+
+### Full Screen Demo: [Jaanga SP500 Realtime Dev]( https://jaanga.github.io/sp500/sp500-realtime/dev )
 
 
 ### Full Screen Demo: [Jaanga SP500 Realtime]( https://jaanga.github.io/sp500/sp500-realtime/ )
 
 
+## Web Page / Dev
 
-## Web Page
-
-<iframe class=ifr src="https://jaanga.github.io/sp500/sp500-realtime/index.html" width=100% height=600px class='overview' ></iframe>
+<iframe class=ifr src="https://jaanga.github.io/sp500/sp500-realtime/dev/index.html" width=100% height=600px class='overview' ></iframe>
 
 
 ## Concept
 
 
-
-### Issues / Problems
-
-
-
 ### Mission
 <!-- a statement of a rationale, applicable now as well as in the future -->
-
-
-
 
 ### Vision
 <!--  a descriptive picture of a desired future state -->
 
+
+### Issues / Problems
+
+* 2017-03-27 ~ Not yet tested when market is open
+
+## To Do
+
+* Add snail slime
 
 ## Usage Notes
 
@@ -48,6 +50,17 @@ _SP500 near realtime ~ updates about once a minute_
 ## Change Log & Developer Notes
 
 
+### 2017-03-27 ~ Theo
+
+Separating into modules went very easily
+
+* SP500 Realtime R2
+* Matches sp500 replay R2 in functionality
+* Code is split into separate JavaScript files and namespaced
+
+### 2017-03-27 ~ Theo
+
+* Update read me
 
 
 ***
