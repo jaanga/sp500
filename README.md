@@ -13,7 +13,7 @@
 
 ### Full Screen Demo: [Jaanga SP500 Realtime]( https://jaanga.github.io/sp500/sp500-realtime/ )
 
-
+### Full Screen Demo: [Jaanga SP500 Realtime Dev]( https://jaanga.github.io/sp500/sp500-realtime/dev/ )
 
 ## Web Page
 
@@ -63,9 +63,17 @@ Currently there is is a single app
 
 ## Data Visualization 3D
 
+There are two scripts of note here
+
+* SP500 Realtime
+	* SP500 near realtime ~ updates about once a minute
+* SP500 Replay
+	* SP500 replay ~ select and follow entire days of one minute intraday trading
+
+
 ### Usage Notes
 
-The first time you run the Jaanga SP500 script, you may need to refresh the page in order for everything to load properly.
+The first time you run the Jaanga SP500 scripts, you may need to refresh the page in order for everything to load properly.
 The script only runs on devices that support [WebGL]( https://get.webgl.org/ ).
 
 Once the script is running, updates will occur every minute or so - and you will see the symbols move just a bit,
