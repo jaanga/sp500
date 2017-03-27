@@ -21,6 +21,7 @@ _did you gain or lose? SP500 replay ~ select and follow entire days of one minut
 
 ### To Do / Upcoming
 
+* 2017-03-26 ~ Demo mode ~ Jump to next day and keep on playing
 * 2017-03-26 ~ update shapes to triangles, diamonds, stars, Xs and so on
 * Toggle log or linear table scales
 	* Prevent objects from going off the table

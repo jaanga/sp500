@@ -42,13 +42,25 @@ It is quite difficult to note which are the outliers and which are in the middle
 
 ## Two types of Scripts here
 
-* Data visualization
 * Data gathering
+* Data visualization 3D
+
+## Data Gathering
+
+Currently there is is a single app
+
+### [Trades Get]( https://jaanga.github.io/sp500/trades-get. )
+
+* Request and obtain intraday trades for hundreds of stock market symbols for a number of days
+
+### Upcoming
+
+* Get official Twitter name for each symbol - using Twitter API
 
 
+## Data Visualization 3D
 
-
-## Data visualization Usage Notes
+### Usage Notes
 
 The first time you run the Jaanga SP500 script, you may need to refresh the page in order for everything to load properly.
 The script only runs on devices that support [WebGL]( https://get.webgl.org/ ).
@@ -75,7 +87,7 @@ Symbol stuck at the edges of the table have gained or lost over 20%
 * Front/Start - Back/Finish. Movement from start to finish is based on volume - the current volume divided by the average daily volume.
 All symbols start at zero. Symbols at the back have reached or exceeded 600% of the symbols average daily volume in that session
 
-## Features SP500 Realtime
+### Features
 <!-- and benefits -->
 
 * Displays the positions of the entire SP500 in 3D
@@ -107,13 +119,9 @@ All symbols start at zero. Symbols at the back have reached or exceeded 600% of 
 
 
 
-## Things To Do / Road Map
+### Things To Do / Road Map
 
 _One day this list will be as long as your arm_
-
-## Upcoming
-
-* Get official Twitter name for each symbol - using Twitter API
 
 
 ### User Interface
