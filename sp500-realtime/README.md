@@ -32,7 +32,7 @@ _SP500 near realtime ~ tracks over 500 symbol with updates about once a minute_
 
 ### Issues / Problems
 
-* 2017-03-27 ~ Not yet tested when market is open
+
 
 ## To Do
 
@@ -49,6 +49,13 @@ _SP500 near realtime ~ tracks over 500 symbol with updates about once a minute_
 
 ## Change Log & Developer Notes
 
+
+### 2017-03-28 ~ Theo
+
+
+* Beginning to add snail slime
+* in process of simplifying the overly complex loading trades data code - taking its time
+* issue ~ 2017-03-27 ~ Not yet tested when market is open << seems to be mostly OK
 
 ### 2017-03-27 ~ Theo
 
