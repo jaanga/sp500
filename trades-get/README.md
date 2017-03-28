@@ -56,7 +56,7 @@ _request and obtain intraday trades for hundreds of stock market symbols for a n
 
 ### 2017-03-25 ~ Theo
 
-Search and select no really needed here but it's a simpler sandbox to play in compared to replay or realtime.
+Search and select is not really needed here but it's a simpler sandbox to play in compared to replay or realtime.
 But might help later with portfolio creation
 
 * Trades Get R5

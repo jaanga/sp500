@@ -15,6 +15,10 @@
 
 ### Full Screen Demo: [Jaanga SP500 Realtime Dev]( https://jaanga.github.io/sp500/sp500-realtime/dev/ )
 
+
+### Full Screen Demo: [Jaanga Trades Get]( https://jaanga.github.io/sp500/trades-get/ )
+
+
 ## Web Page
 
 <iframe src="https://jaanga.github.io/sp500/sp500-replay/index.html" width=100% height=600px ></iframe>

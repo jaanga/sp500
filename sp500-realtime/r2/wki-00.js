@@ -13,7 +13,6 @@
 
 	var symbols;
 	var symbolsObjects;
-	var symbolsLines;
 	var index = 0;
 
 	symbols = {};
@@ -29,6 +28,8 @@
 		loadWikiJSON();
 
 	}
+
+
 
 	function loadWikiJSON() {
 
@@ -49,7 +50,6 @@
 			symbols.meshes = [];
 			symbols.touchables = [];
 			symbols.trades = [];
-			symbols.updates = 0;
 
 			txt = '';
 
@@ -58,16 +58,14 @@
 				entry = entries[i];
 
 				symbol = {
-					symbol: entry.gsx$tickersymbol.$t, // t.replace( '.', '-' ),
+					symbol: entry.gsx$tickersymbol.$, // t.replace( '.', '-' ),
 					name: entry.gsx$security.$t,
 					sector: entry.gsx$gicssector.$t,
 					sectorID: parseInt( entry.gsx$sectorid.$t, 10 ),
 					industry: entry.gsx$gicssubindustry.$t,
 					cik: parseInt( entry.gsx$cik.$t, 10),
 					volumeAvg: parseInt( entry.gsx$volumeavg.$t, 10 ),
-					marketCap: parseInt( entry.gsx$marketcap.$t, 10 ),
-					trades : [],
-					vertices : []
+					marketCap: parseInt( entry.gsx$marketcap.$t, 10 )
 				};
 
 				symbols.keys[ i ] = symbol.symbol;
@@ -101,6 +99,7 @@ console.log( 'loaded', symbols.keys.length );
 
 			obj = new THREE.Object3D();
 			symbol = symbols[ symbols.keys[ i ] ];
+			symbol.trades = [];
 
 			material = new THREE.MeshPhongMaterial( {
 				color: colors[ symbol.sectorID ], // 0xffffff * Math.random(),
@@ -155,7 +154,7 @@ console.log( 'loaded', symbols.keys.length );
 	function loadTradeJSON() {
 
 		var xhr, data, entries, txt;
-		var entry, trade, symbol, diff, note;
+		var entry, trade;
 
 		sp500TradesPrevious = symbols.trades.slice( 0 );
 
@@ -169,7 +168,8 @@ console.log( 'loaded', symbols.keys.length );
 			data = xhr.responseText;
 			data = JSON.parse( data );
 			entries = data.feed.entry;
-			symbols.updates++;
+//			sp500TradesPrevious = symbols.trades.slice( 0 );
+			symbols.trades = [];
 			txt = '';
 
 			for ( var i = 0; i < entries.length; i++  ) {
@@ -181,70 +181,62 @@ console.log( 'loaded', symbols.keys.length );
 					parseInt( entry.gsx$volume.$t, 10 )
 				];
 
-// move to after check!!!!!
-
-				symbol.trades.push( trade );
+				symbols.trades.push( trade );
 
 //				txt += i + ' ' + entry.gsx$symbol.$t + ' ' + trade.toString() + '<br>';
 
 			}
 
-			note = '<br>updates: ' + symbols.updates;
+			if ( sp500TradesPrevious.length === 0 && symbols.trades.length > 500 ) { // first pass
 
-			if ( symbols.trades.length < 2 ) { // first pass
+console.log( 'difff sp500TradesPrevious.length', sp500TradesPrevious.length );
 
-console.log( 'first difff' );
+				for ( var i = 0; i < entries.length; i++ ) {
 
-				diff = true;
-				note = '<br><span style=color:red; >first updates</span>';
-
-				symbols.trades.push( entries );
-
-			}  else if ( symbols.updates > 2 ) {
-
-				for ( i = 1; i < symbols.keys.length ; i++ ) {
-
+					entry = entries[ i ];
 					symbol = symbols[ symbols.keys[ i ] ];
-
-					if ( symbol.trades[ symbol.trades.length - 1 ][ 1 ] !== symbol.trades[ symbol.trades.length - 2  ][ 1 ] ) {
-
-						diff = true;
-						note = '<br><span style=color:red; >update ' + symbol.symbol + '</span>';
-						symbols.trades.push( entries );
-
-console.log( 'update', symbol.symbol, symbol.trades[ symbol.trades.length - 1 ][ 1 ],  symbol.trades[ symbol.trades.length - 2  ][ 1 ] );
-
-//						break; // we have found a diff
-
-
-					}
-
-
+					trade = [
+						parseFloat( entry.gsx$changepct.$t ),
+						parseInt( entry.gsx$volume.$t, 10 )
+					];
+					symbol.trades.push( trade );
 
 				}
-
+				diff = true;
 
 			} else {
 
-				diff = false;
-				note = '<br>no update';
+				for ( i = 0; i < symbols.trades.length ; i++ ) {
+
+	//				if ( sp500TradesPrevious.length > 1 && !isNaN( symbols.trades[ i ][ 1 ] ) &&  symbols.trades[i][ 1 ] !== sp500TradesPrevious[ i ][ 1 ] ) {
+					if ( symbols.trades[i][ 1 ] !== sp500TradesPrevious[ i ][ 1 ] ) {
+
+	console.log( 'update',  symbols.trades[ i ], sp500TradesPrevious[ i ]);
+
+						sp500TradesPrevious = symbols.trades.slice( 0 );
+
+						diff = true;
+
+						break; // we have found a diff
+
+					} else {
+
+						diff = false;
+
+					}
+
+				}
 
 			}
+
+// no need diff - only for console use..
 
 //console.log( 'difference:', diff,  new Date().toLocaleTimeString() );
 
 			updateTime = new Date().toLocaleTimeString();
 			updateText = ''; //txt;
-			msg1.innerHTML = 'Debug info:<br>' + updateTime + note;
 
-			if ( diff === true ) {
-
-				updateSymbols();
-				updateLines();
-				msg2.innerHTML = 'ticks:' + symbols.trades.length;
-				msg3.innerHTML = updateText;
-
-			}
+			updateSymbols();
 
 // use the wait for free time thing
 			tim = setTimeout( loadTradeJSON, 5000 );
@@ -256,52 +248,37 @@ console.log( 'update', symbol.symbol, symbol.trades[ symbol.trades.length - 1 ][
 
 	function updateSymbols() {
 
-		var symbol, trade, x, z, vertex;
-
-		for ( var i = 0; i < symbols.keys.length; i++ ) {
-
-			symbol = symbols[ symbols.keys[ i ] ];
-			trade = symbol.trades[ symbol.trades.length - 1 ];
-
-			x = 10 * trade[ 0 ];
-			x = x > 150 ? 150 : x;
-			x = x < -150 ? -150 : x;
-
-			z = -200 * Math.log( 1 + trade[ 1 ] / symbol.volumeAvg );
-			z = z < -400 ? -400 : z;
-
-			vertex =  new THREE.Vector3( x, 0, z );
-			symbol.vertices.push( vertex );
-			symbols.meshes[ i ].position.copy( vertex )
-
-		}
-
-	}
-
-
-	function updateLines() {
-
-		var symbol;
-		var geometry, material, line;
-
-		scene.remove( symbolsLines );
-
-		symbolsLines = new THREE.Object3D();
+		var pos, note;
 
 		for ( var i = 0; i < symbols.keys.length; i++ ) {
 
 			symbol = symbols[ symbols.keys[ i ] ];
 
-			geometry = new THREE.Geometry();
-			geometry.vertices = symbol.vertices;
-			material = new THREE.LineBasicMaterial( { color: colors[ symbol.sectorID ], transparent: true } );
-			line = new THREE.Line( geometry, material );
-			line.userData.symbol = symbol.symbol;
-
-			symbolsLines.add( line );
+//			symbols.touchables[i].userData.changePct = symbols.trades[i][0];
+//			symbols.touchables[i].userData.volume = symbols.trades[i][1];
+			pos = 10 * symbols.trades[ i ][ 0 ];
+			pos = pos > 150 ? 150 : pos;
+			pos = pos < -150 ? -150 : pos;
+			symbols.meshes[ i ].position.x = pos;
+			pos = -200 * Math.log( 1 + symbols.trades[ i ][ 1 ] / symbol.volumeAvg );
+			symbols.meshes[ i ].position.z = pos < -400 ? -400 : pos;
 
 		}
 
-		scene.add( symbolsLines );
+		if ( updateText === updateTextPrevious ) {
+
+			note = '<br>no update';
+
+		} else {
+
+			note = '<br><span style=color:red; >update</span>';
+			sp500ticks.push( symbols.trades );
+
+		}
+
+		msg1.innerHTML = 'Debug info:<br>' + updateTime + note;
+		msg2.innerHTML = 'ticks:' + sp500ticks.length;
+		msg3.innerHTML = updateText;
+		updateTextPrevious = updateText;
 
 	}

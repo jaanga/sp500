@@ -35,14 +35,16 @@
 					'<p>' +
 						'<select id=selFiles onchange="requestFileTrades( this.value );" size=10 style=width:100%; ></select>' +
 					'</p>' +
-*/
+
 
 					'<p>Replaying day: <output id=outDate ><output> </p>' +
 					'<p>' +
 						'<button id=mnuControls onclick=replay(); >Play</button>' +
 						' <input type=range id=inpIndex min=0 max=390 step=1 value=0 oninput=index=inpIndex.value; title="0 to 390: OK" >' +
 					'</p>' +
+*/
 					'<p id=menuReplay></p>' +
+
 
 				'</details>' +
 
