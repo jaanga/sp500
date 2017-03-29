@@ -50,6 +50,17 @@ _SP500 near realtime ~ tracks over 500 symbol with updates about once a minute_
 ## Change Log & Developer Notes
 
 
+### 2017-03-29 ~ Theo
+
+* Realtime much simplified and seems to be updating well
+* Progress on replay portion of things but looks like will cause a number changes
+
+currently getting change % via google finance
+Change is from close, but my replay works on change from open
+maybe need new ss with current price - then could allow you to choose change from open or from close
+
+
+
 ### 2017-03-28 ~ Theo
 
 
