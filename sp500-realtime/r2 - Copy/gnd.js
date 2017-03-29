@@ -12,6 +12,7 @@
 
 		function v( x, y, z ){ return new THREE.Vector3( x, y, z ); }
 
+
 		var geometry, material, mesh;
 		var edgesGeometry, edgesMaterial, edges;
 

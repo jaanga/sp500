@@ -3,16 +3,11 @@
 
 	set.init = function() {
 
-		toggleBackgroundGradient();
-
-		renderer.domElement.addEventListener( 'click', function() {  controls.autoRotate = false; }, false );
-
 		window.addEventListener( 'resize', onWindowResize, false );
 		window.addEventListener( 'keyup', onKeyUp, false );
 
 
 	}
-
 
 	function toggleWireframe() {
 
@@ -67,16 +62,5 @@
 		event.clientY = event.touches[0].clientY;
 
 		onDocumentMouseMove( event );
-
-	}
-
-	function onWindowResize() {
-
-		camera.aspect = window.innerWidth / window.innerHeight;
-		camera.updateProjectionMatrix();
-
-		renderer.setSize( window.innerWidth, window.innerHeight );
-
-		stats.domElement.style.display = window.innerWidth < 500 ? 'none' : '';
 
 	}

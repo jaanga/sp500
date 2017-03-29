@@ -20,16 +20,17 @@
 		camera.position.set( 120, 100, 110 );
 
 // Controls
-
 		controls = new THREE.OrbitControls( camera, renderer.domElement );
 		controls.minDistance = 10;
 		controls.maxDistance = 800;
 		controls.target.set( 0, 20, -150 );
 		controls.autoRotate = true;
 
-
+		toggleBackgroundGradient();
 		addLights();
 		addShadows();
+
+		renderer.domElement.addEventListener( 'click', function() {  controls.autoRotate = false; }, false );
 
 	}
 
@@ -81,6 +82,19 @@
 			}
 
 		} );
+
+	}
+
+
+
+	function onWindowResize() {
+
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+
+		renderer.setSize( window.innerWidth, window.innerHeight );
+
+		stats.domElement.style.display = window.innerWidth < 500 ? 'none' : '';
 
 	}
 

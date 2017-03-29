@@ -1,17 +1,10 @@
 
 	var MNU = mnu = {};
 
-	var colors = [0x575757,0xAD2323,0x2A4BD7,0x1D6914,0x814A19,0x8126C0,0x81C57A,0x9DAFFF,0x29D0D0,0xFF9233,0xE9DEBB,0xFFCDF3,0xFFEE33,0xA0A0A0,0x000000,0xFFFFFF];
-	var sectors = [
-		'Consumer Discretionary','Consumer Staples','Energy','Financials','Health Care','Industrials',
-		'Information Technology', 'Materials','Real Estate','Telecommunication Services','Utilities'
-	];
-
-
 	mnu.init = function() {
 
 
-		let txt = '';
+		var txt = '';
 
 		for ( var i = 0; i < sectors.length; i++ ) {
 
@@ -21,18 +14,17 @@
 
 		mnuSector.innerHTML = txt + '<button onclick=resetSectors(); >Reset Sectors</button>';
 
-		inpSearch.onclick = function() { this.select(); }
-		inpSearch.onkeyup = function() { setSearch(); }
-
 	}
-
 
 
 	function setMenuSymbolSelect() {
 
+		inpSearch.onclick = function() { this.select(); }
+		inpSearch.onkeyup = function() { setSearch(); }
+
 		selSymbols.onclick = function() { highlight( selSymbols.value ); }
 
-		for ( let i = 0; i < symbols.keys.length; i++ ) {
+		for ( var i = 0; i < symbols.keys.length; i++ ) {
 
 			selSymbols[ i ] = new Option( symbols.keys[ i ] );
 
@@ -45,13 +37,13 @@
 
 	function setSearch() {
 
-		let syms, letters;
+		var syms, letters;
 
 		syms = [];
 
 		letters = inpSearch.value.toUpperCase();
 
-		for ( let i = 0; i < symbols.keys.length; i++ ) {
+		for ( var i = 0; i < symbols.keys.length; i++ ) {
 
 			if ( symbols.keys[ i ].indexOf( letters ) > -1 ) {
 
@@ -63,9 +55,7 @@
 
 		selSymbols.innerHTML = '';
 
-// combine into single loop??
-
-		for ( let i = 0; i < syms.length; i++ ) {
+		for ( var i = 0; i < syms.length; i++ ) {
 
 			selSymbols[ i ] = new Option( syms[ i ] );
 

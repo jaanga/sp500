@@ -1,6 +1,12 @@
 
 	HTM = {};
 
+	var colors = [0x575757,0xAD2323,0x2A4BD7,0x1D6914,0x814A19,0x8126C0,0x81C57A,0x9DAFFF,0x29D0D0,0xFF9233,0xE9DEBB,0xFFCDF3,0xFFEE33,0xA0A0A0,0x000000,0xFFFFFF];
+	var sectors = [
+		'Consumer Discretionary','Consumer Staples','Energy','Financials','Health Care','Industrials',
+		'Information Technology', 'Materials','Real Estate','Telecommunication Services','Utilities'
+	];
+
 	HTM.init = function()  {
 
 		let container;
@@ -20,10 +26,11 @@
 				'<p><small><i>' + document.head.querySelector("[name=description]").content + '</i></small></p>' +
 
 				'<details open>' +
-					'<summary><h3>Debug</h3></summary>' +
+					'<summary><h3>Menu</h3></summary>' +
 
-					'<div id=mnuWKI ></div>' +
-					'<div id=mnuTRD ></div>' +
+					'<div id=msg1 ></div>' +
+					'<div id=msg2 ></div>' +
+					'<div id=msg3 ></div>' +
 /*
 					'<p>' +
 						'<select id=selFiles onchange="requestFileTrades( this.value );" size=10 style=width:100%; ></select>' +
