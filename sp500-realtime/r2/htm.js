@@ -24,10 +24,13 @@
 
 					'<div id=mnuWKI ></div>' +
 					'<div id=mnuTRD ></div>' +
+
 /*
 					'<p>' +
-						'<select id=selFiles onchange="requestFileTrades( this.value );" size=10 style=width:100%; ></select>' +
+						'<button onclick=REP.init(); style=width:100%; >Load prior trades</button>' +
 					'</p>' +
+					'<div id=log ></div>' +
+					'<div id=log2 ></div>' +
 
 
 					'<p>Replaying day: <output id=outDate ><output> </p>' +
