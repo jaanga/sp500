@@ -50,6 +50,12 @@ _SP500 near realtime ~ tracks over 500 symbol with updates about once a minute_
 ## Change Log & Developer Notes
 
 
+### 2017-03-30 ~ Theo
+
+* Realtime loads snail slime slime data
+* Realtime replays current days snail slime - with issues
+
+
 ### 2017-03-29 ~ Theo
 
 * Realtime much simplified and seems to be updating well

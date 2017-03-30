@@ -25,20 +25,18 @@
 					'<div id=mnuWKI ></div>' +
 					'<div id=mnuTRD ></div>' +
 
-/*
 					'<p>' +
 						'<button onclick=REP.init(); style=width:100%; >Load prior trades</button>' +
 					'</p>' +
-					'<div id=log ></div>' +
+					'<div id=log1 ></div>' +
 					'<div id=log2 ></div>' +
-
 
 					'<p>Replaying day: <output id=outDate ><output> </p>' +
 					'<p>' +
 						'<button id=mnuControls onclick=replay(); >Play</button>' +
 						' <input type=range id=inpIndex min=0 max=390 step=1 value=0 oninput=index=inpIndex.value; title="0 to 390: OK" >' +
 					'</p>' +
-*/
+
 					'<p id=menuReplay></p>' +
 
 

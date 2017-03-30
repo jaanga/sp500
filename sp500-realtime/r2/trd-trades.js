@@ -1,12 +1,15 @@
 // https://docs.google.com/spreadsheets/d/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/edit#gid=1750244370
 	var TradeDataFileName = 'https://spreadsheets.google.com/feeds/list/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/1/public/values?alt=json';
 
+	tickUpdate = 2;
 
 	function loadTradeJSON() {
 
 		let xhr, response, txt;
 		let cells, cell, trades, trade, symbol, diff, note;
 		const b = '<br>';
+
+
 
 		trades = [];
 		txt = '';
@@ -55,7 +58,9 @@
 
 					symbol = symbols[ symbols.keys[ i ] ];
 
-					if ( symbol.trades[ symbol.trades.length - 1 ][ 1 ] !== trades[ i ][ 1 ] ) {
+if ( !trades[ i ][ 1 ] || !symbol.trades[ symbol.trades.length - 1 ] ) { console.log( 'trd', i, trades ); break; }
+
+					if ( trades[ i ][ 1 ] && symbol.trades[ symbol.trades.length - 1 ][ 1 ] !== trades[ i ][ 1 ] ) {
 
 //console.log( 'diff', symbol.symbol );
 
@@ -71,10 +76,10 @@
 
 			updateTime = new Date().toLocaleTimeString();
 
-
 			if ( diff === true ) {
 
-				note = '<span style=color:red; >Tick at ' + symbols.updates + ' with diff at ' + symbol.symbol + '</span>';
+				note = ' <span style=color:red; >' + symbols.updates + ' diff at ' + symbol.symbol + '</span>';
+				tickUpdate = note;
 				addTrades();
 
 				updateSymbols();
@@ -91,7 +96,7 @@
 				updateTime + b +
 				'updates: ' + symbols.updates + b +
 				note + b +
-				'ticks: ' + symbols["AAPL"].trades.length + b +
+				'ticks: ' + symbols["AAPL"].trades.length + ' at update ' + tickUpdate + b +
 
 			'';
 
@@ -145,8 +150,8 @@
 
 	function updateLines() {
 
-		var symbol;
-		var geometry, material, line;
+		let symbol;
+		let geometry, material, line;
 
 		scene.remove( symbols.lines );
 
