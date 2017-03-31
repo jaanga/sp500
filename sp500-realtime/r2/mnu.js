@@ -1,8 +1,8 @@
 
-	var MNU = mnu = {};
+	let MNU = mnu = {};
 
-	var colors = [0x575757,0xAD2323,0x2A4BD7,0x1D6914,0x814A19,0x8126C0,0x81C57A,0x9DAFFF,0x29D0D0,0xFF9233,0xE9DEBB,0xFFCDF3,0xFFEE33,0xA0A0A0,0x000000,0xFFFFFF];
-	var sectors = [
+	let colors = [0x575757,0xAD2323,0x2A4BD7,0x1D6914,0x814A19,0x8126C0,0x81C57A,0x9DAFFF,0x29D0D0,0xFF9233,0xE9DEBB,0xFFCDF3,0xFFEE33,0xA0A0A0,0x000000,0xFFFFFF];
+	let sectors = [
 		'Consumer Discretionary','Consumer Staples','Energy','Financials','Health Care','Industrials',
 		'Information Technology', 'Materials','Real Estate','Telecommunication Services','Utilities'
 	];
@@ -13,7 +13,7 @@
 
 		let txt = '';
 
-		for ( var i = 0; i < sectors.length; i++ ) {
+		for ( let i = 0; i < sectors.length; i++ ) {
 
 			txt += '<div onclick=showSector(' + ( i + 1 ) + '); ><span style=background-color:#' + colors[ i + 1 ].toString( 16 ) + '; >&nbsp; &nbsp; &nbsp; </span> &nbsp;' + sectors[ i ].slice(0,25) + '</div>';
 
@@ -81,7 +81,7 @@
 
 console.log( 'id', id );
 
-		for ( var i = 0; i < symbols.touchables.length; i++ ) {
+		for ( let i = 0; i < symbols.touchables.length; i++ ) {
 
 			tch = symbols.touchables[ i ];
 
@@ -110,7 +110,7 @@ console.log( 'id', id );
 
 	function resetSectors() {
 
-		for ( var i = 0; i < symbols.touchables.length; i++ ) {
+		for ( let i = 0; i < symbols.touchables.length; i++ ) {
 
 			tch = symbols.touchables[ i ];
 

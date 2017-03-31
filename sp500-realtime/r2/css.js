@@ -1,4 +1,4 @@
-	var CSS = {};
+	let CSS = {};
 
 	CSS.init = function() {
 

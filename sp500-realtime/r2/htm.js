@@ -16,6 +16,7 @@
 					'<a href="" title="Click here to refresh this page" >📈' + location.pathname.split( '/' ).pop().slice( 0, -5).replace( /-/g, ' ' ) + '</a>' +
 					' <a href=../../index.html#sp500-realtime/README.md onmouseover=popHelp.style.display=""; onmouseout=popHelp.style.display="none"; > &#x24D8; </a>' +
 				'</h2>' +
+
 				'<div class=popUp id=popHelp style=display:none; ><p>Hi there!</p>Click the i-in-circle, info icon for latest updates.</div>' +
 				'<p><small><i>' + document.head.querySelector("[name=description]").content + '</i></small></p>' +
 
@@ -26,7 +27,7 @@
 					'<div id=mnuTRD ></div>' +
 
 					'<p>' +
-						'<button onclick=REP.init(); style=width:100%; >Load prior trades</button>' +
+						'<button onclick=TKS.init(); style=width:100%; >Load prior trades</button>' +
 					'</p>' +
 					'<div id=log1 ></div>' +
 					'<div id=log2 ></div>' +
@@ -34,7 +35,7 @@
 					'<p>Replaying day: <output id=outDate ><output> </p>' +
 					'<p>' +
 						'<button id=mnuControls onclick=replay(); >Play</button>' +
-						' <input type=range id=inpIndex min=0 max=390 step=1 value=0 oninput=index=inpIndex.value; title="0 to 390: OK" >' +
+						' <input type=range id=inpIndex min=0 max=390 step=1 value=0 oninput=PLY.index=inpIndex.value; title="0 to 390: OK" >' +
 					'</p>' +
 
 					'<p id=menuReplay></p>' +
@@ -82,11 +83,11 @@
 
 					'<p>Click the \'i in a circle\' icon for more <a href=index.html#readme.md title="Click here for help and information" >help</a>.</p>' +
 					'<p>' +
-					'Keywords:' + b +
-					document.head.querySelector("[name=keywords]").content.replace( /,/g, ', ' ) + b + b +
-					'Revision Date:' + b +
-					document.head.querySelector("[name=date]").content + b + b +
-					'File name:' + b +
+						'Keywords:' + b +
+						document.head.querySelector("[name=keywords]").content.replace( /,/g, ', ' ) + b + b +
+						'Revision Date:' + b +
+						document.head.querySelector("[name=date]").content + b + b +
+						'File name:' + b +
 						location.pathname.split( '/' ).pop() + b +
 					'</p>' +
 					'<p>Copyright &copy; ' + ( new Date() ).getFullYear() + ' Jaanga authors. <a href=http://jaanga.github.io/home/r4/index.html#http://jaanga.github.io/jaanga-copyright-and-mit-license.md >MIT license</a>.</p>' +

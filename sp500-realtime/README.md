@@ -22,6 +22,7 @@ _SP500 near realtime ~ tracks over 500 symbol with updates about once a minute_
 
 ## Concept
 
+See SP500 home page
 
 ### Mission
 <!-- a statement of a rationale, applicable now as well as in the future -->
@@ -32,11 +33,12 @@ _SP500 near realtime ~ tracks over 500 symbol with updates about once a minute_
 
 ### Issues / Problems
 
-
+& Indiidual issues still not highlighting
 
 ## To Do
 
-* Add snail slime
+* Load and be able to highlight portfolios
+
 
 ## Usage Notes
 
@@ -49,10 +51,18 @@ _SP500 near realtime ~ tracks over 500 symbol with updates about once a minute_
 
 ## Change Log & Developer Notes
 
+### 2017-03-31 ~ Theo
+
+* Code cleanup
+* Update script file names for more clarity
+* Split loading prior trades and playing into two files
+* Fix some of the replay issues
+
 
 ### 2017-03-30 ~ Theo
 
 * Realtime loads snail slime slime data
+	* 2017-03-27 ~ Add snail slime
 * Realtime replays current days snail slime - with issues
 
 
