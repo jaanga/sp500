@@ -32,7 +32,7 @@
 
 		if ( symbols.index < getEnd ) {
 
-			requestFileYQL( symbols.keys[ symbols.index ].replace( '-', '.' ) );
+			requestFileYQL( symbols.keys[ symbols.index ] );
 
 			symbols.date.setTime( symbols[ 'MMM'].openTime );
 			symbols.ticksCount = symbols[ 'MMM'].ticks.length;
@@ -44,6 +44,9 @@
 console.timeEnd( 'time' );
 
 		}
+
+
+
 
 	}
 
@@ -77,9 +80,7 @@ console.timeEnd( 'time' );
 		xhr.send( null );
 
 		function callbackQuery( xhr ) {
-			sym = symbols[ symbol.replace( '.', '-') ];
-if ( !sym ) { console.log( '', symbol ); }
-
+			sym = symbols[ symbol ];
 			sym.ticks = [];
 			sym.vertices = [];
 
@@ -95,9 +96,11 @@ console.log( symbol, xhr.target.response );
 
 			}
 
-// if ( symbols.index === 0 ) { /* console.log( '', txt.query.results.body.split( '\n' ).slice( 7 )[ 0 ]  );}
+if ( symbols.index === 0 ) { console.log( '', txt.query.results.body.split( '\n' ).slice( 7 )[ 0 ]  );}
 
 			ticks = txt.query.results.body.split( '\n' ).slice( 7 );
+
+
 
 			if ( ticks.length === 0 ) {
 

@@ -33,7 +33,9 @@ See SP500 home page
 
 ### Issues / Problems
 
-& Indiidual issues still not highlighting
+* Gain/loss spread need adjusting
+* Set 100% bar correctly
+* Play prior trades has many issues
 
 ## To Do
 
@@ -50,6 +52,13 @@ See SP500 home page
 
 
 ## Change Log & Developer Notes
+
+### 2017-04-01 ~ Theo
+
+* Utilities sector now highlights properly - issue was in Google SS
+* Individual symbols now highlight
+* Symbols focus and search mouse and keyboard UI much improved
+* Reset symbols button added
 
 ### 2017-03-31 ~ Theo
 

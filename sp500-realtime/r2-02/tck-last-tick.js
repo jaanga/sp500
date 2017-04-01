@@ -39,7 +39,7 @@
 
 			if ( symbols.updates === 1 ) { // first pass
 
-//console.log( 'first update' );
+console.log( 'first update' );
 
 				diff = true;
 

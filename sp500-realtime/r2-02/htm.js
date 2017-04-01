@@ -46,9 +46,8 @@
 				'<details id=detSymbols >' +
 					'<summary><h3>Symbol Highlight</h3></summary>' +
 
-					'<p>🔍 <input id=inpSearch size=5 ></p>' +
-					'<p><select id=selSymbols size=10 style=width:100px; ></select></p>' +
-					'<p><button onclick=MNU.resetSectors(); >Reset Symbols</button></p>' +
+					'<p >🔍 <input id=inpSearch size=5 ></p>' +
+					'<p ><select id=selSymbols size=10 style=width:100px; ></select></p>' +
 
 				'</details>' +
 

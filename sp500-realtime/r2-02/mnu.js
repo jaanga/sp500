@@ -10,6 +10,7 @@
 
 	mnu.init = function() {
 
+
 		let txt = '';
 
 		for ( let i = 0; i < sectors.length; i++ ) {
@@ -18,17 +19,19 @@
 
 		}
 
-		mnuSector.innerHTML = txt + '<p><button onclick=MNU.resetSectors(); >Reset Sectors</button></p>';
+		mnuSector.innerHTML = txt + '<button onclick=MNU.resetSectors(); >Reset Sectors</button>';
 
 		inpSearch.onclick = function() { this.select(); } // highlights everything
 		inpSearch.onkeyup = function() { MNU.setSymbolSearch(); }
+
+
 
 	}
 
 
 	MNU.setMenuSymbolSelect = function() { // runs after symbols loaded
 
-//		detSymbols.open = true; // toggle for debug
+		detSymbols.open = true; // toggle for debug
 		detSymbols.ontoggle = function() { inpSearch.focus(); }
 
 		for ( let i = 0; i < symbols.keys.length; i++ ) {
@@ -39,18 +42,8 @@
 
 		selSymbols.selectedIndex = Math.floor( Math.random() * symbols.keys.length );
 
-// improve
-
-		selSymbols.onchange = function() {
-			highlight( selSymbols.value );
-			MNU.showSymbol( selSymbols.selectedIndex );
-		}
-
-		selSymbols.onfocus = function() {
-			highlight( selSymbols.value );
-			MNU.showSymbol( selSymbols.selectedIndex );
-		}
-
+		selSymbols.onchange = function() { highlight( selSymbols.value ); }
+		selSymbols.onfocus = function() { highlight( selSymbols.value ); }
 	}
 
 
@@ -78,38 +71,10 @@
 	}
 
 
-	MNU.showSymbol = function( index ) {
-
-		for ( let i = 0; i < symbols.touchables.length; i++ ) {
-
-			tch = symbols.touchables[ i ];
-
-			if ( index !== i ) {
-
-				tch.material.opacity = 0.1;
-				tch.children[0].material.opacity = 0;
-				tch.castShadow = false;
-				tch.receiveShadow = false;
-				symbols.meshes[ i ].children[ 1 ].visible = false;
-//				symbolsLines.children[ i ].material.opacity = 0.2;
-
-			} else {
-
-				tch.material.opacity = 0.85;
-				tch.children[0].material.opacity = 1;
-				tch.castShadow = true;
-				tch.receiveShadow = true;
-				symbols.meshes[ i ].children[ 1 ].visible = true;
-//				symbolsLines.children[ i ].material.opacity = 1;
-			}
-
-		}
-
-	}
-
-
 
 	MNU.showSector = function( id ) {
+
+console.log( 'id', id );
 
 		for ( let i = 0; i < symbols.touchables.length; i++ ) {
 
@@ -138,9 +103,6 @@
 
 	}
 
-
-
-
 	MNU.resetSectors = function() {
 
 		for ( let i = 0; i < symbols.touchables.length; i++ ) {
@@ -151,7 +113,7 @@
 			tch.children[0].material.opacity = 1;
 			tch.castShadow = true;
 			tch.receiveShadow = true;
-			symbols.meshes[ i ].children[ 1 ].visible = 1;
+			symbols.meshes[ i ].children[ 1 ].material.opacity = 1;
 //			symbolsLines.children[ i ].material.opacity = 1;
 
 		}
