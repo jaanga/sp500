@@ -6,6 +6,7 @@
 		CSS.css.innerHTML =
 
 			'body { font: 12pt monospace; margin: 0; overflow: hidden; }' +
+
 			'a { color: crimson; text-decoration: none; }' +
 			'a:hover { text-decoration: underline; }' +
 
