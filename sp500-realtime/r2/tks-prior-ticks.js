@@ -6,10 +6,10 @@
 
 		symbols.index = 0;
 
-		symbols.timeOpen = parseInt( '1490906965' + '000', 0 );
+		symbols.openTime = parseInt( '1490906965' + '000', 0 );
 
 		symbols.date = new Date();
-		symbols.date.setTime( symbols.timeOpen );
+		symbols.date.setTime( symbols.openTime );
 
 		getEnd = symbols.keys.length;
 
@@ -27,6 +27,7 @@
 		return d;
 
 	}
+
 
 	function getTicks() {
 
@@ -78,7 +79,8 @@ console.timeEnd( 'time' );
 
 		function callbackQuery( xhr ) {
 			sym = symbols[ symbol.replace( '.', '-') ];
-if ( !sym ) { console.log( '', symbol ); }
+
+if ( !sym ) { console.log( '', symbol );getTicks(); }
 
 			sym.ticks = [];
 			sym.vertices = [];
@@ -114,7 +116,6 @@ console.log( symbol, ticks );
 
 if ( symbols.index === 0 ) { console.log( '', sym.open  );}
 
-
 			for ( let i = 1; i < ticks.length - 1; i++ ) {
 
 				tck = ticks[ i ].split( ',');
@@ -134,8 +135,6 @@ if ( symbols.index === 0 ) { console.log( '', sym.open  );}
 
 			}
 
-			updateLine( sym );
-
 			symbols.index++;
 
 			log1.innerHTML = 'loaded: ' + symbols.index + ' ' + sym.symbol;
@@ -143,24 +142,6 @@ if ( symbols.index === 0 ) { console.log( '', sym.open  );}
 			getTicks();
 
 		}
-
-
-	}
-
-
-	function updateLine( symbol ) {
-
-//		let sym;
-		let geometry, material, line;
-
-		scene.remove( sym.line );
-		geometry = new THREE.Geometry();
-		geometry.vertices = sym.vertices;
-		material = new THREE.LineBasicMaterial( { color: colors[ symbol.sectorID ], transparent: true } );
-		sym.line = new THREE.Line( geometry, material );
-		sym.line.userData.symbol = sym.symbol;
-
-		scene.add( sym.line );
 
 	}
 

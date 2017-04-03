@@ -11,7 +11,7 @@ _did you gain or lose? SP500 replay ~ select and follow entire days of one minut
 
 ### Full Screen Demo: [Jaanga SP500 Replay ]( https://jaanga.github.io/sp500/sp500-replay/ )
 
-### Full Screen Demo: [Jaanga SP500 Replay Dev ]( https://jaanga.github.io/sp500/sp500-replay/dev )
+### Full Screen Demo: [Jaanga SP500 Replay Dev ]( https://jaanga.github.io/sp500/sp500-replay/dev/ )
 
 
 ## Web Page
@@ -31,9 +31,6 @@ _did you gain or lose? SP500 replay ~ select and follow entire days of one minut
 
 ### Issues / Problems
 
-* 2017-03-26 ~ Utilities not showing up
-* 2017-03-26 ~ Replay bar needs much work
-* 2017-03-26 ~ Symbol highlight not yet highlighting symbols
 * 2017-03-26 ~ ****Colors, opacity, emissivity, lights, shading all need big looking at****
 * Move 100% bar to correct position
 
@@ -55,6 +52,16 @@ a statement of a rationale, applicable now as well as in the future
 
 
 ## Change Log & Developer Notes
+
+
+### 2017-04-03 ~ Theo
+
+* R8
+* Updated to new modular format with name spaces etc
+* Has all the new features of the realtime player
+	* 2017-03-26 ~ Utilities not showing up
+	* 2017-03-26 ~ Replay bar needs much work
+	* 2017-03-26 ~ Symbol highlight not yet highlighting symbols
 
 ### 2017-03-26 ~ Theo
 
