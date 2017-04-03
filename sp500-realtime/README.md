@@ -30,6 +30,8 @@ See SP500 home page
 ### Vision
 <!--  a descriptive picture of a desired future state -->
 
+## Usage Notes
+
 
 ### Issues / Problems
 
@@ -40,10 +42,7 @@ See SP500 home page
 ## To Do
 
 * Load and be able to highlight portfolios
-
-
-## Usage Notes
-
+* Update shadows
 
 
 ## Copyright and License
@@ -52,6 +51,12 @@ See SP500 home page
 
 
 ## Change Log & Developer Notes
+
+
+### 2017-04-03 ~ Theo
+
+* Works on a phone. Yay! Heads-up appears when symbol is touched
+* Heads-up code cleaned up
 
 ### 2017-04-01 ~ Theo
 

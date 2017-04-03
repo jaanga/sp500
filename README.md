@@ -111,6 +111,8 @@ All symbols start at zero. Symbols at the back have reached or exceeded 600% of 
 * Full 3D ~ rotate, and and zoom in real-time
 	* Real-time animation or real-time data
 * Heads-up display with links and charts for individual symbols
+* Select a symbol from menu and see its position highlighted in the 3D display
+* Select a symbol by typing
 * Symbols colored by sector
 * Data wrangling
 	* Keeps all the data visible always
@@ -133,7 +135,6 @@ All symbols start at zero. Symbols at the back have reached or exceeded 600% of 
 	* Works on desktops, laptops, tablets and phones
 
 
-
 ### Things To Do / Road Map
 
 _One day this list will be as long as your arm_
@@ -141,8 +142,6 @@ _One day this list will be as long as your arm_
 
 ### User Interface
 
-* Select a symbol from menu and see its position highlighted in the 3D display
-* Select a symbol by typing
 * Alternative menu layouts
 * Create alternative color schemes
 
