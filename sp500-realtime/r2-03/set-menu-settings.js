@@ -5,6 +5,7 @@
 
 		toggleBackgroundGradient();
 
+
 		window.addEventListener( 'resize', onWindowResize, false );
 		window.addEventListener( 'keyup', onKeyUp, false );
 

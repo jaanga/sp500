@@ -1,42 +1,44 @@
 
 	let HED = hed = {}
 
+	let index;
+	let mouse = new THREE.Vector2();
+	let offset = new THREE.Vector3();
+	let intersected;
+
 	hed.init = function() {
 
-		window.index = undefined;
-		window.mouse = new THREE.Vector2();
-		window.intersected = undefined;
+// Heads Up
 
 		headsUp = document.body.appendChild( document.createElement( 'div' ) );
-		headsUp.style.cssText = 'background-color: #ddd; border-radius: 8px; display: none; opacity: 0.85; ' +
-			'padding: 0 5px 10px 5px; position: absolute; ';
+		headsUp.style.cssText = 'background-color: #ddd; border-radius: 8px; display: none; padding: 0 5px 10px 5px; opacity: 0.85; ' +
+			'position: absolute; ';
 
 		renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );
 		renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
-		renderer.domElement.addEventListener( 'touchstart', onDocumentTouchStart, false );
+		renderer.domElement.addEventListener( 'touchmove', onDocumentTouchStart, false ); // for mobile
 
 	}
 
 
 	function onDocumentMouseMove( event ) {
 
-		let raycaster, intersects;
+		let vector, raycaster, intersects, txt;
 
 		event.preventDefault();
 
 		mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
 		mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-		raycaster = new THREE.Raycaster();
-		raycaster.setFromCamera( mouse, camera );
+		vector = new THREE.Vector3( mouse.x, mouse.y, 0.5 ).unproject( camera );
+
+		raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
 
 		intersects = raycaster.intersectObjects( symbols.touchables );
 
-		if ( intersects.length > 0 ) {
+		if ( intersects.length > 0 && event.buttons < 1 ) {
 
-
-
-			if ( intersected !== intersects[ 0 ].object ) {
+			if ( intersected != intersects[ 0 ].object ) {
 
 				if ( intersected && intersected.material.emissive ) {
 
@@ -44,18 +46,28 @@
 
 				}
 
-				intersected = intersects[ 0 ].object
-
+				intersected = intersects[ 0 ].object;
 
 				if ( intersected.material.emissive ) {
 
 					intersected.currentHex = intersected.material.emissive.getHex();
 					intersected.material.emissive.setHex( 0xff0000 );
 
+					if ( intersected.name ) {
+
+						headsUp.style.left = 50 + 0.5 * window.innerWidth + mouse.x * 0.5 * window.innerWidth + 'px';
+						headsUp.style.top = -50 + 0.5 * window.innerHeight - mouse.y * 0.5 * window.innerHeight + 'px';
+						headsUp.style.display = '';
+
+						setHeadsUp( intersected.name );
+
+					}
+
 				}
 
-
 			}
+
+			document.body.style.cursor = 'pointer';
 
 		} else {
 
@@ -65,39 +77,31 @@
 
 			}
 
-			intersected = undefined;
+			intersected = null;
+
+			document.body.style.cursor = 'auto';
 
 		}
-
-		setHeadsUp( event );
 
 	}
 
 
+	function highlight( symbol ) {
 
-	function setHeadsUp( event ) {
-
-		let sym, idx, txt;
-		const b = '<br>';
-
-		if ( intersected === undefined ){
-
-			if ( event.type === 'touchstart' ) {
-
-				headsUp.style.display = 'none';
-
-			}
-
-			document.body.style.cursor = 'auto';
-			return;
-
-		}
-
-		headsUp.style.left = 50 + 0.5 * window.innerWidth + mouse.x * 0.5 * window.innerWidth + 'px';
-		headsUp.style.top = -50 + 0.5 * window.innerHeight - mouse.y * 0.5 * window.innerHeight + 'px';
+		headsUp.style.left = 50 + 0.5 * window.innerWidth + 'px';
+		headsUp.style.top = -50 + 0.5 * window.innerHeight + 'px';
 		headsUp.style.display = '';
 
-		sym = symbols[ intersected.name ];
+		setHeadsUp( symbol )
+
+	}
+
+
+	function setHeadsUp( symbol ) {
+
+		let sym, idx, txt;
+
+		sym = symbols[ symbol ];
 		index = index ? index : 0;
 		idx = sym.ticks.length > index ? index : sym.ticks.length - 1 ;
 
@@ -121,7 +125,6 @@
 		'';
 
 		headsUp.innerHTML = txt;
-		document.body.style.cursor = 'pointer';
 
 	}
 

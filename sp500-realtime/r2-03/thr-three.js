@@ -28,7 +28,6 @@
 		controls.autoRotate = true;
 
 		renderer.domElement.addEventListener( 'click', function() {  controls.autoRotate = false; }, false );
-		renderer.domElement.addEventListener( 'touchstart', function() {  controls.autoRotate = false; chkRotate.checked = false; }, false );
 
 		addLights();
 
