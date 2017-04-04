@@ -20,7 +20,7 @@ _request and obtain intraday trades for hundreds of stock market symbols for a n
 
 ## Concept
 
-
+Request and obtain stock market intraday data for hundreds of symbols sourced via Wikipedia, Google and Yahoo
 
 ### Issues / Problems
 
@@ -30,13 +30,13 @@ _request and obtain intraday trades for hundreds of stock market symbols for a n
 <!-- a statement of a rationale, applicable now as well as in the future -->
 
 
-
-
 ### Vision
 <!--  a descriptive picture of a desired future state -->
 
 
-### Get Trades
+### Wish List / To Do
+
+* Move to Google SS and daily trigger
 * Select exchange & portfolio
 * Get trades for selected symbols or portfolio of issues not in sp500
 * Display start index
@@ -53,6 +53,13 @@ _request and obtain intraday trades for hundreds of stock market symbols for a n
 
 
 ## Change Log & Developer Notes
+
+2017-04-04 ~ Theo
+
+Code could use much cleanup and streamlining
+
+* Fixed issues when there's a day with a new symbol
+* Added get single day of ticks
 
 ### 2017-03-25 ~ Theo
 

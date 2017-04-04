@@ -23,8 +23,6 @@ _did you gain or lose? SP500 replay ~ select and follow entire days of one minut
 
 * 2017-03-26 ~ Demo mode ~ Jump to next day and keep on playing
 * 2017-03-26 ~ update shapes to triangles, diamonds, stars, Xs and so on
-* Toggle log or linear table scales
-	* Prevent objects from going off the table
 * Add sounds
 * Add sun movement
 
@@ -32,12 +30,13 @@ _did you gain or lose? SP500 replay ~ select and follow entire days of one minut
 ### Issues / Problems
 
 * 2017-03-26 ~ ****Colors, opacity, emissivity, lights, shading all need big looking at****
-* Move 100% bar to correct position
 
 
 ## Concept
 
-See top page
+SP500 replay ~ select and follow entire days of one minute intraday trading.
+
+See also top page
 
 <!---
 ### Mission
@@ -53,6 +52,21 @@ a statement of a rationale, applicable now as well as in the future
 
 ## Change Log & Developer Notes
 
+
+### 2017-04-04 ~ Theo ~ 8.1
+
+* Code cleanup / many tweaks
+* Move 100% bar to correct position
+	* But average volume and calculated volume to seem to tie together
+* Make off the table volumes go up with log scale
+	* Toggle log or linear table scales  << dealt with
+	* Prevent objects from going off the table  << dealt with
+* Replay bar works as expected
+* Play/pause works as anticipated
+* Headsup shows correct numbers
+* Add rev numbers to title
+* Indicate progress when loading file
+*
 
 ### 2017-04-03 ~ Theo
 

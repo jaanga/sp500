@@ -2,8 +2,10 @@
 
 	CSS.init = function() {
 
-		CSS.css = document.head.appendChild( document.createElement( 'style' ) );
-		CSS.css.innerHTML =
+//		CSS.css = document.head.appendChild( document.createElement( 'style' ) );
+		document.head.innerHTML +=
+
+			'<style>' +
 
 			'body { font: 12pt monospace; margin: 0; overflow: hidden; }' +
 
@@ -30,6 +32,6 @@
 			'#menu { background-color: #eee; border: 1px #ccc solid; max-height: ' + window.innerHeight + 'px; overflow-x: hidden; overflow-y: auto; padding: 0 10px; position: absolute; width: 300px; }' +
 			'#menu h2 { margin: 0; }' +
 
-		'';
+		'</style>';
 
 	}

@@ -1,16 +1,11 @@
 
 	let MNU = mnu = {};
 
-	let colors = [0x575757,0xAD2323,0x2A4BD7,0x1D6914,0x814A19,0x8126C0,0x81C57A,0x9DAFFF,0x29D0D0,0xFF9233,0xE9DEBB,0xFFCDF3,0xFFEE33,0xA0A0A0,0x000000,0xFFFFFF];
-	let sectors = [
-		'Consumer Discretionary','Consumer Staples','Energy','Financials','Health Care','Industrials',
-		'Information Technology', 'Materials','Real Estate','Telecommunication Services','Utilities'
-	];
 
+	MNU.init = function() {
 
-	mnu.init = function() {
-
-		let txt = '';
+		let index, txt;
+		txt = '';
 
 		for ( let i = 0; i < sectors.length; i++ ) {
 
@@ -88,6 +83,8 @@
 
 	MNU.showSymbol = function( index ) {
 
+		let tch;
+
 		for ( let i = 0; i < symbols.touchables.length; i++ ) {
 
 			tch = symbols.touchables[ i ];
@@ -117,8 +114,9 @@
 	}
 
 
-
 	MNU.showSector = function( id ) {
+
+		let tch;
 
 		for ( let i = 0; i < symbols.touchables.length; i++ ) {
 
@@ -149,9 +147,9 @@
 	}
 
 
-
-
 	MNU.resetSectors = function() {
+
+		let tch;
 
 		for ( let i = 0; i < symbols.touchables.length; i++ ) {
 

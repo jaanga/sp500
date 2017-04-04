@@ -27,6 +27,8 @@
 		controls.target.set( 0, 20, -150 );
 		controls.autoRotate = true;
 
+		window.addEventListener( 'resize', onWindowResize, false );
+
 		renderer.domElement.addEventListener( 'click', function() {  controls.autoRotate = false; }, false );
 		renderer.domElement.addEventListener( 'touchstart', function() {  controls.autoRotate = false; chkRotate.checked = false; }, false );
 
@@ -34,65 +36,136 @@
 
 		addShadows();
 
-	}
-
-
-	function addLights() {
+			function addLights() {
 
 // 2016-02-21 ~ http://jaanga.github.io/cookbook-threejs/templates/add-lights/template-threejs-lights-r2.html
 
-		let lightAmbient, lightPoint;
+				let lightAmbient, lightPoint;
 
-		lightAmbient = new THREE.AmbientLight( 0x444444 );
-		scene.add( lightAmbient );
+				lightAmbient = new THREE.AmbientLight( 0x444444 );
+				scene.add( lightAmbient );
 
-		thr.lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.5 );
-		thr.lightDirectional.position.set( -100, 100, 100 );
-		thr.lightDirectional.shadow.camera.scale.set( 50, 50, 1 );
+				thr.lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.5 );
+				thr.lightDirectional.position.set( -100, 100, 100 );
+				thr.lightDirectional.shadow.camera.scale.set( 50, 50, 1 );
 
-		thr.lightDirectional.shadow.mapSize.width = 2048;  // default 512
-		thr.lightDirectional.shadow.mapSize.height = 2048;
+				thr.lightDirectional.shadow.mapSize.width = 2048;  // default 512
+				thr.lightDirectional.shadow.mapSize.height = 2048;
 
-		thr.lightDirectional.castShadow = true;
-		scene.add( thr.lightDirectional );
+				thr.lightDirectional.castShadow = true;
+				scene.add( thr.lightDirectional );
 
-		scene.add( new THREE.CameraHelper( thr.lightDirectional.shadow.camera ) );
+				scene.add( new THREE.CameraHelper( thr.lightDirectional.shadow.camera ) );
 
-		lightPoint = new THREE.PointLight( 0xffffff, 0.95 );
-		camera.add( lightPoint );
-		lightPoint.position = new THREE.Vector3( 0, 0, 1 );
+				lightPoint = new THREE.PointLight( 0xffffff, 0.95 );
+				camera.add( lightPoint );
+				lightPoint.position = new THREE.Vector3( 0, 0, 1 );
 
-		scene.add( camera );
-
-	}
-
-
-	function addShadows() {
-
-// 2017-01-02 ~ http://jaanga.github.io/cookbook-threejs/templates/add-lights/template-threejs-lights-r3.html
-
-		renderer.shadowMap.enabled = true;
-		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-		scene.traverse( function ( child ) {
-
-			if ( child instanceof THREE.Mesh ) {
-
-				child.castShadow = true
-				child.receiveShadow = true;
+				scene.add( camera );
 
 			}
 
-		} );
+
+			function addShadows() {
+
+// 2017-01-02 ~ http://jaanga.github.io/cookbook-threejs/templates/add-lights/template-threejs-lights-r3.html
+
+				renderer.shadowMap.enabled = true;
+				renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+				scene.traverse( function ( child ) {
+
+					if ( child instanceof THREE.Mesh ) {
+
+						child.castShadow = true
+						child.receiveShadow = true;
+
+					}
+
+				} );
+
+			}
+
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+				stats.domElement.style.display = window.innerWidth < 500 ? 'none' : '';
+
+			}
+
 
 	}
 
 
-	function animate() {
+	function drawSprite( text, scale, color, x, y, z ) {
+
+		let texture, spritMaterial, sprite;
+
+		texture = canvasText( text, color );
+		spriteMaterial = new THREE.SpriteMaterial( { map: texture, opacity: 1 } );
+		sprite = new THREE.Sprite( spriteMaterial );
+		sprite.position.set( x, y, z ) ;
+		sprite.scale.set( scale * texture.image.width, scale * texture.image.height );
+
+		return sprite;
+
+	}
+
+
+	function canvasText( textArray, color ) {
+
+		let canvas = document.createElement( 'canvas' );
+		let context = canvas.getContext( '2d' );
+		let width = 0, texture;
+
+		if ( typeof textArray === 'string' ) textArray = [ textArray ];
+
+		context.font = '48px sans-serif';
+
+		for ( let i = 0, len = textArray.length; i < len; i++) {
+
+			width = context.measureText( textArray[i] ).width > width ? context.measureText( textArray[i] ).width : width;
+
+		}
+
+		canvas.width = width + 20; // 480
+		canvas.height = textArray.length * 60;
+
+		context.fillStyle = color;
+		context.fillRect( 0, 0, canvas.width, canvas.height);
+
+		context.lineWidth = 1 ;
+		context.strokeStyle = '#000';
+		context.strokeRect( 0, 0, canvas.width, canvas.height);
+
+		context.fillStyle = '#000' ;
+		context.font = '48px sans-serif';
+
+		for ( i = 0, len = textArray.length; i < len; i++) {
+
+			context.fillText( textArray[i], 10, 48  + i * 60 );
+
+		}
+
+		texture = new THREE.Texture( canvas );
+		texture.minFilter = texture.magFilter = THREE.NearestFilter;
+		texture.needsUpdate = true;
+
+		return texture;
+
+	}
+
+
+	 THR.animate = function() {
 
 		controls.update();
 		stats.update();
 		renderer.render( scene, camera );
-		requestAnimationFrame( animate );
+		requestAnimationFrame( THR.animate );
 
 	}

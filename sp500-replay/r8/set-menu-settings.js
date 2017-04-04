@@ -5,7 +5,6 @@
 
 		toggleBackgroundGradient();
 
-		window.addEventListener( 'resize', onWindowResize, false );
 		window.addEventListener( 'keyup', onKeyUp, false );
 
 
@@ -50,31 +49,14 @@
 
 		switch( event.keyCode ) {
 
-			case 32: controls.autoRotate = !controls.autoRotate; break; // space bar
+			case 32:
+				controls.autoRotate = !controls.autoRotate;
+				PLY.playing = !PLY.playing;
+				mnuControls.innerHTML = 'Pause';
+				updatePosition();
+				break; // space bar
 
 		}
 
 	}
 
-	function onDocumentTouchStart( event ) {
-
-//		event.preventDefault();
-
-		event.clientX = event.touches[0].clientX;
-		event.clientY = event.touches[0].clientY;
-
-		onDocumentMouseMove( event );
-
-	}
-
-
-	function onWindowResize() {
-
-		camera.aspect = window.innerWidth / window.innerHeight;
-		camera.updateProjectionMatrix();
-
-		renderer.setSize( window.innerWidth, window.innerHeight );
-
-		stats.domElement.style.display = window.innerWidth < 500 ? 'none' : '';
-
-	}

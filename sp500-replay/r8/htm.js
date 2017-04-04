@@ -9,12 +9,13 @@
 		container = document.body.appendChild( document.createElement( 'div' ) );
 		container.id = 'container';
 		container.innerHTML =
+
 			'<div id=menu >' +
 
 				'<h2>' +
 					'<a href=http://jaanga.github.io/sp500/ title="Jaanga - your 3D happy place" > &#x2766 </a>' + b +
-					'<a href="" title="Click here to refresh this page" >📈' + location.pathname.split( '/' ).pop().slice( 0, -5).replace( /-/g, ' ' ) + '</a>' +
-					' <a href=../../index.html#sp500-realtime/README.md onmouseover=popHelp.style.display=""; onmouseout=popHelp.style.display="none"; > &#x24D8; </a>' +
+					'<a href="" title="Click here to refresh this page" >📈' + location.pathname.split( '/' ).pop().slice( 0, -5).replace( /-/g, ' ' ) + '.' + revNumber + ' </a>' +
+					' <a href=../../index.html#sp500-replay/README.md onmouseover=popHelp.style.display=""; onmouseout=popHelp.style.display="none"; > &#x24D8; </a>' +
 				'</h2>' +
 
 				'<div class=popUp id=popHelp style=display:none; ><p>Hi there!</p>Click the i-in-circle, info icon for latest updates.</div>' +
@@ -24,11 +25,10 @@
 					'<summary><h3>Trading Days</h3></summary>' +
 
 					'<p>' +
-						'<select id=selFiles onchange=requestFileTrades(this.value); size=10 style=width:100%; ></select>' +
+						'<select id=selFiles onchange=requestFileTicks(this.value); size=10 style=width:100%; ></select>' +
 					'</p>' +
 
-
-					'<p>Replaying day: <output id=outDate ><output> </p>' +
+					'<p><output id=outDate ><output> </p>' +
 
 					'<p id=menuReplay>&nbsp;</p>' +
 
@@ -36,7 +36,7 @@
 					'<p id=log2 ></p>' +
 
 					'<p>' +
-						' <input type=range id=inpIndex min=0 max=390 step=1 value=0 oninput=PLY.index=inpIndex.value; title="0 to 390: OK" style=width:100%;>' +
+						' <input type=range id=inpIndex min=0 max=390 step=1 value=0 oninput=PLY.index=inpIndex.value;updatePosition(); title="0 to 390: OK" style=width:100%;>' +
 					'</p>' +
 
 					'<p>' +

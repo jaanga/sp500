@@ -1,70 +1,85 @@
 
 	DAY = day = {};
 
-	var folder;
+	let symbols;
+	let folder;
+
 	folder = '../../trades/';
 
 	day.init = function() {
 
-		requestTradesFileNames();
+//		requestTradesFileNames();
 
-	}
+//			function requestTradesFileNames() {
 
-	function requestTradesFileNames() {
+				let fileName, text, files, files2;
 
-		var fileName, text, files, files2;
+				fileName = 'https://api.github.com/repos/jaanga/sp500/contents/trades';
 
-		fileName = 'https://api.github.com/repos/jaanga/sp500/contents/trades';
+				xhr = new XMLHttpRequest();
+				xhr.open( 'GET', fileName, true );
+				xhr.onerror = function( xhr ) { console.log( 'error', xhr  ); };
+				xhr.onload = callback;
+				xhr.send( null );
 
-		xhr = new XMLHttpRequest();
-		xhr.open( 'GET', fileName, true );
-//		xhr.onerror = function( xhr ) { console.log( 'error', xhr  ); };
-		xhr.onload = callback;
-		xhr.send( null );
+				function callback( xhr ) {
 
-		function callback( xhr ) {
+					text = xhr.target.response;
+					files = JSON.parse( text );
 
-			text = xhr.target.response;
-			files = JSON.parse( text );
+					files2 = [];
 
-			files2 = [];
+					for ( let i = 0; i < files.length; i++ ) {
 
-			for ( var i = 0; i < files.length; i++ ) {
+						file = files[ i ].name;
 
-				file = files[ i ].name;
+						if ( file.endsWith( '.csv' ) ) { files2.push( file ); }
 
-				if ( file.endsWith( '.csv' ) ) { files2.push( file ); }
+					}
 
-			}
+					for ( i = 0; i < files2.length; i++ ) {
 
-			for ( i = 0; i < files2.length; i++ ) {
+						selFiles[ files2.length - i - 1 ] = new Option( files2[ i ] );
 
-				selFiles[ files2.length - i - 1 ] = new Option( files2[ i ] );
+					}
 
-			}
+					selFiles.selectedIndex = 0;
 
-			selFiles.selectedIndex = 0;
+					requestFileTicks( selFiles.value );
 
-			requestFileTicks( selFiles.value );
+				}
 
-		}
+//			}
+
 
 	}
 
 
 	function requestFileTicks( fname ) {
 
-		var xhr, text, len, lines, line;
-		var info, symbol, tick, vol;
+		let xhr, text, len, lines, line;
+		let info, symbol, tick, vol;
+
+		if ( symbols ) {
+
+			scene.remove( symbols.objects, symbols.lines );
+
+		}
 
 		symbols = {};
 		symbols.keys = [];
-		symbols.touchables = [];
 		symbols.meshes = [];
 		symbols.lines = undefined;
+		symbols.touchables = [];
+		symbols.date = new Date();
+		PLY.index = 0;
+		PLY.playing = false;
+		mnuControls.innerHTML = 'Pause';
 
 		xhr = new XMLHttpRequest();
 		xhr.open( 'GET', folder + fname, true );
+		xhr.onerror = function( xhr ) { console.log( 'error', xhr  ); };
+		xhr.onprogress = function( xhr ) { outDate.innerHTML = '<span style=color:red; >Loaded ' + xhr.loaded + ' out of ' + xhr.total + '</span>'; };
 		xhr.onload = callback;
 		xhr.send( null );
 
@@ -76,15 +91,13 @@
 
 			symbols.openTime = parseInt( lines[ 0 ][ 1 ].slice( 1, 11 ) + '000', 0 );
 
-			symbols.date = new Date();
 			symbols.date.setTime( symbols.openTime );
 
-			outDate.innerHTML = symbols.date.toLocaleDateString();
-//			menuReplay.innerHTML = '';
+			outDate.innerHTML ='Replaying day: ' + symbols.date.toLocaleDateString();
 
 			len = lines.length - 1;
 
-			for ( var i = 0; i < len; i++ ) {
+			for ( let i = 0; i < len; i++ ) {
 
 				symbolData = lines[ i ];
 				info = symbolData[ 0 ].split( ',' );
@@ -93,6 +106,10 @@
 				vol = 0;
 
 				symbols.keys.push( info[ 0 ] );
+
+if ( isNaN( parseInt( info[ 3 ] ), 10 ) ){ console.log( '', symbolData ); }
+if ( isNaN( parseInt( info[ 5 ] ), 10 ) ){ console.log( '', symbolData ); }
+if ( isNaN( parseInt( info[ 6 ] ), 10 ) ){ console.log( '', symbolData ); }
 
 				symbol = symbols[ info[ 0 ] ] = {
 
@@ -106,9 +123,9 @@
 
 				}
 
-				if ( symbol.sector === 'Utilities' ) { symbol.sectorID = 11; }
+				if ( symbol.sector === 'Utilities' ) { symbol.sectorID = 11; } // to make up for wiki errors
 
-				for ( var j = 1; j < symbolData.length - 1; j++ ) {
+				for ( let j = 1; j < symbolData.length - 1; j++ ) {
 
 					tick = symbolData[ j ].split( ',' );
 
@@ -121,7 +138,7 @@
 						parseFloat( tick[ 3 ] ), parseFloat( tick[ 4 ] ),
 						vol ]
 
-					)
+					);
 
 				}
 
@@ -146,7 +163,7 @@
 
 		let geometry, material, mesh;
 		let edgesGeometry, edgesMaterial, edges;
-		let scale,  obj, sp;
+		let scale, obj, sp;
 
 		scene.remove( symbols.objects );
 
@@ -211,7 +228,9 @@
 
 	function getVertices() {
 
-		var len, symbol, tick, verts;
+		let len, symbol, tick, verts;
+
+
 
 		scene.remove( symbols.lines );
 
@@ -219,7 +238,7 @@
 
 		len = symbols.keys.length;
 
-		for ( var i = 0; i < len; i++ ) {
+		for ( let i = 0; i < len; i++ ) {
 
 			symbol = symbols[ symbols.keys[ i ] ];
 
@@ -227,10 +246,19 @@
 
 			if ( !symbol.ticks ) { console.log( 'no ticks', symbol.symbol ); continue; }
 
-			for ( var j = 0; j < symbol.ticks.length; j++ ) {
+
+			for ( let j = 0; j < symbol.ticks.length; j++ ) {
+
+				let v = new THREE.Vector3;
 
 				tick = symbol.ticks[ j ];
-				verts.push( new THREE.Vector3( 3000 * ( tick[ 1 ] - symbol.open ) / symbol.open, 0,  -200 * tick[ 5 ] /  symbol.volumeAvg ) );
+
+				v.x = 3000 * ( tick[ 1 ] - symbol.open ) / symbol.open;
+				v.z = -200 * tick[ 5 ] /  symbol.volumeAvg;
+				v.y = v.z < -400 ? 10 * Math.log( -400 - v.z ) : 0;
+				v.z = v.z < -400 ? -400 : v.z;
+
+				verts.push( v );
 
 			}
 
@@ -247,7 +275,7 @@
 
 	function drawLine( symbol ) {
 
-		var geometry, material, line;
+		let geometry, material, line;
 
 		geometry = new THREE.Geometry();
 		geometry.vertices = symbol.vertices;

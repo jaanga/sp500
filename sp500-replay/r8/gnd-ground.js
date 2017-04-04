@@ -1,7 +1,7 @@
 
 	let GND = gnd = {};
 
-	gnd.init = function() {
+	GND.init = function() {
 
 		function v( x, y, z ){ return new THREE.Vector3( x, y, z ); }
 
@@ -61,6 +61,7 @@
 
 		mesh = new THREE.Mesh( geometry, material );
 		mesh.position.set( 0, 0.5, -200 * Math.log( 2 ) );
+		mesh.position.set( 0, 0.5, -200 );
 		mesh.castShadow = true;
 		mesh.receiveShadow = true;
 		ground.add( mesh );
@@ -96,64 +97,4 @@
 		scene.add( ground );
 
 	}
-
-
-	function drawSprite( text, scale, color, x, y, z ) {
-
-		let texture, spritMaterial, sprite;
-
-		texture = canvasText( text, color );
-		spriteMaterial = new THREE.SpriteMaterial( { map: texture, opacity: 1 } );
-		sprite = new THREE.Sprite( spriteMaterial );
-		sprite.position.set( x, y, z ) ;
-		sprite.scale.set( scale * texture.image.width, scale * texture.image.height );
-
-		return sprite;
-
-	}
-
-
-	function canvasText( textArray, color ) {
-
-		let canvas = document.createElement( 'canvas' );
-		let context = canvas.getContext( '2d' );
-		let width = 0, texture;
-
-		if ( typeof textArray === 'string' ) textArray = [ textArray ];
-
-		context.font = '48px sans-serif';
-
-		for ( let i = 0, len = textArray.length; i < len; i++) {
-
-			width = context.measureText( textArray[i] ).width > width ? context.measureText( textArray[i] ).width : width;
-
-		}
-
-		canvas.width = width + 20; // 480
-		canvas.height = textArray.length * 60;
-
-		context.fillStyle = color;
-		context.fillRect( 0, 0, canvas.width, canvas.height);
-
-		context.lineWidth = 1 ;
-		context.strokeStyle = '#000';
-		context.strokeRect( 0, 0, canvas.width, canvas.height);
-
-		context.fillStyle = '#000' ;
-		context.font = '48px sans-serif';
-
-		for ( i = 0, len = textArray.length; i < len; i++) {
-
-			context.fillText( textArray[i], 10, 48  + i * 60 );
-
-		}
-
-		texture = new THREE.Texture( canvas );
-		texture.minFilter = texture.magFilter = THREE.NearestFilter;
-		texture.needsUpdate = true;
-
-		return texture;
-
-	}
-
 
