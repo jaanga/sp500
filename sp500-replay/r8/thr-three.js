@@ -101,7 +101,7 @@
 
 	}
 
-
+// See TKS, GND
 	THR.drawSprite = function( text, scale, color, x, y, z ) {
 
 		let texture, spritMaterial, sprite;

@@ -36,7 +36,7 @@
 						controls.autoRotate = !controls.autoRotate;
 						PLA.playing = !PLA.playing;
 						mnuControls.innerHTML = 'Pause';
-						updatePosition();
+						PLA.updatePosition();
 						break; // space bar
 
 				}

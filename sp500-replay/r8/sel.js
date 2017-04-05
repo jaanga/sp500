@@ -26,7 +26,7 @@
 				'<p id=menuReplay>&nbsp;</p>' +
 
 				'<p>' +
-					' <input type=range id=inpIndex min=0 max=390 step=1 value=0 oninput=PLA.index=inpIndex.value;updatePosition(); title="0 to 390: OK" style=width:100%;>' +
+					' <input type=range id=inpIndex min=0 max=390 step=1 value=0 oninput=PLA.index=inpIndex.value;PLA.updatePosition(); title="0 to 390: OK" style=width:100%;>' +
 				'</p>' +
 
 				'<p>' +

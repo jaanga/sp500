@@ -11,7 +11,7 @@
 			if ( PLA.index > symbols.ticksCount ) { PLA.index = 0; }
 			PLA.playing = true;
 			mnuControls.innerHTML = 'Pause';
-			updatePosition();
+			PLA.updatePosition();
 
 		} else {
 
@@ -22,8 +22,8 @@
 
 	}
 
-
-	function updatePosition() {
+// See SEL.init, SET.init
+	 PLA.updatePosition = function() {
 
 		let symbol, vertex, t;
 
@@ -53,7 +53,7 @@
 
 // window.requestIdleCallback ??
 
-			t = setTimeout( updatePosition, 100 );
+			t = setTimeout( PLA.updatePosition, 100 );
 
 		} else if ( PLA.playing === true ) {
 
@@ -67,7 +67,7 @@
 			} else {
 
 					inpIndex.value = PLA.index = 0;
-					t = setTimeout( updatePosition, 50 );
+					t = setTimeout( PLA.updatePosition, 50 );
 
 			}
 
