@@ -54,7 +54,7 @@ Request and obtain stock market intraday data for hundreds of symbols sourced vi
 
 ## Change Log & Developer Notes
 
-2017-04-04 ~ Theo
+### 2017-04-04 ~ Theo
 
 Code could use much cleanup and streamlining
 
