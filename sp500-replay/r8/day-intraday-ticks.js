@@ -107,9 +107,9 @@
 
 				symbols.keys.push( info[ 0 ] );
 
-if ( isNaN( parseInt( info[ 3 ] ), 10 ) ){ console.log( '', symbolData ); }
-if ( isNaN( parseInt( info[ 5 ] ), 10 ) ){ console.log( '', symbolData ); }
-if ( isNaN( parseInt( info[ 6 ] ), 10 ) ){ console.log( '', symbolData ); }
+if ( isNaN( parseInt( info[ 3 ] ), 10 ) ){ info[ 3 ] = 0; console.log( 'id', info ); }
+if ( isNaN( parseInt( info[ 5 ] ), 10 ) ){ info[ 5 ] = 100000000000;console.log( 'cap', info ); }
+if ( isNaN( parseInt( info[ 6 ] ), 10 ) ){ info[ 5 ] = 2000000;console.log( 'vol', info ); }
 
 				symbol = symbols[ info[ 0 ] ] = {
 

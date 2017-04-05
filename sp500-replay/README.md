@@ -10,26 +10,13 @@ _did you gain or lose? SP500 replay ~ select and follow entire days of one minut
 
 
 ### Full Screen Demo: [Jaanga SP500 Replay ]( https://jaanga.github.io/sp500/sp500-replay/ )
-
+<!--
 ### Full Screen Demo: [Jaanga SP500 Replay Dev ]( https://jaanga.github.io/sp500/sp500-replay/dev/ )
-
+-->
 
 ## Web Page
 
 <iframe src="https://jaanga.github.io/sp500/sp500-replay/index.html" width=100% height=600px ></iframe>
-
-
-### To Do / Upcoming
-
-* 2017-03-26 ~ Demo mode ~ Jump to next day and keep on playing
-* 2017-03-26 ~ update shapes to triangles, diamonds, stars, Xs and so on
-* Add sounds
-* Add sun movement
-
-
-### Issues / Problems
-
-* 2017-03-26 ~ ****Colors, opacity, emissivity, lights, shading all need big looking at****
 
 
 ## Concept
@@ -45,6 +32,20 @@ a statement of a rationale, applicable now as well as in the future
  a descriptive picture of a desired future state
 ## Usage Notes
 -->
+
+### To Do / Upcoming
+
+* 2017-03-26 ~ Demo mode ~ Jump to next day and keep on playing
+* 2017-03-26 ~ update shapes to triangles, diamonds, stars, Xs and so on
+* Add sounds
+* Add sun movement
+
+
+### Issues / Problems
+
+* 2017-03-26 ~ ****Colors, opacity, emissivity, lights, shading all need big looking at****
+
+
 ## Copyright and License
 
 * [Copyright and License]( https://jaanga.github.io/#https://jaanga.github.io/jaanga-copyright-and-mit-license.md )
