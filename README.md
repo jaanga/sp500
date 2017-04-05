@@ -9,7 +9,9 @@
 
 ### Full Screen Demo: [Jaanga SP500 Replay]( https://jaanga.github.io/sp500/sp500-replay/ )
 
+<!--
 ### Full Screen Demo: [Jaanga SP500 Replay Dev]( https://jaanga.github.io/sp500/sp500-replay/dev/ )
+-->
 
 ### Full Screen Demo: [Jaanga SP500 Realtime]( https://jaanga.github.io/sp500/sp500-realtime/ )
 
