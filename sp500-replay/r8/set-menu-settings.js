@@ -1,17 +1,52 @@
 
-	let SET = set = {};
+	let SET = {};
 
-	set.init = function() {
+	SET.init = function() {
 
-		toggleBackgroundGradient();
+		mnuSettings.innerHTML =
+
+			'<details>' +
+				'<summary><h3>Settings</h3></summary>' +
+				'<p><input type=checkbox onchange=symbols.lines.visible=!symbols.lines.visible; checked > Snail Slime</p>' +
+				'<p><input type=checkbox id=chkWire onchange=SET.toggleWireframe(); > Wireframe</p>' +
+				'<p><input type=checkbox onchange=GND.ground.visible=!GND.ground.visible; checked > Ground plane</p>' +
+				'<p><input type=checkbox onchange=GND.axisHelper.visible=!GND.axisHelper.visible; checked > Axes</p>' +
+				'<p><input type=checkbox onchange=THR.lightDirectional.shadow.camera.visible=!THR.lightDirectional.shadow.camera.visible; checked > lightbox</p>' +
+				'<p><input type=checkbox id=chkBackground onchange=SET.toggleBackgroundGradient(); checked > Gradient background</p>' +
+				'<p title="Press spacebar or click in window to stop." >' +
+					'<input type=checkbox id=chkRotate onchange=controls.autoRotate=!controls.autoRotate checked > Rotation ' +
+				'</p>'  +
+			'</details>' +
+		'';
+
+		SET.toggleBackgroundGradient();
 
 		window.addEventListener( 'keyup', onKeyUp, false );
 
+			function onKeyUp ( event ) {
+
+		//console.log( 'key', event.keyCode );
+
+				controls.enableKeys = false;
+				event.preventDefault();
+
+				switch( event.keyCode ) {
+
+					case 32:
+						controls.autoRotate = !controls.autoRotate;
+						PLA.playing = !PLA.playing;
+						mnuControls.innerHTML = 'Pause';
+						updatePosition();
+						break; // space bar
+
+				}
+
+			}
 
 	}
 
 
-	function toggleWireframe() {
+	SET.toggleWireframe = function() {
 
 		scene.traverse( function ( child ) {
 
@@ -26,7 +61,7 @@
 	}
 
 
-	function toggleBackgroundGradient() {
+	SET.toggleBackgroundGradient = function() {
 
 // 2016-07-18
 
@@ -38,25 +73,3 @@
 				pt() + 'px ' + pt() + 'px, #' + col() + ' 0%, #' + col() + ' 50%, #' + col() + ' 100% ) ';
 
 	}
-
-
-	function onKeyUp ( event ) {
-
-//console.log( 'key', event.keyCode );
-
-		controls.enableKeys = false;
-		event.preventDefault();
-
-		switch( event.keyCode ) {
-
-			case 32:
-				controls.autoRotate = !controls.autoRotate;
-				PLY.playing = !PLY.playing;
-				mnuControls.innerHTML = 'Pause';
-				updatePosition();
-				break; // space bar
-
-		}
-
-	}
-

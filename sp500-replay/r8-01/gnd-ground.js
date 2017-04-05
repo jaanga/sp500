@@ -1,5 +1,5 @@
 
-	let GND = {};
+	let GND = gnd = {};
 
 	GND.init = function() {
 
@@ -9,7 +9,7 @@
 		let edgesGeometry, edgesMaterial, edges;
 
 // Ground Plane
-		GND.ground = new THREE.Object3D();
+		ground = new THREE.Object3D();
 
 		geometry = new THREE.BoxGeometry( 150, 5, 400 );
 
@@ -23,7 +23,7 @@
 		mesh.position.set( 75, -2.6, -200 );
 		mesh.castShadow = true;
 		mesh.receiveShadow = true;
-		GND.ground.add( mesh );
+		ground.add( mesh );
 
 		edgesGeometry = new THREE.EdgesGeometry( mesh.geometry ); // or WireframeGeometry
 		edgesMaterial = new THREE.LineBasicMaterial();
@@ -42,7 +42,7 @@
 		mesh.position.set( -75, -2.51, -200 );
 		mesh.castShadow = true;
 		mesh.receiveShadow = true;
-		GND.ground.add( mesh );
+		ground.add( mesh );
 
 		edgesGeometry = new THREE.EdgesGeometry( mesh.geometry ); // or WireframeGeometry
 		edgesMaterial = new THREE.LineBasicMaterial();
@@ -64,7 +64,7 @@
 		mesh.position.set( 0, 0.5, -200 );
 		mesh.castShadow = true;
 		mesh.receiveShadow = true;
-		GND.ground.add( mesh );
+		ground.add( mesh );
 
 
 		edgesGeometry = new THREE.EdgesGeometry( mesh.geometry ); // or WireframeGeometry
@@ -76,25 +76,25 @@
 // Labels
 		let sp, ar, axis;
 
-		sp = THR.drawSprite( '0% vol avg', 0.1, '#ff00ff', -150, 12 , 0 );
+		sp = drawSprite( '0% vol avg', 0.1, '#ff00ff', -150, 12 , 0 );
 		sp.material.opacity = 0.5;
 		scene.add( sp );
 
 		ar = new THREE.ArrowHelper( v( 0, 1, 0 ), v( -150, 0, 0 ), 8, 0xff8888, 4, 3 );
-		GND.ground.add( ar );
+		ground.add( ar );
 
-		sp = THR.drawSprite( '100% vol avg', 0.1, '#ff00ff', -150, 12 , mesh.position.z );
+		sp = drawSprite( '100% vol avg', 0.1, '#ff00ff', -150, 12 , mesh.position.z );
 		sp.material.opacity = 0.5;
-		GND.ground.add( sp );
+		ground.add( sp );
 
-		sp = THR.drawSprite( '>600% vol avg', 0.1, '#ff00ff', -150, 12 , -200 * Math.log( 7 ) );
+		sp = drawSprite( '>600% vol avg', 0.1, '#ff00ff', -150, 12 , -200 * Math.log( 7 ) );
 		sp.material.opacity = 0.5;
-		GND.ground.add( sp );
+		ground.add( sp );
 
-		GND.axisHelper = new THREE.AxisHelper( 50 );
-		GND.ground.add( GND.axisHelper );
+		axisHelper = new THREE.AxisHelper( 50 );
+		ground.add( axisHelper );
 
-		scene.add( GND.ground );
+		scene.add( ground );
 
 	}
 

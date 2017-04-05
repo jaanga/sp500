@@ -53,6 +53,7 @@ See SP500 home page
 ## Change Log & Developer Notes
 
 
+
 ### 2017-04-03 ~ Theo
 
 * Works on a phone. Yay! Heads-up appears when symbol is touched

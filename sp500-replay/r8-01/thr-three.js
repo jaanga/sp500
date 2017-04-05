@@ -1,9 +1,9 @@
 
-	let THR = {};
+	let THR = thr = {};
 
 	let stats, renderer, scene, camera, controls;
 
-	THR.init = function() {
+	thr.init = function() {
 
 		stats = new Stats();
 		stats.domElement.style.cssText = 'position: absolute; right: 0; top: 0;' ;
@@ -45,17 +45,17 @@
 				lightAmbient = new THREE.AmbientLight( 0x444444 );
 				scene.add( lightAmbient );
 
-				THR.lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.5 );
-				THR.lightDirectional.position.set( -100, 100, 100 );
-				THR.lightDirectional.shadow.camera.scale.set( 50, 50, 1 );
+				thr.lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.5 );
+				thr.lightDirectional.position.set( -100, 100, 100 );
+				thr.lightDirectional.shadow.camera.scale.set( 50, 50, 1 );
 
-				THR.lightDirectional.shadow.mapSize.width = 2048;  // default 512
-				THR.lightDirectional.shadow.mapSize.height = 2048;
+				thr.lightDirectional.shadow.mapSize.width = 2048;  // default 512
+				thr.lightDirectional.shadow.mapSize.height = 2048;
 
-				THR.lightDirectional.castShadow = true;
-				scene.add( THR.lightDirectional );
+				thr.lightDirectional.castShadow = true;
+				scene.add( thr.lightDirectional );
 
-				scene.add( new THREE.CameraHelper( THR.lightDirectional.shadow.camera ) );
+				scene.add( new THREE.CameraHelper( thr.lightDirectional.shadow.camera ) );
 
 				lightPoint = new THREE.PointLight( 0xffffff, 0.95 );
 				camera.add( lightPoint );
@@ -102,7 +102,7 @@
 	}
 
 
-	THR.drawSprite = function( text, scale, color, x, y, z ) {
+	function drawSprite( text, scale, color, x, y, z ) {
 
 		let texture, spritMaterial, sprite;
 
@@ -114,54 +114,54 @@
 
 		return sprite;
 
+	}
 
-			function canvasText( textArray, color ) {
 
-				let canvas = document.createElement( 'canvas' );
-				let context = canvas.getContext( '2d' );
-				let width = 0, texture;
+	function canvasText( textArray, color ) {
 
-				if ( typeof textArray === 'string' ) textArray = [ textArray ];
+		let canvas = document.createElement( 'canvas' );
+		let context = canvas.getContext( '2d' );
+		let width = 0, texture;
 
-				context.font = '48px sans-serif';
+		if ( typeof textArray === 'string' ) textArray = [ textArray ];
 
-				for ( let i = 0, len = textArray.length; i < len; i++) {
+		context.font = '48px sans-serif';
 
-					width = context.measureText( textArray[i] ).width > width ? context.measureText( textArray[i] ).width : width;
+		for ( let i = 0, len = textArray.length; i < len; i++) {
 
-				}
+			width = context.measureText( textArray[i] ).width > width ? context.measureText( textArray[i] ).width : width;
 
-				canvas.width = width + 20; // 480
-				canvas.height = textArray.length * 60;
+		}
 
-				context.fillStyle = color;
-				context.fillRect( 0, 0, canvas.width, canvas.height);
+		canvas.width = width + 20; // 480
+		canvas.height = textArray.length * 60;
 
-				context.lineWidth = 1 ;
-				context.strokeStyle = '#000';
-				context.strokeRect( 0, 0, canvas.width, canvas.height);
+		context.fillStyle = color;
+		context.fillRect( 0, 0, canvas.width, canvas.height);
 
-				context.fillStyle = '#000' ;
-				context.font = '48px sans-serif';
+		context.lineWidth = 1 ;
+		context.strokeStyle = '#000';
+		context.strokeRect( 0, 0, canvas.width, canvas.height);
 
-				for ( i = 0, len = textArray.length; i < len; i++) {
+		context.fillStyle = '#000' ;
+		context.font = '48px sans-serif';
 
-					context.fillText( textArray[i], 10, 48  + i * 60 );
+		for ( i = 0, len = textArray.length; i < len; i++) {
 
-				}
+			context.fillText( textArray[i], 10, 48  + i * 60 );
 
-				texture = new THREE.Texture( canvas );
-				texture.minFilter = texture.magFilter = THREE.NearestFilter;
-				texture.needsUpdate = true;
+		}
 
-				return texture;
+		texture = new THREE.Texture( canvas );
+		texture.minFilter = texture.magFilter = THREE.NearestFilter;
+		texture.needsUpdate = true;
 
-			}
+		return texture;
 
 	}
 
 
-	THR.animate = function() {
+	 THR.animate = function() {
 
 		controls.update();
 		stats.update();

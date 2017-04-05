@@ -5,6 +5,7 @@
 
 	HED.init = function() {
 
+		window.index = undefined;
 		window.mouse = new THREE.Vector2();
 		window.intersected = undefined;
 
@@ -66,7 +67,7 @@
 
 				}
 
-				HED.setHeadsUp( event );
+				setHeadsUp( event );
 
 			}
 
@@ -93,9 +94,10 @@
 	}
 
 
-HED.setHeadsUp = function( event ) {
+function setHeadsUp( event ) {
 
 	let sym, idx, txt;
+	const b = '<br>';
 
 	if ( intersected === undefined ){
 
@@ -115,7 +117,8 @@ HED.setHeadsUp = function( event ) {
 	headsUp.style.display = '';
 
 	sym = symbols[ intersected.name ];
-	idx = PLA.index >= sym.ticks.length ? sym.ticks.length - 1 : PLA.index;
+	index = index ? index : 0;
+	idx = PLY.index >= sym.ticks.length ? sym.ticks.length - 1 : PLY.index;
 	tick = sym.ticks[ idx ];
 
 	txt =

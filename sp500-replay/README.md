@@ -35,7 +35,7 @@ a statement of a rationale, applicable now as well as in the future
 
 ### To Do / Upcoming
 
-* 2017-03-26 ~ Demo mode ~ Jump to next day and keep on playing
+
 * 2017-03-26 ~ update shapes to triangles, diamonds, stars, Xs and so on
 * Add sounds
 * Add sun movement
@@ -53,6 +53,12 @@ a statement of a rationale, applicable now as well as in the future
 
 ## Change Log & Developer Notes
 
+
+### 2017-04-05 ~ Theo
+
+* Much streamlining and name spacing
+* 2017-03-26 ~ Demo mode ~ Jump to next day and keep on playing << done
+* Set replay same or next day
 
 ### 2017-04-04 ~ Theo ~ 8.1
 

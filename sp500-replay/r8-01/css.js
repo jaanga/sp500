@@ -1,10 +1,8 @@
-
-// having css here allows for inserting JavaScript
-
 	let CSS = {};
 
 	CSS.init = function() {
 
+//		CSS.css = document.head.appendChild( document.createElement( 'style' ) );
 		document.head.innerHTML +=
 
 			'<style>' +

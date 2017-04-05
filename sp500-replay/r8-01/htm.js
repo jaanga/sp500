@@ -21,17 +21,62 @@
 				'<div class=popUp id=popHelp style=display:none; ><p>Hi there!</p>Click the i-in-circle, info icon for latest updates.</div>' +
 				'<p><small><i>' + document.head.querySelector("[name=description]").content + '</i></small></p>' +
 
+				'<details open>' +
+					'<summary><h3>Trading Days</h3></summary>' +
 
-				'<div id=mnuSelect ></div>' +
+					'<p>' +
+						'<select id=selFiles onchange=requestFileTicks(this.value); size=10 style=width:100%; ></select>' +
+					'</p>' +
 
-				'<div id=mnuShow ></div>' +
+					'<p><output id=outDate ><output> </p>' +
 
-				'<div id=mnuSettings ></div>' +
+					'<p id=menuReplay>&nbsp;</p>' +
 
+					'<p id=log1 ></p>' +
+					'<p id=log2 ></p>' +
+
+					'<p>' +
+						' <input type=range id=inpIndex min=0 max=390 step=1 value=0 oninput=PLY.index=inpIndex.value;updatePosition(); title="0 to 390: OK" style=width:100%;>' +
+					'</p>' +
+
+					'<p>' +
+						'<button id=mnuControls onclick=replay(); style=width:100%; >Play</button>' +
+					'</p>' +
+
+
+				'</details>' +
+
+				'<details id=detSymbols >' +
+					'<summary><h3>Symbol Highlight</h3></summary>' +
+
+					'<p>🔍 <input id=inpSearch size=5 ></p>' +
+					'<p><select id=selSymbols size=10 style=width:100px; ></select></p>' +
+					'<p><button onclick=MNU.resetSectors();  style=width:100%; >Reset Symbols</button></p>' +
+
+				'</details>' +
+
+				'<details open>' +
+					'<summary><h3>Sector Highlight</h3></summary>' +
+
+					'<p id=mnuSector ></p>' +
+
+				'</details>' +
+
+				'<details>' +
+					'<summary><h3>Settings</h3></summary>' +
+					'<p><input type=checkbox onchange=symbols.lines.visible=!symbols.lines.visible; checked > Snail Slime</p>' +
+					'<p><input type=checkbox id=chkWire onchange=toggleWireframe(); > Wireframe</p>' +
+					'<p><input type=checkbox onchange=ground.visible=!ground.visible; checked > Ground plane</p>' +
+					'<p><input type=checkbox onchange=axisHelper.visible=!axisHelper.visible; checked > Axes</p>' +
+					'<p><input type=checkbox onchange=lightDirectional.shadow.camera.visible=!lightDirectional.shadow.camera.visible; checked > lightbox</p>' +
+					'<p><input type=checkbox id=chkBackground onchange=toggleBackgroundGradient(); checked > Gradient background</p>' +
+					'<p title="Press spacebar or click in window to stop." >' +
+						'<input type=checkbox id=chkRotate onchange=controls.autoRotate=!controls.autoRotate checked > Rotation ' +
+					'</p>'  +
+				'</details>' +
 
 				'<details>' +
 					'<summary><h3>About</h3></summary>' +
-
 					'<p>' +
 						'&bull; Rotate|Zoom|Pan => 1|2|3' + b +
 						'&nbsp; fingers/buttons' + b +
@@ -39,8 +84,8 @@
 						'&bull; Slide menu => \'hamburger\' icon' +
 					'<p>' +
 
-					'<p>Click the \'i in a circle\' icon for more <a href=index.html#readme.md title="Click here for help and information" >help</a>.</p>' +
 
+					'<p>Click the \'i in a circle\' icon for more <a href=index.html#readme.md title="Click here for help and information" >help</a>.</p>' +
 					'<p>' +
 						'Keywords:' + b +
 						document.head.querySelector("[name=keywords]").content.replace( /,/g, ', ' ) + b + b +
@@ -49,9 +94,7 @@
 						'File name:' + b +
 						location.pathname.split( '/' ).pop() + b +
 					'</p>' +
-
 					'<p>Copyright &copy; ' + ( new Date() ).getFullYear() + ' Jaanga authors. <a href=http://jaanga.github.io/home/r4/index.html#http://jaanga.github.io/jaanga-copyright-and-mit-license.md >MIT license</a>.</p>' +
-
 				'</details>' +
 
 				'<hr>' +
