@@ -24,13 +24,17 @@
 	let tradesDate;
 	const b = '<br>';
 
+	getStart = 0;
+
 // comment next to load all trades
-//	getEnd = 3;
+//	getEnd = 70;
 	period = '&p=1d';
 
 	init();
 
 	function init() {
+
+		console.clear();
 
 		let txt, css, contents;
 
@@ -70,12 +74,15 @@
 
 			'<p id=symData ></p>' +
 
-			'<p><button onclick=initGetTrades(); >Get Trades </button> end: <input id=inpEnd onClick=this.select(); size=4 > <output id=outTrades ></output></p>' +
+			'<p><button onclick=initGetTrades(); >Get Trades </button> ' +
+				'start: <input id=inpStart onClick=this.select(); size=4 > ' +
+				'end: <input id=inpEnd onClick=this.select(); size=4 > ' +
+				'<output id=outTrades ></output></p>' +
 
 			'<p id=log2 ></p>' +
 
 			'<p>' +
-				'<button onclick=validate(); >Validate Data</button>' +
+				'<button onclick=vvalidate(); >Validate Data</button>' +
 				' &nbsp; <button onclick=saveFile(); >Save File</button>' +
 			'</p>' +
 
@@ -100,6 +107,7 @@
 
 		getDateObjFromEpochTime( inpTimestamp.value )
 
+		inpStart.value = getStart;
 		inpEnd.value = getEnd ? getEnd : 'full list' ;
 
 		outTrades.innerHTML = 'period: ' + period;
@@ -185,7 +193,7 @@ console.log( '', syms );
 				marketCap = entry.gsx$marketcap.$t ? parseInt( entry.gsx$marketcap.$t, 10 ) : 50000000000;
 
 				symbol = {
-					symbol: entry.gsx$tickersymbol.$t, // .replace( '-', '.' ), // was for Yahoo. fix in ss?
+					symbol: entry.gsx$tickersymbol.$t.replace( '-', '.' ), // was for Yahoo. fix in ss?
 					name: entry.gsx$security.$t.replace( /,/g, '' ),
 					sector: entry.gsx$gicssector.$t,
 					sectorID: parseInt( entry.gsx$sectorid.$t, 10 ),
@@ -242,7 +250,7 @@ console.log( '', syms );
 
 		console.time( 'time' );
 
-		symbols.index = getStart = getCount = 0;
+		symbols.index =  getStart ? getStart : 0;
 
 		getEnd = getEnd ? getEnd : symbols.keys.length;
 
@@ -314,7 +322,7 @@ console.timeEnd( 'time' );
 
 			if ( txt.query.results === null ) {
 
-console.log( symbol, xhr.target.response, );
+console.log( symbol, xhr.target.response );
 
 //				getTrades();
 				return;
@@ -325,7 +333,7 @@ console.log( symbol, xhr.target.response, );
 
 			if ( lines.length === 0 ) {
 
-console.log( txt );
+console.log( symbol, txt.query.results.body.split( '\n' ) );
 
 				getTrades();
 				return;
@@ -510,7 +518,7 @@ console.log( txt );
 
 		divTrades.innerText = txt;
 
-		symbol = symbols[ symbols.keys[ 0 ] ];
+		symbol = symbols[ symbols.keys[ getStart ] ];
 		divTradesMeta.innerHTML = symbol.symbol + ' ' + symbol.tradeDays[ day ].date + ' ' +
 			symbol.tradeDays[ day ].epoch + ' ' +
 			symbol.tradeDays[ day ].length +
@@ -522,7 +530,7 @@ console.log( txt );
 	}
 
 
-	function validate() {
+	function vvalidate() {
 
 		for ( let i = 0; i < symbols.keys.length; i++ ) {
 
@@ -535,6 +543,7 @@ console.log( txt );
 		}
 
 	}
+
 
 	function getDateFromEpochTime( epoch ) {
 

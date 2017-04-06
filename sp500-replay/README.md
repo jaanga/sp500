@@ -35,7 +35,6 @@ a statement of a rationale, applicable now as well as in the future
 
 ### To Do / Upcoming
 
-
 * 2017-03-26 ~ update shapes to triangles, diamonds, stars, Xs and so on
 * Add sounds
 * Add sun movement
@@ -44,7 +43,7 @@ a statement of a rationale, applicable now as well as in the future
 ### Issues / Problems
 
 * 2017-03-26 ~ ****Colors, opacity, emissivity, lights, shading all need big looking at****
-
+* 2017-04-05 ~ Complexity ov interferences slowing things down. how to speed up?
 
 ## Copyright and License
 

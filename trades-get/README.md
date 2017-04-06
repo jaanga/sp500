@@ -54,6 +54,11 @@ Request and obtain stock market intraday data for hundreds of symbols sourced vi
 
 ## Change Log & Developer Notes
 
+### 2017-04-05 ~ Theo
+
+* Add getStart
+* Fix brk.b issues again
+
 ### 2017-04-04 ~ Theo
 
 Code could use much cleanup and streamlining
