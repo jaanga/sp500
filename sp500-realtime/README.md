@@ -54,9 +54,10 @@ See SP500 home page
 
 ### 2017-04-07 ~ Theo
 
-* On same modular track as replay
+* Realtime now on same modular track as Replay
 	* Both should be able to be updated simultaneously
 * Fixes to replay, headsup
+* Add reset view to home button under hamburger
 
 ### 2017-04-03 ~ Theo
 

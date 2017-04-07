@@ -30,6 +30,7 @@
 			'#container { left: 0; position: absolute; transition: left 1s; }' +
 
 			'#hamburger { background-color: #eee; left: 325px; position: absolute; top: 20px; }' +
+			'#home { background-color: #eee; cursor: pointer; font-size: 40pt; left: 325px; line-height: 30pt; position: absolute; top: 80px; }' +
 
 			'#menu { background-color: #eee; border: 1px #ccc solid; max-height: ' + window.innerHeight + 'px; overflow-x: hidden; overflow-y: auto; padding: 0 10px; position: absolute; width: 300px; }' +
 			'#menu h2 { margin: 0; }' +

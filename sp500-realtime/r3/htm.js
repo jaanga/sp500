@@ -64,6 +64,9 @@
 				'<div id=bars title="Click this hamburger to slide the menu" > &#9776 </div>' +
 			'</div>' +
 
+			'<div id=home onclick=controls.reset();controls.target.set(0,20,-150); title="Click to return to home view" > &#8962;</div>' +
+
+
 		'';
 
 	}

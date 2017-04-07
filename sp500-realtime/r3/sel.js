@@ -16,11 +16,11 @@
 			'</details>' +
 
 
-			'<details open>' +
+			'<details>' +
 
 				'<summary><h3>Replay</h3></summary>' +
 
-				'<p id=menuReplay>&nbsp;</p>' +
+				'<p id=menuReplay>work-in-progress</p>' +
 
 				'<p>' +
 					' <input type=range id=inpIndex min=0 max=390 step=1 value=0 oninput=PLA.index=inpIndex.value;PLA.updatePosition(); title="0 to 390: OK" style=width:100%;>' +
