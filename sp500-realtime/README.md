@@ -11,7 +11,6 @@ _SP500 near realtime ~ tracks over 500 symbol with updates about once a minute_
 
 ### Full Screen Demo: [Jaanga SP500 Realtime Dev]( https://jaanga.github.io/sp500/sp500-realtime/dev )
 
-
 ### Full Screen Demo: [Jaanga SP500 Realtime]( https://jaanga.github.io/sp500/sp500-realtime/ )
 
 
@@ -53,6 +52,11 @@ See SP500 home page
 ## Change Log & Developer Notes
 
 
+### 2017-04-07 ~ Theo
+
+* On same modular track as replay
+	* Both should be able to be updated simultaneously
+* Fixes to replay, headsup
 
 ### 2017-04-03 ~ Theo
 
