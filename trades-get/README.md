@@ -54,6 +54,12 @@ Request and obtain stock market intraday data for hundreds of symbols sourced vi
 
 ## Change Log & Developer Notes
 
+
+### 2017-04-07 ~ Theo
+
+* Updated the select symbol bits
+* Better error checking in loading Google SS / Wikipedia data
+
 ### 2017-04-05 ~ Theo
 
 * Add getStart
