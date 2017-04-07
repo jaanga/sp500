@@ -1,14 +1,15 @@
 // https://docs.google.com/spreadsheets/d/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/edit#gid=1750244370
 	let TradeDataFileName = 'https://spreadsheets.google.com/feeds/list/17cct_eo6odACejno1YnDPxXXyOoNxxjs02zhXTNdWwo/1/public/values?alt=json';
 
-	tickUpdate = 2;
+
 
 	function loadTickJSON() {
+
+	let tickUpdate = 2;
 
 		let xhr, response, txt;
 		let cells, cell, ticks, tick, symbol, diff, note;
 		const b = '<br>';
-
 
 		ticks = [];
 		txt = '';
@@ -138,14 +139,15 @@
 			symbol = symbols[ symbols.keys[ i ] ];
 			tick = symbol.ticks[ symbol.ticks.length - 1 ];
 
-			x = 10 * tick[ 0 ];
+			x = 30 * tick[ 0 ];
 			x = x > 150 ? 150 : x;
 			x = x < -150 ? -150 : x;
 
-			z = -200 * Math.log( 1 + tick[ 1 ] / symbol.volumeAvg );
+			z = -200 * tick[ 1 ] / symbol.volumeAvg;
+			y = z < -400 ? 10 * Math.log( -400 - z ) : 0;
 			z = z < -400 ? -400 : z;
 
-			vertex =  new THREE.Vector3( x, 0, z );
+			vertex =  new THREE.Vector3( x, y, z );
 			symbol.vertices.push( vertex );
 			symbols.meshes[ i ].position.copy( vertex )
 

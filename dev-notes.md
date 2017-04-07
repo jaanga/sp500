@@ -3,33 +3,38 @@ Dev Notes
 
 ## To Do
 
-### Realtime
 
+### For all scripts
+
+* Add tweets
+* Select exchange & index
+* Select portfolio
+* Compare and contrast Google and Yahoo volume data
+* Start creating issue blog posts
+* Toggle log or linear table scales
+
+### Ground
+
+* Add sounds
+* Add sun movement
+
+### SHO
+
+* Only symbols in the sector highlight
+* When you select a sector, the list of constituents is displayed in the symbols list
+
+
+## 2017-04-07 ~ Theo
+
+Done a while ago
+* Add minute slider bar
+* Prevent objects from going off the table
+* Add select and highlight symbol by text entry
+* Set up read me files
+* Add auto replay
 * Make trade variables properties of symbols
 * Add graph icons to the apps
 * Add date and time for each minute
-
-### Replay
-
-
-### Both
-* Start creating issue blog posts
-* Set up read me files
-* Toggle log or linear table scales
-* Add sounds
-* Add auto replay
-* Add minute slider bar
-* Add sun movement
-* Prevent objects from going off the table
-* Add select and highlight symbol by text entry
-
-
-### Get Trades
-* Select exchange & portfolio
-* Get trades for selected symbols or portfolio of issues not in sp500
-* Display start index
-* Add display date that will be saved << make more apparent
-
 
 ## 2017-03-25
 

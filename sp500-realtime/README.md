@@ -58,6 +58,7 @@ See SP500 home page
 	* Both should be able to be updated simultaneously
 * Fixes to replay, headsup
 * Add reset view to home button under hamburger
+* Adjusted x and z symbol displacements r=to fit table more nicely
 
 ### 2017-04-03 ~ Theo
 

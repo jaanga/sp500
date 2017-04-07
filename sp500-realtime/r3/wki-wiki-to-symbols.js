@@ -135,6 +135,7 @@
 		scene.add( symbols.objects );
 
 		loadTickJSON();
+		SHO.setMenuSymbolSelect();
 
 		hed.touchables = symbols.touchables;
 
