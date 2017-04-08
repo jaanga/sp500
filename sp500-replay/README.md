@@ -10,13 +10,15 @@ _did you gain or lose? SP500 replay ~ select and follow entire days of one minut
 
 
 ### Full Screen Demo: [Jaanga SP500 Replay ]( https://jaanga.github.io/sp500/sp500-replay/ )
-<!--
+
 ### Full Screen Demo: [Jaanga SP500 Replay Dev ]( https://jaanga.github.io/sp500/sp500-replay/dev/ )
--->
+
 
 ## Web Page
 
-<iframe src="https://jaanga.github.io/sp500/sp500-replay/index.html" width=100% height=600px ></iframe>
+<iframe src="https://jaanga.github.io/sp500/sp500-replay/dev/index.html" width=100% height=600px ></iframe>
+
+_Development version - may have issues_
 
 
 ## Concept

@@ -18,7 +18,9 @@
 		xhr = new XMLHttpRequest();
 		xhr.open( 'GET', TWT.folder + fileName, true );
 		xhr.onerror = function( xhr ) { console.log( 'error', xhr  ); };
-		xhr.onprogress = function( xhr ) { outDate.innerHTML = '<span style=color:red; >Loaded ' + xhr.loaded + ' out of ' + xhr.total + '</span>'; };
+		xhr.onprogress = function( xhr ) {
+			//outDate.innerHTML += '<span style=color:red; > Tweets: ' + xhr.loaded + ' out of ' + xhr.total + '</span>';
+		};
 		xhr.onload = callback;
 		xhr.send( null );
 
