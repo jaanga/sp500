@@ -52,6 +52,11 @@ a statement of a rationale, applicable now as well as in the future
 
 ## Change Log & Developer Notes
 
+
+### 2017-04-08 ~ Theo ~ r9.0
+
+* Add tweets to the dark side
+
 ### 2017-04-07 ~ Theo ~ 8.3
 
 * Add reset view to home button under hamburger

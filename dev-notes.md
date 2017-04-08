@@ -6,9 +6,9 @@ Dev Notes
 
 ### For all scripts
 
+* 2017-04-08 ~ Add sp500, dji snail slime
+* 2017-04-08 ~ add text to voice commentary
 * Add tweets
-* Select exchange & index
-* Select portfolio
 * Compare and contrast Google and Yahoo volume data
 * Start creating issue blog posts
 * Toggle log or linear table scales
@@ -18,11 +18,15 @@ Dev Notes
 * Add sounds
 * Add sun movement
 
+### SEL
+
+* Select exchange & index
+
 ### SHO
 
 * Only symbols in the sector highlight
 * When you select a sector, the list of constituents is displayed in the symbols list
-
+* Select portfolio
 
 ## 2017-04-07 ~ Theo
 
