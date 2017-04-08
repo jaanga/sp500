@@ -9,9 +9,8 @@
 
 ### Full Screen Demo: [Jaanga SP500 Replay]( https://jaanga.github.io/sp500/sp500-replay/ )
 
-<!--
 ### Full Screen Demo: [Jaanga SP500 Replay Dev]( https://jaanga.github.io/sp500/sp500-replay/dev/ )
--->
+
 
 ### Full Screen Demo: [Jaanga SP500 Realtime]( https://jaanga.github.io/sp500/sp500-realtime/ )
 
@@ -148,6 +147,7 @@ _One day this list will be as long as your arm_
 * Create alternative color schemes
 
 ### Portfolios / Sectors /Groups
+
 * Highlight your own and others portfolios
 * Display bounding boxes around the symbols in a particular industry sector
 
