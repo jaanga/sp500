@@ -17,7 +17,7 @@
 		scene = new THREE.Scene();
 
 		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 5000 );
-		camera.position.set( 120, 100, 110 );
+		camera.position.set( 130, 100, 150 );
 
 // Controls
 

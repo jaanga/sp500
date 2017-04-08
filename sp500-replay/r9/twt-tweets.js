@@ -10,7 +10,7 @@
 
 	TWT.requestTweets = function() {
 
-		let fileName, text, lines, v2, material, geometry, mesh;
+//		let fileName, text, lines, v2, material, geometry, mesh;
 
 
 		fileName = symbols.fileName;
@@ -27,6 +27,8 @@
 				text = xhr.target.response;
 
 				lines = text.split( '\n' ).map( function( line ) { return line.split( ',' ); } );
+
+if ( lines === undefined ) { return; }
 
 				v2 = function( x, y ){ return new THREE.Vector2( x, y ); };
 				points = [ v2( 0, -1 ) , v2( 0.5, -1 ), v2( 1, -0.8 ), v2( 0, 0 ) ];
