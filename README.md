@@ -22,7 +22,8 @@
 
 ## Web Page
 
-<iframe src="https://jaanga.github.io/sp500/sp500-replay/index.html" width=100% height=600px ></iframe>
+<iframe src="https://jaanga.github.io/sp500/sp500-replay/dev/index.html" width=100% height=600px ></iframe>
+
 
 ## Concept
 
