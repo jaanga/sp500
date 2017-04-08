@@ -15,8 +15,10 @@
 
 		material = new THREE.MeshPhongMaterial( {
 			color: 0x22cc55,
+			opacity: 0.85,
 			specular: 0xffffff * Math.random(),
-			shininess: 10
+			shininess: 10,
+			transparent: true
 		} );
 
 		mesh = new THREE.Mesh( geometry, material );
@@ -34,8 +36,10 @@
 
 		material = new THREE.MeshPhongMaterial( {
 			color: 0x992222,
+			opacity: 0.85,
 			specular: 0xffffff * Math.random(),
-			shininess: 10
+			shininess: 10,
+			transparent: true
 		} );
 
 		mesh = new THREE.Mesh( geometry, material );
